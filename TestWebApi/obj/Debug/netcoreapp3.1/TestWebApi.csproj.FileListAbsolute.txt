@@ -1,0 +1,210 @@
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\appsettings.Development.json
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\appsettings.json
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.exe
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.deps.json
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.runtimeconfig.json
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.runtimeconfig.dev.json
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.pdb
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Razor.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Workspaces.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\dotnet-aspnet-codegenerator-design.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\NuGet.Frameworks.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.AttributedModel.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.Convention.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.Hosting.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.Runtime.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.TypedParts.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+G:\vs2019project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csproj.CoreCompileInputs.cache
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cs
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cache
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.AssemblyInfoInputs.cache
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.AssemblyInfo.cs
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.RazorTargetAssemblyInfo.cache
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csproj.CopyComplete
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\staticwebassets\TestWebApi.StaticWebAssets.Manifest.cache
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\staticwebassets\TestWebApi.StaticWebAssets.xml
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.dll
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.pdb
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.genruntimeconfig.cache
+G:\vs2019project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csprojAssemblyReference.cache
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.exe
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.deps.json
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.runtimeconfig.json
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.runtimeconfig.dev.json
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\TestWebApi.pdb
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Razor.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\dotnet-aspnet-codegenerator-design.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\NuGet.Frameworks.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.AttributedModel.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.Convention.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.Hosting.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.Runtime.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\System.Composition.TypedParts.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csprojAssemblyReference.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csproj.CoreCompileInputs.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.AssemblyInfoInputs.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.AssemblyInfo.cs
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.RazorTargetAssemblyInfo.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csproj.CopyComplete
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\staticwebassets\TestWebApi.StaticWebAssets.Manifest.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\staticwebassets\TestWebApi.StaticWebAssets.xml
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.dll
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.pdb
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.genruntimeconfig.cache
