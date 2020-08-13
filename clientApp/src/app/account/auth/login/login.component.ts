@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -51,12 +51,21 @@ export class LoginComponent implements OnInit, AfterViewInit {
     if (this.loginForm.invalid) {
       return;
     }
-
-    this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {
-      this.router.navigate(['/dashboard']);
-    })
-      .catch(error => {
-        this.error = error ? error : '';
-      });
+    this.authenticationService.login(this.f.email.value, this.f.password.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate(['/dashboard']);
+        },
+        error => {
+          // this.alertService.error(error);
+          // this.loading = false;
+        });
+    // this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {
+    //   this.router.navigate(['/dashboard']);
+    // })
+    //   .catch(error => {
+    //     this.error = error ? error : '';
+    //   });
   }
 }
