@@ -17,14 +17,14 @@ namespace TestWebApi.Services
 {
     public class UserInfoService : IUserInfoService
     {
-        public int Add(tblUser userInfo, string connectionString)
+        public int Add(tblUser userInfo)
         {
 
             var saltedpassword = helper.Helper.ComputeHash(userInfo.Password, "SHA512", null);
             string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin]) " +
                 "VALUES('" + userInfo.UserName + "','" + userInfo.Email + "','" + userInfo.FirstName + "','" + 
                 userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "')";
-            int retVal=ExecuteCRUDByQuery(sQry, connectionString);
+            int retVal=ExecuteCRUDByQuery(sQry);
             return retVal;
         }
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
@@ -34,23 +34,28 @@ namespace TestWebApi.Services
         };
 
         private readonly AppSettings _appSettings;
+        private readonly ConnectionStrings _connectionStrings;
 
-        public UserInfoService(IOptions<AppSettings> appSettings)
+        public UserInfoService(IOptions<AppSettings> appSettings, IOptions<ConnectionStrings> connectionStrings)
         {
             _appSettings = appSettings.Value;
+            _connectionStrings = connectionStrings.Value;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
-            var user = _users.SingleOrDefault(x => x.UserName == model.Username && x.Password == model.Password);
+
+            tblUser _user = new tblUser();
+            _user = FindUserByName(model);
 
             // return null if user not found
-            if (user == null) return null;
+            if (_user == null) return null;
 
             // authentication successful so generate jwt token
-            var token = generateJwtToken(user);
+            var token = generateJwtToken(_user);
 
-            return new AuthenticateResponse(user, token);
+            return new AuthenticateResponse(_user, token);
+
         }
 
         public IEnumerable<tblUser> GetAll()
@@ -91,18 +96,37 @@ namespace TestWebApi.Services
         //    return retVal;
         //}
 
-        //public PlaceInfo Find(int id)
-        //{
-        //    PlaceInfo placeInfo = null;
-        //    string sQry = "SELECT * FROM [BillGatesPlaceInfo] WHERE [Id]="+id;
-        //    DataTable dtPlaceInfo = ExecuteQuery(sQry);
-        //    if (dtPlaceInfo != null)
-        //    {
-        //        DataRow dr = dtPlaceInfo.Rows[0];
-        //        placeInfo = GetPlaceInfoByRow(dr);
-        //    }
-        //    return placeInfo;
-        //}
+        public tblUser Find(int id)
+        {
+            tblUser userInfo = null;
+            string sQry = "SELECT * FROM [BillGatesPlaceInfo] WHERE [Id]=" + id;
+            DataTable dtPlaceInfo = ExecuteQuery(sQry, _connectionStrings.connectionStr);
+            if (dtPlaceInfo != null)
+            {
+                DataRow dr = dtPlaceInfo.Rows[0];
+                userInfo = GetPlaceInfoByRow(dr);
+            }
+            return userInfo;
+        }
+
+        public tblUser FindUserByName(AuthenticateRequest model)
+        {
+            tblUser userInfo = null;
+            
+            string sQry = "SELECT * FROM [tblUser] WHERE [email]='" + model.Username + "'";
+            DataTable dtUserInfo = ExecuteQuery(sQry, _connectionStrings.connectionStr);
+            if (dtUserInfo != null)
+            {
+                DataRow dr = dtUserInfo.Rows[0];
+                userInfo = GetPlaceInfoByRow(dr);
+            }
+            bool saltedpassword = false;
+            if (userInfo != null) {
+                saltedpassword = helper.Helper.VerifyHash(model.Password, "SHA512", userInfo.Password);
+            }
+            if (!saltedpassword) { userInfo = null; }
+            return userInfo;
+        }
 
         //public IEnumerable<PlaceInfo> GetAll()
         //{
@@ -133,13 +157,13 @@ namespace TestWebApi.Services
         //}
 
 
-        private int ExecuteCRUDByQuery(string strSql, string connectionString)
+        private int ExecuteCRUDByQuery(string strSql)
         {
             SqlConnection conn = null;
             int iR = 0;
             try
             {
-                conn = new SqlConnection(connectionString);
+                conn = new SqlConnection(_connectionStrings.connectionStr);
                 SqlCommand cmd = new SqlCommand(strSql, conn);
                 cmd.CommandType = CommandType.Text;
                 conn.Open();
@@ -158,42 +182,42 @@ namespace TestWebApi.Services
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
-        
 
-    
-    //private DataTable ExecuteQuery(string strSql)
-    //{
-    //    string sConStr = "Data Source=.\\SQLExpress;Initial Catalog=BillGatesMoney;Integrated Security=True";
-    //    SqlConnection conn = null;
-    //    DataTable dt = null;
-    //    try
-    //    {
-    //        conn = new SqlConnection(sConStr);                
-    //        SqlCommand cmd = new SqlCommand(strSql,conn);
-    //        cmd.CommandType = CommandType.Text;
-    //        SqlDataAdapter da = new SqlDataAdapter(cmd);
-    //        conn.Open();
-    //        dt = new DataTable();
-    //        //Fill the dataset
-    //        da.Fill(dt);
-    //        if (!(dt.Rows.Count > 0)) dt = null;
-    //    }
-    //    catch { dt = null;  }
-    //    finally { if (conn.State != 0) conn.Close(); }
-    //    return dt;
-    //}
 
-    //private PlaceInfo GetPlaceInfoByRow(DataRow dr)
-    //{
-    //    PlaceInfo placeInfo = new PlaceInfo();
-    //    placeInfo.Id = Convert.ToInt32(dr["Id"]);
-    //    placeInfo.Place = dr["Place"].ToString();
-    //    placeInfo.About = dr["About"].ToString();
-    //    placeInfo.City = dr["City"].ToString();
-    //    placeInfo.State = dr["State"].ToString();
-    //    placeInfo.Country = dr["Country"].ToString();
-    //    return placeInfo;
-    //}
 
-}
+        private DataTable ExecuteQuery(string strSql,string connectionString)
+        {
+            SqlConnection conn = null;
+            DataTable dt = null;
+            try
+            {
+                conn = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.CommandType = CommandType.Text;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                conn.Open();
+                dt = new DataTable();
+                //Fill the dataset
+                da.Fill(dt);
+                if (!(dt.Rows.Count > 0)) dt = null;
+            }
+            catch { dt = null; }
+            finally { if (conn.State != 0) conn.Close(); }
+            return dt;
+        }
+
+        private tblUser GetPlaceInfoByRow(DataRow dr)
+        {
+            tblUser userInfo = new tblUser();
+            userInfo.UserID = Convert.ToInt32(dr["UserID"]);
+            userInfo.UserName = dr["UserName"].ToString();
+            userInfo.FirstName = dr["FirstName"].ToString();
+            userInfo.LastName = dr["LastName"].ToString();
+            userInfo.Email = dr["Email"].ToString();
+            userInfo.Password = dr["Password"].ToString();
+            userInfo.IsAdmin = Convert.ToBoolean(dr["IsAdmin"].ToString());
+            return userInfo;
+        }
+
+    }
 }

@@ -8,13 +8,13 @@ namespace TestWebApi.Services
 {
     public interface IUserInfoService
     {
-        int Add(tblUser userInfo, string connectionString);
+        int Add(tblUser userInfo);
         AuthenticateResponse Authenticate(AuthenticateRequest model);
         IEnumerable<tblUser> GetAll();
         tblUser GetById(int id);
         //int AddRange(IEnumerable<PlaceInfo> places);
         //IEnumerable<PlaceInfo> GetAll();
-        //PlaceInfo Find(int id);
+        tblUser Find(int id);
         //int Remove(int id);
         //int Update(PlaceInfo placeInfo);
     }

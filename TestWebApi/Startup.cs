@@ -26,6 +26,7 @@ namespace TestWebApi
             services.AddControllers();
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IPlaceInfoService, PlaceInfoService>();
             services.AddSingleton<IUserInfoService, UserInfoService>();
             services.AddSwaggerGen(options =>

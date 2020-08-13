@@ -16,19 +16,17 @@ namespace TestWebApi.Controllers
     public class UserInfoController : ControllerBase
     {
         private readonly IUserInfoService _userInfoService;
-        private readonly IConfiguration _configuration;
-        public UserInfoController(IUserInfoService userInfoService, IConfiguration configuration)
+        public UserInfoController(IUserInfoService userInfoService)
         {
             _userInfoService = userInfoService;
-            _configuration = configuration;
         }
         // POST api/placeinfo
         [HttpPost]
         public IActionResult PostUserInfo([FromBody]tblUser userinfo)
         {
-            string connectionString = _configuration.GetConnectionString("myDb1");
+           
             if (userinfo == null) return BadRequest();
-            int retVal = _userInfoService.Add(userinfo, connectionString);
+            int retVal = _userInfoService.Add(userinfo);
             if (retVal > 0) return Ok(); else return NotFound();
         }
         [HttpPost("authenticate")]
@@ -40,6 +38,16 @@ namespace TestWebApi.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(response);
+        }
+        // GET api/userinfo/id
+        [HttpGet("{id}", Name = nameof(GetUserInfoById))]
+        public IActionResult GetUserInfoById(int id)
+        {
+            tblUser userInfo = _userInfoService.Find(id);
+            if (userInfo == null)
+                return NotFound();
+            else
+                return new ObjectResult(userInfo);
         }
     }
 }
