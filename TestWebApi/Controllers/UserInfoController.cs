@@ -49,5 +49,12 @@ namespace TestWebApi.Controllers
             else
                 return new ObjectResult(userInfo);
         }
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userInfoService.GetAll();
+            return Ok(users);
+        }
     }
 }

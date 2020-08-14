@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace TestWebApi.Models
 {
@@ -16,7 +17,7 @@ namespace TestWebApi.Models
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-
+        [JsonIgnore]
         public string Password { get; set; }
 
         public bool? IsDeleted { get; set; }

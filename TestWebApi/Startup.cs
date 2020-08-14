@@ -57,7 +57,7 @@ namespace TestWebApi
             app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints =>{endpoints.MapControllers();});
             app.UseSwagger();
-            app.UseSwaggerUI(options =>options.SwaggerEndpoint("/swagger/v2/swagger.json", "PlaceInfo Services"));
+            app.UseSwaggerUI(options =>options.SwaggerEndpoint("/swagger/v2/swagger.json", "LOTO Project Services"));
         }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using TestWebApi.helper;
-
+using System.Reflection;
 
 namespace TestWebApi.Services
 {
@@ -58,10 +58,10 @@ namespace TestWebApi.Services
 
         }
 
-        public IEnumerable<tblUser> GetAll()
-        {
-            return _users;
-        }
+        //public IEnumerable<tblUser> GetAll()
+        //{
+        //    return _users;
+        //}
 
         public tblUser GetById(int id)
         {
@@ -100,7 +100,7 @@ namespace TestWebApi.Services
         {
             tblUser userInfo = null;
             string sQry = "SELECT * FROM [BillGatesPlaceInfo] WHERE [Id]=" + id;
-            DataTable dtPlaceInfo = ExecuteQuery(sQry, _connectionStrings.connectionStr);
+            DataTable dtPlaceInfo = ExecuteQuery(sQry);
             if (dtPlaceInfo != null)
             {
                 DataRow dr = dtPlaceInfo.Rows[0];
@@ -114,7 +114,7 @@ namespace TestWebApi.Services
             tblUser userInfo = null;
             
             string sQry = "SELECT * FROM [tblUser] WHERE [email]='" + model.Username + "'";
-            DataTable dtUserInfo = ExecuteQuery(sQry, _connectionStrings.connectionStr);
+            DataTable dtUserInfo = ExecuteQuery(sQry);
             if (dtUserInfo != null)
             {
                 DataRow dr = dtUserInfo.Rows[0];
@@ -128,20 +128,48 @@ namespace TestWebApi.Services
             return userInfo;
         }
 
-        //public IEnumerable<PlaceInfo> GetAll()
-        //{
-        //    List<PlaceInfo> placeInfos = null;
-        //    string sQry = "SELECT * FROM [BillGatesPlaceInfo]";
-        //    DataTable dtPlaceInfo = ExecuteQuery(sQry);           
-        //    if (dtPlaceInfo != null)
-        //    {
-        //        placeInfos = new List<PlaceInfo>();
-        //        foreach (DataRow dr in dtPlaceInfo.Rows)
-        //          placeInfos.Add(GetPlaceInfoByRow(dr));
-        //    }
-        //    return placeInfos;
-        //}
+        public IEnumerable<tblUser> GetAll()
+        {
+            List<tblUser> userInfos = null;
+            string sQry = "SELECT * FROM [tblUser]";
+            DataTable dtUserInfo = ExecuteQuery(sQry);
+            if (dtUserInfo != null)
+            {
 
+                userInfos = ConvertDataTable<tblUser>(dtUserInfo);
+                //userInfos = new List<tblUser>();
+                //foreach (DataRow dr in dtUserInfo.Rows)
+                //    userInfos.Add(GetPlaceInfoByRow(dr));
+            }
+            return userInfos;
+        }
+        private static List<T> ConvertDataTable<T>(DataTable dt)
+        {
+            List<T> data = new List<T>();
+            foreach (DataRow row in dt.Rows)
+            {
+                T item = GetItem<T>(row);
+                data.Add(item);
+            }
+            return data;
+        }
+        private static T GetItem<T>(DataRow dr)
+        {
+            Type temp = typeof(T);
+            T obj = Activator.CreateInstance<T>();
+
+            foreach (DataColumn column in dr.Table.Columns)
+            {
+                foreach (PropertyInfo pro in temp.GetProperties())
+                {
+                    if (pro.Name == column.ColumnName)
+                        pro.SetValue(obj, dr[column.ColumnName], null);
+                    else
+                        continue;
+                }
+            }
+            return obj;
+        }
         //public int Remove(int id)
         //{
         //    string sQry = "DELETE FROM [BillGatesPlaceInfo] WHERE [Id]=" + id;
@@ -185,13 +213,13 @@ namespace TestWebApi.Services
 
 
 
-        private DataTable ExecuteQuery(string strSql,string connectionString)
+        private DataTable ExecuteQuery(string strSql)
         {
             SqlConnection conn = null;
             DataTable dt = null;
             try
             {
-                conn = new SqlConnection(connectionString);
+                conn = new SqlConnection(_connectionStrings.connectionStr);
                 SqlCommand cmd = new SqlCommand(strSql, conn);
                 cmd.CommandType = CommandType.Text;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
