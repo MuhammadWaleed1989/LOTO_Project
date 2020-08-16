@@ -203,9 +203,6 @@ C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win-x86\nat
 C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csprojAssemblyReference.cache
-C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csproj.CoreCompileInputs.cache
-C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cs
-C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.AssemblyInfoInputs.cache
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.AssemblyInfo.cs
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.RazorTargetAssemblyInfo.cache
@@ -215,3 +212,7 @@ C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\staticwebassets\Test
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.dll
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.pdb
 C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.genruntimeconfig.cache
+C:\Personal\LOTO Project\TestWebApi\bin\Debug\netcoreapp3.1\launchSettings.json
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.csproj.CoreCompileInputs.cache
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Personal\LOTO Project\TestWebApi\obj\Debug\netcoreapp3.1\TestWebApi.MvcApplicationPartsAssemblyInfo.cache

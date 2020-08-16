@@ -21,9 +21,9 @@ namespace TestWebApi.Services
         {
 
             var saltedpassword = helper.Helper.ComputeHash(userInfo.Password, "SHA512", null);
-            string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin]) " +
+            string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin],[IsUserOnline]) " +
                 "VALUES('" + userInfo.UserName + "','" + userInfo.Email + "','" + userInfo.FirstName + "','" + 
-                userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "')";
+                userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "','" + false + "')";
             int retVal=ExecuteCRUDByQuery(sQry);
             return retVal;
         }
@@ -99,7 +99,7 @@ namespace TestWebApi.Services
         public tblUser Find(int id)
         {
             tblUser userInfo = null;
-            string sQry = "SELECT * FROM [BillGatesPlaceInfo] WHERE [Id]=" + id;
+            string sQry = "SELECT * FROM [tblUser] WHERE [UserID]=" + id;
             DataTable dtPlaceInfo = ExecuteQuery(sQry);
             if (dtPlaceInfo != null)
             {
@@ -123,9 +123,16 @@ namespace TestWebApi.Services
             bool saltedpassword = false;
             if (userInfo != null) {
                 saltedpassword = helper.Helper.VerifyHash(model.Password, "SHA512", userInfo.Password);
+                UpdateOnlineStatus(userInfo.UserID, true);
             }
             if (!saltedpassword) { userInfo = null; }
             return userInfo;
+        }
+        public int UpdateOnlineStatus(int userID, bool isOnline)
+        {
+            string sQry = "UPDATE [tblUser] SET [IsUserOnline]='" + isOnline + "' WHERE [UserID]=" + userID;
+            int retVal = ExecuteCRUDByQuery(sQry);
+            return retVal;
         }
 
         public IEnumerable<tblUser> GetAll()
@@ -135,11 +142,19 @@ namespace TestWebApi.Services
             DataTable dtUserInfo = ExecuteQuery(sQry);
             if (dtUserInfo != null)
             {
-
-                userInfos = ConvertDataTable<tblUser>(dtUserInfo);
                 //userInfos = new List<tblUser>();
-                //foreach (DataRow dr in dtUserInfo.Rows)
-                //    userInfos.Add(GetPlaceInfoByRow(dr));
+                userInfos = (from DataRow dr in dtUserInfo.Rows
+                               select new tblUser()
+                               {
+                                   UserID = Convert.ToInt32(dr["UserID"]),
+                                   UserName = dr["UserName"].ToString(),
+                                   FirstName = dr["FirstName"].ToString(),
+                                   LastName = dr["LastName"].ToString(),
+                                   Email = dr["Email"].ToString(),
+                                   IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"].ToString())
+                               }).ToList();
+
+               // userInfos = ConvertDataTable<tblUser>(dtUserInfo);
             }
             return userInfos;
         }

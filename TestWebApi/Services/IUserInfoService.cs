@@ -15,6 +15,7 @@ namespace TestWebApi.Services
         //int AddRange(IEnumerable<PlaceInfo> places);
         //IEnumerable<PlaceInfo> GetAll();
         tblUser Find(int id);
+        int UpdateOnlineStatus(int userID, bool isOnline);
         //int Remove(int id);
         //int Update(PlaceInfo placeInfo);
     }

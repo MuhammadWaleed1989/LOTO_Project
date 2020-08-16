@@ -32,6 +32,7 @@ import { ChartModule } from './chart/chart.module';
 import { CalendarComponent } from './calendar/calendar.component';
 import { MapsModule } from './maps/maps.module';
 import { ChatComponent } from './chat/chat.component';
+import { UsersModule } from './usermanagement/users.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -66,7 +67,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FullCalendarModule,
     NgbNavModule,
     NgbTooltipModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    UsersModule
   ],
   providers: [
     {

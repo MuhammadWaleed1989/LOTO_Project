@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'email', loadChildren: () => import('./email/email.module').then(m => m.EmailModule) },
   { path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule) },
   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
+  { path: 'usermanagement', loadChildren: () => import('./usermanagement/users.module').then(m => m.UsersModule) },
   { path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule) },
   { path: 'contacts', loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule) },
   { path: 'pages', loadChildren: () => import('./utility/utility.module').then(m => m.UtilityModule) },

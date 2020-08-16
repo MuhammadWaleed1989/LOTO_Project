@@ -2,6 +2,10 @@ import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from '../../core/services/auth.service';
+import { Users } from '../../pages/usermanagement/users.model';
+import { environment } from '../../../environments/environment';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-topbar',
@@ -16,7 +20,8 @@ export class TopbarComponent implements OnInit {
 
   element;
   configData;
-
+  public _hubConnection: HubConnection;
+  users: Users[] = [];
   constructor(@Inject(DOCUMENT) private document: any, private router: Router, private authService: AuthenticationService) { }
 
   openMobileMenu: boolean;
@@ -25,6 +30,20 @@ export class TopbarComponent implements OnInit {
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   ngOnInit() {
+    this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
+    this._hubConnection.on('UserList', (data: any) => {
+      this.users = data;
+    });
+    this._hubConnection.start()
+      .then(() => {
+        this._hubConnection.invoke('Start');
+        console.log('Hub connection started')
+      })
+      .catch(err => {
+        console.log('Error while establishing connection')
+      });
+
+    console.log(this._hubConnection);
     this.openMobileMenu = false;
     this.element = document.documentElement;
 
@@ -53,8 +72,12 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/account/login']);
+    this.authService.logout().pipe(first()).subscribe(data => {
+      this._hubConnection.invoke('Start');
+      this.router.navigate(['/account/login']);
+    });
+    //this.authService.logout();
+
   }
 
   /**

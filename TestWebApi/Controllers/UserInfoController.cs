@@ -49,6 +49,14 @@ namespace TestWebApi.Controllers
             else
                 return new ObjectResult(userInfo);
         }
+        [HttpPut("{id}")]
+        public IActionResult PostUserInfo(int id, [FromBody] tblUser userinfo)
+        {
+            if (userinfo == null || id != userinfo.UserID) return BadRequest();
+            if (_userInfoService.Find(id) == null) return NotFound();
+            int retVal = _userInfoService.UpdateOnlineStatus(userinfo.UserID, false);
+            if (retVal > 0) return Ok(); else return NotFound();
+        }
         [Authorize]
         [HttpGet]
         public IActionResult GetAll()

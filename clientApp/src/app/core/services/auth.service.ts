@@ -39,6 +39,7 @@ export class AuthenticationService {
                 if (data && data.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(data.firstName));
+                    localStorage.setItem('id', data.id);
                     localStorage.setItem('access_token', data.token);
                     this.currentUserSubject.next(data.firstName);
                 }
@@ -66,15 +67,66 @@ export class AuthenticationService {
             return message;
         });
     }
-
+    getToken() {
+        return localStorage.getItem('access_token');
+    }
     /**
      * Logout the user
      */
     logout() {
+        var id = localStorage.getItem('id');
+        var userid: number = +id;
+        return this.http.put(`${environment.apiUrl}/api/UserInfo/` + userid, {
+            "userID": userid,
+            "userName": "string",
+            "email": "string",
+            "firstName": "string",
+            "lastName": "string",
+            "password": "string",
+            "isDeleted": true,
+            "isAdmin": true,
+            "isUserOnline": true
+        }).pipe(map(data => {
+            // login successful if there's a jwt token in the response
+            if (data) {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('id');
+                this.currentUserSubject.next(null);
+            }
+            return data;
+        }));
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        // localStorage.removeItem('currentUser');
+        // localStorage.removeItem('access_token');
+        // localStorage.removeItem('id');
+        // this.currentUserSubject.next(null);
+
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('access_token');
-        this.currentUserSubject.next(null);
+        // return this.http.put<any>(`${environment.apiUrl}/api/UserInfo/` + id, {
+        //     "userID": id,
+        //     "userName": "string",
+        //     "email": "string",
+        //     "firstName": "string",
+        //     "lastName": "string",
+        //     "password": "string",
+        //     "isDeleted": true,
+        //     "isAdmin": true,
+        //     "isUserOnline": true
+        // })
+        //     .pipe(map(data => {
+        //         // login successful if there's a jwt token in the response
+        //         if (data) {
+        //             // store user details and jwt token in local storage to keep user logged in between page refreshes
+        //             localStorage.removeItem('currentUser');
+        //             localStorage.removeItem('access_token');
+        //             localStorage.removeItem('id');
+        //             this.currentUserSubject.next(data.firstName);
+        //         }
+
+        //         return data;
+        //     }));
     }
 }
 

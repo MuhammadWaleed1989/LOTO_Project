@@ -23,6 +23,7 @@ namespace TestWebApi.Models
         public bool? IsDeleted { get; set; }
 
         public bool? IsAdmin { get; set; }
+        public bool? IsUserOnline { get; set; }
 
     }
 }

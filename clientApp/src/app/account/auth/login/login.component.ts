@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { environment } from '../../../../environments/environment';
+import { Users } from '../../../pages/usermanagement/users.model';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +24,26 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   // set the currenr year
   year: number = new Date().getFullYear();
-
+  public _hubConnection: HubConnection;
+  users: Users[] = [];
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
+    this._hubConnection.on('UserList', (data: any) => {
+      this.users = data;
+    });
+    this._hubConnection.start()
+      .then(() => {
+
+        console.log('Hub connection started')
+      })
+      .catch(err => {
+        console.log('Error while establishing connection')
+      });
+
+    console.log(this._hubConnection);
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -33,6 +51,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     // reset login status
     this.authenticationService.logout();
+
   }
 
   ngAfterViewInit() {
@@ -55,6 +74,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .pipe(first())
       .subscribe(
         data => {
+          this._hubConnection.invoke('Start');
           this.router.navigate(['/dashboard']);
         },
         error => {

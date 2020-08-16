@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TestWebApi.Services;
 using TestWebApi.helper;
-
+using TestWebApi.Hubs;
 
 
 namespace TestWebApi
@@ -22,13 +22,22 @@ namespace TestWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            //services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
             services.AddControllers();
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IPlaceInfoService, PlaceInfoService>();
             services.AddSingleton<IUserInfoService, UserInfoService>();
+            services.AddSignalR();
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -48,16 +57,17 @@ namespace TestWebApi
             app.UseRouting();
             app.UseAuthorization();
             // global cors policy////
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
+            app.UseCors("CorsPolicy");
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints =>{endpoints.MapControllers();});
             app.UseSwagger();
             app.UseSwaggerUI(options =>options.SwaggerEndpoint("/swagger/v2/swagger.json", "LOTO Project Services"));
+            app.UseSignalR(s => s.MapHub<EchoHub>("/echo"));
         }
     }
 }

@@ -11,6 +11,8 @@ import { LayoutsModule } from './layouts/layouts.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { initFirebaseBackend } from './authUtils';
+import { AuthInterceptor } from './_helpers/jwt.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 initFirebaseBackend(environment.firebaseConfig);
 
@@ -26,6 +28,13 @@ initFirebaseBackend(environment.firebaseConfig);
     AppRoutingModule,
     ExtrapagesModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
 })
 export class AppModule { }
