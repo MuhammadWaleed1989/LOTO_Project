@@ -37,6 +37,7 @@ namespace TestWebApi
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddSingleton<IPlaceInfoService, PlaceInfoService>();
             services.AddSingleton<IUserInfoService, UserInfoService>();
+            services.AddSingleton<IGameInfoService, GameInfoService>();
             services.AddSignalR();
             services.AddSwaggerGen(options =>
             {

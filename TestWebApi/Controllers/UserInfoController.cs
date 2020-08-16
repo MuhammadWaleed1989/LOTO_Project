@@ -20,7 +20,7 @@ namespace TestWebApi.Controllers
         {
             _userInfoService = userInfoService;
         }
-        // POST api/placeinfo
+        // POST api/userinfo
         [HttpPost]
         public IActionResult PostUserInfo([FromBody]tblUser userinfo)
         {

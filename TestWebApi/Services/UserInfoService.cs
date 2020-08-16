@@ -17,6 +17,14 @@ namespace TestWebApi.Services
 {
     public class UserInfoService : IUserInfoService
     {
+        private readonly AppSettings _appSettings;
+        private readonly ConnectionStrings _connectionStrings;
+
+        public UserInfoService(IOptions<AppSettings> appSettings, IOptions<ConnectionStrings> connectionStrings)
+        {
+            _appSettings = appSettings.Value;
+            _connectionStrings = connectionStrings.Value;
+        }
         public int Add(tblUser userInfo)
         {
 
@@ -26,20 +34,6 @@ namespace TestWebApi.Services
                 userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "','" + false + "')";
             int retVal=ExecuteCRUDByQuery(sQry);
             return retVal;
-        }
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<tblUser> _users = new List<tblUser>
-        {
-            new tblUser { UserID = 1, FirstName = "Test", LastName = "User", UserName = "test", Password = "test" }
-        };
-
-        private readonly AppSettings _appSettings;
-        private readonly ConnectionStrings _connectionStrings;
-
-        public UserInfoService(IOptions<AppSettings> appSettings, IOptions<ConnectionStrings> connectionStrings)
-        {
-            _appSettings = appSettings.Value;
-            _connectionStrings = connectionStrings.Value;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
@@ -58,17 +52,10 @@ namespace TestWebApi.Services
 
         }
 
-        //public IEnumerable<tblUser> GetAll()
-        //{
-        //    return _users;
-        //}
-
         public tblUser GetById(int id)
         {
-            return _users.FirstOrDefault(x => x.UserID == id);
+            return Find(id);
         }
-
-        // helper methods
 
         private string generateJwtToken(tblUser user)
         {
@@ -84,26 +71,15 @@ namespace TestWebApi.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        //public int AddRange(IEnumerable<PlaceInfo> places)
-        //{
-        //    string sQry = "INSERT INTO [BillGatesPlaceInfo] ([Place],[About],[City],[State],[Country]) VALUES";
-        //    string sVal = "";
-        //    foreach(var place in places)            
-        //      sVal+= "('" + place.Place + "','" + place.About + "','" + place.City + "','" + place.State + "','" + place.Country + "'),";
-        //    sVal = sVal.TrimEnd(',');
-        //    sQry = sQry + sVal;
-        //    int retVal=ExecuteCRUDByQuery(sQry);
-        //    return retVal;
-        //}
 
         public tblUser Find(int id)
         {
             tblUser userInfo = null;
             string sQry = "SELECT * FROM [tblUser] WHERE [UserID]=" + id;
-            DataTable dtPlaceInfo = ExecuteQuery(sQry);
-            if (dtPlaceInfo != null)
+            DataTable dtUserInfo = ExecuteQuery(sQry);
+            if (dtUserInfo != null)
             {
-                DataRow dr = dtPlaceInfo.Rows[0];
+                DataRow dr = dtUserInfo.Rows[0];
                 userInfo = GetPlaceInfoByRow(dr);
             }
             return userInfo;
@@ -142,7 +118,6 @@ namespace TestWebApi.Services
             DataTable dtUserInfo = ExecuteQuery(sQry);
             if (dtUserInfo != null)
             {
-                //userInfos = new List<tblUser>();
                 userInfos = (from DataRow dr in dtUserInfo.Rows
                                select new tblUser()
                                {
@@ -153,8 +128,6 @@ namespace TestWebApi.Services
                                    Email = dr["Email"].ToString(),
                                    IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"].ToString())
                                }).ToList();
-
-               // userInfos = ConvertDataTable<tblUser>(dtUserInfo);
             }
             return userInfos;
         }
@@ -185,20 +158,6 @@ namespace TestWebApi.Services
             }
             return obj;
         }
-        //public int Remove(int id)
-        //{
-        //    string sQry = "DELETE FROM [BillGatesPlaceInfo] WHERE [Id]=" + id;
-        //    int retVal=ExecuteCRUDByQuery(sQry);
-        //    return retVal;
-        //}
-
-        //public int Update(PlaceInfo placeInfo)
-        //{
-        //    string sQry = "UPDATE [BillGatesPlaceInfo] SET [Place]='" + placeInfo.Place + "',[About]='" + placeInfo.About + "',[City]='" + placeInfo.City + "',[State]='" + placeInfo.State + "',[Country]='" + placeInfo.Country + "' WHERE [Id]=" + placeInfo.Id;
-        //    int retVal=ExecuteCRUDByQuery(sQry);
-        //    return retVal;            
-        //}
-
 
         private int ExecuteCRUDByQuery(string strSql)
         {
@@ -225,8 +184,6 @@ namespace TestWebApi.Services
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
-
-
 
         private DataTable ExecuteQuery(string strSql)
         {

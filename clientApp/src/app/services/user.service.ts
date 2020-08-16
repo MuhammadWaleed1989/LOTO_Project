@@ -11,15 +11,15 @@ export class UserService {
         return this.http.get<Users[]>(`${environment.apiUrl}/api/UserInfo`);
     }
 
-    postUser(user: any) {
-        return this.http.post(`${environment.apiUrl}/user/`, user);
-    }
+    // postUser(user: any) {
+    //     return this.http.post(`${environment.apiUrl}/user/`, user);
+    // }
 
-    updateUser(user: any, id: any) {
-        return this.http.put(`${environment.apiUrl}/user/` + id, user);
-    }
+    // updateUser(user: any, id: any) {
+    //     return this.http.put(`${environment.apiUrl}/user/` + id, user);
+    // }
 
-    deleteUser(id: number) {
-        return this.http.delete(`${environment.apiUrl}/user/${id}`);
-    }
+    // deleteUser(id: number) {
+    //     return this.http.delete(`${environment.apiUrl}/user/${id}`);
+    // }
 }
