@@ -6,10 +6,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestWebApi.Services;
+using WebApi.Services;
 
 
-namespace TestWebApi.helper
+namespace WebApi.helper
 {
     public class JwtMiddleware
     {

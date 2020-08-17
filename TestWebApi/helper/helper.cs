@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace TestWebApi.helper
+namespace WebApi.helper
 {
     public static class Helper
     {

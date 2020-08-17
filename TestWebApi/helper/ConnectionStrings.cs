@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestWebApi.helper
+namespace WebApi.helper
 {
     public class ConnectionStrings
     {

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using TestWebApi.helper;
-using TestWebApi.Models;
+using WebApi.helper;
+using WebApi.Models;
 using System.Data;
 using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
 
 
-namespace TestWebApi.Hubs
+namespace WebApi.Hubs
 {
     public class EchoHub: Hub
     {

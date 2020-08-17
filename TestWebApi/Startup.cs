@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TestWebApi.Services;
-using TestWebApi.helper;
-using TestWebApi.Hubs;
+using WebApi.Services;
+using WebApi.helper;
+using WebApi.Hubs;
 
 
-namespace TestWebApi
+namespace WebApi
 {
     public class Startup
     {

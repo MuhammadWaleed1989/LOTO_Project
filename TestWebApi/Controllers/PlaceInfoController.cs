@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TestWebApi.Models;
-using TestWebApi.Services;
+using WebApi.Models;
+using WebApi.Services;
 
-namespace TestWebApi.Controllers
+namespace WebApi.Controllers
 {
 
     [ApiController]

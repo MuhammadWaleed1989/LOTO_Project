@@ -4,16 +4,16 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using TestWebApi.Models;
+using WebApi.Models;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using TestWebApi.helper;
+using WebApi.helper;
 using System.Reflection;
 
-namespace TestWebApi.Services
+namespace WebApi.Services
 {
     public class GameInfoService : IGameInfoService
     {

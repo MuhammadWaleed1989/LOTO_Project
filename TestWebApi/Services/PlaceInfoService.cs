@@ -4,9 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using TestWebApi.Models;
+using WebApi.Models;
 
-namespace TestWebApi.Services
+namespace WebApi.Services
 {
     public class PlaceInfoService : IPlaceInfoService
     {

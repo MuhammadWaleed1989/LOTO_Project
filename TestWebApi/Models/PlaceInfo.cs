@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestWebApi.Models
+namespace WebApi.Models
 {
     public class PlaceInfo
     {

@@ -7321,9 +7321,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Personal\\LOTO Project\\TestWebApi\\TestWebApi.csproj",
-      "projectName": "TestWebApi",
-      "projectPath": "C:\\Personal\\LOTO Project\\TestWebApi\\TestWebApi.csproj",
+      "projectUniqueName": "C:\\Personal\\LOTO Project\\TestWebApi\\WebApi.csproj",
+      "projectName": "WebApi",
+      "projectPath": "C:\\Personal\\LOTO Project\\TestWebApi\\WebApi.csproj",
       "packagesPath": "C:\\Users\\Muhammad.Waleed\\.nuget\\packages\\",
       "outputPath": "C:\\Personal\\LOTO Project\\TestWebApi\\obj\\",
       "projectStyle": "PackageReference",
