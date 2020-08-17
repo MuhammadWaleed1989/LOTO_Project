@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Personal\\LOTO Project\\TestWebApi\\WebApi.csproj": {}
+    "C:\\Personal\\LOTO Project\\WebApi\\WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Personal\\LOTO Project\\TestWebApi\\WebApi.csproj": {
+    "C:\\Personal\\LOTO Project\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Personal\\LOTO Project\\TestWebApi\\WebApi.csproj",
+        "projectUniqueName": "C:\\Personal\\LOTO Project\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "C:\\Personal\\LOTO Project\\TestWebApi\\WebApi.csproj",
+        "projectPath": "C:\\Personal\\LOTO Project\\WebApi\\WebApi.csproj",
         "packagesPath": "C:\\Users\\Muhammad.Waleed\\.nuget\\packages\\",
-        "outputPath": "C:\\Personal\\LOTO Project\\TestWebApi\\obj\\",
+        "outputPath": "C:\\Personal\\LOTO Project\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
