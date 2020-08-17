@@ -35,17 +35,17 @@ namespace TestWebApi
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
-            services.AddSingleton<IPlaceInfoService, PlaceInfoService>();
+            //services.AddSingleton<IPlaceInfoService, PlaceInfoService>();
             services.AddSingleton<IUserInfoService, UserInfoService>();
             services.AddSingleton<IGameInfoService, GameInfoService>();
             services.AddSignalR();
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "Place Info Service API",
-                    Version = "v2",
-                    Description = "Sample service for Learner",
+                    Title = "LOTO Project API",
+                    Version = "v1",
+                    Description = "Game API",
                 });
             });
         }
@@ -67,7 +67,7 @@ namespace TestWebApi
             app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints =>{endpoints.MapControllers();});
             app.UseSwagger();
-            app.UseSwaggerUI(options =>options.SwaggerEndpoint("/swagger/v2/swagger.json", "LOTO Project Services"));
+            app.UseSwaggerUI(options =>options.SwaggerEndpoint("/swagger/v1/swagger.json", "LOTO Project Services"));
             app.UseSignalR(s => s.MapHub<EchoHub>("/echo"));
         }
     }

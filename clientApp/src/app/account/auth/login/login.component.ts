@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(
         data => {
           this._hubConnection.invoke('Start');
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/usermanagement']);
         },
         error => {
           // this.alertService.error(error);
