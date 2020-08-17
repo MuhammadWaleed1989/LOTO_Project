@@ -34,6 +34,7 @@ export class GamesComponent implements OnInit {
   HighlightCol: Number;
   highlightedColArray = [];
   highlightedRowArray = [];
+  selectedCellForWinner = [];
   typeValidationForm: FormGroup; // type validation form
   constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder) {
     this.typesubmit = false;
@@ -107,21 +108,17 @@ export class GamesComponent implements OnInit {
     this.highlightedRowArray.push(row);
     this.HighlightCol = col;
     this.HighlightRow = row;
-    eve.currentTarget.classList.add("active");
-    console.log(eve)
-    // const checked = eve.target.checked;
-    // if(checked){
-    //   var target = eve.currentTarget;
 
-    //   var pElement = target.parentElement.nextSibling;
-    //   pElement.innerText= "included";
-    // }
-    // else{
-    //   var target = eve.currentTarget;
+    const index = this.selectedCellForWinner.indexOf(eve.currentTarget.innerText);
+    if (index > -1) {
+      eve.currentTarget.classList.remove("active");
+      this.selectedCellForWinner.splice(index, 1);
+    }
+    else {
+      eve.currentTarget.classList.add("active");
+      this.selectedCellForWinner.push(eve.currentTarget.innerText);
+    }
 
-    //   var pElement = target.parentElement.nextSibling;
-    //   pElement.innerText= "excluded";
-    // }
   }
 
 
