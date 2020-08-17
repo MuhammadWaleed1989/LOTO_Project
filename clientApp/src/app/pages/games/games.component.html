@@ -96,7 +96,29 @@
               <span *ngIf="type.gameName.errors.required">Game name is required.</span>
             </div>
           </div>
-          <div class="form-group">
+          <div class="table-responsive">
+            <table class="table table-centered table-nowrap">
+              <thead>
+                <th *ngFor="let column of tableHeader">
+                  {{column}}
+                </th>
+              </thead>
+              <tbody>
+                <!-- <tr *ngFor="let row of tableArray; let i = index">
+                  <td *ngFor="let column of tableHeader; let j = index" (click)="clickedEvent(i,j,$event)"
+                    [class.active]="highlightedColArray.indexOf(j)>-1 && highlightedRowArray.indexOf(i)>-1">
+                    {{row[column]}}
+                  </td>
+                </tr> -->
+                <tr *ngFor="let row of tableArray; let i = index">
+                  <td *ngFor="let column of tableHeader; let j = index" (click)="clickedEvent(i,j,$event)">
+                    {{row[column]}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="form-group">
             <label>Cell 1 Value</label>
             <input type="text" class="form-control" formControlName="cell1Value"
               [ngClass]="{'is-invalid': typesubmit && type.cell1Value.errors}" placeholder="Enter cell 1 value" />
@@ -127,7 +149,7 @@
             <div *ngIf="typesubmit && type.cell4Value.errors" class="invalid-feedback">
               <span *ngIf="type.cell4Value.errors.required">Cell 4 value is required.</span>
             </div>
-          </div>
+          </div> -->
           <div class="form-group mb-0">
             <div>
               <button type="submit" class="btn btn-primary mr-1">

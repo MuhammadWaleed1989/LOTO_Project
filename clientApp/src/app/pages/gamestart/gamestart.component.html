@@ -1,0 +1,61 @@
+<div class="container-fluid">
+
+  <app-page-title title="User Management" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box mr-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="term" />
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-sm-8">
+              <div class="text-sm-right">
+                <button type="button" (click)="openModal(largeDataModal,null)"
+                  class="btn btn-success btn-rounded mb-2 mr-2">
+                  <i class="mdi mdi-plus mr-1"></i> New User
+                </button>
+              </div>
+            </div> -->
+            <!-- end col-->
+          </div>
+          <div>{{statusMessage}}</div>
+          <div class="table-responsive">
+            <table class="table table-centered table-nowrap">
+              <thead>
+                <tr>
+                  <!-- <th>#</th> -->
+                  <th>User Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Is User Online</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users  | filter:term ;let i = index;">
+                  <td>{{user.userName}}</td>
+                  <td>{{user.firstName}}</td>
+                  <td>{{user.lastName}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.isUserOnline === true ? 'Yes' : 'No'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- pagination -->
+          <ngb-pagination [collectionSize]="totalPages" [(page)]="currentpage"
+            class="pagination pagination-rounded justify-content-end mb-2" aria-label="Default pagination">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>
