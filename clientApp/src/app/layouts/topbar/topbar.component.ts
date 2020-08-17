@@ -21,6 +21,7 @@ export class TopbarComponent implements OnInit {
   element;
   configData;
   public _hubConnection: HubConnection;
+  public userName: string;
   users: Users[] = [];
   constructor(@Inject(DOCUMENT) private document: any, private router: Router, private authService: AuthenticationService) { }
 
@@ -51,6 +52,7 @@ export class TopbarComponent implements OnInit {
       suppressScrollX: true,
       wheelSpeed: 0.3
     };
+    this.userName = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   /**
