@@ -32,20 +32,21 @@
                 <tr>
                   <!-- <th>#</th> -->
                   <th>Game Name</th>
-                  <th>Cell 1 Value</th>
+                  <!-- <th>Cell 1 Value</th>
                   <th>Cell 2 Value</th>
                   <th>Cell 3 Value</th>
-                  <th>Cell 4 Value</th>
+                  <th>Cell 4 Value</th> -->
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let game of gameInfo  | filter:term ;let i = index;">
-                  <td>{{game.gameName}}</td>
-                  <td>{{game.cell1Value}}</td>
+                  <td><a [routerLink]="['/gamestart/', game.gameID]">{{game.gameName}}</a></td>
+
+                  <!-- <td>{{game.cell1Value}}</td>
                   <td>{{game.cell2Value}}</td>
                   <td>{{game.cell3Value}}</td>
-                  <td>{{game.cell4Value}}</td>
+                  <td>{{game.cell4Value}}</td> -->
                   <td>
                     <div class="dropdown" ngbDropdown placement="bottom-right">
                       <a href="javascript: void(0);" class="dropdown-toggle card-drop" data-toggle="dropdown"

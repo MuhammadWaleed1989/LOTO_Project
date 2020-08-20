@@ -34,6 +34,7 @@ import { MapsModule } from './maps/maps.module';
 import { ChatComponent } from './chat/chat.component';
 import { UsersModule } from './usermanagement/users.module';
 import { GamesModule } from './games/games.module';
+import { GameStartModule } from './gamestart/gamestart.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -70,7 +71,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgbTooltipModule,
     PerfectScrollbarModule,
     UsersModule,
-    GamesModule
+    GamesModule,
+    GameStartModule
   ],
   providers: [
     {

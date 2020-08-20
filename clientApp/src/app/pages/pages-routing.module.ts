@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'usermanagement', loadChildren: () => import('./usermanagement/users.module').then(m => m.UsersModule) },
   { path: 'games', loadChildren: () => import('./games/games.module').then(m => m.GamesModule) },
+  { path: 'gamestart/:id', loadChildren: () => import('./gamestart/gamestart.module').then(m => m.GameStartModule) },
   { path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule) },
   { path: 'contacts', loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule) },
   { path: 'pages', loadChildren: () => import('./utility/utility.module').then(m => m.UtilityModule) },

@@ -75,7 +75,7 @@ export class GamesComponent implements OnInit {
   private loadAllGames() {
     this.gameService.getAll().pipe(first()).subscribe(games => {
       this.gameInfo = games;
-      this.totalPages = games.length;
+      this.totalPages = 0;
     });
   }
 
@@ -101,7 +101,44 @@ export class GamesComponent implements OnInit {
       }
       this.tableArray.push(jsonData);
     }
+    console.log(this.tableArray)
 
+  }
+  private getPivotArray(dataArray, rowIndex, colIndex, dataIndex) {
+    //Code from https://techbrij.com
+    var result = {}, ret = [];
+    var newCols = [];
+    for (var i = 0; i < dataArray.length; i++) {
+
+      if (!result[dataArray[i][rowIndex]]) {
+        result[dataArray[i][rowIndex]] = {};
+      }
+      result[dataArray[i][rowIndex]][dataArray[i][colIndex]] = dataArray[i][dataIndex];
+
+      //To get column names
+      if (newCols.indexOf(dataArray[i][colIndex]) == -1) {
+        newCols.push(dataArray[i][colIndex]);
+      }
+    }
+
+    newCols.sort();
+    var item = [];
+
+    //Add Header Row
+    item.push('Item');
+    item.push.apply(item, newCols);
+    ret.push(item);
+
+    //Add content 
+    for (var key in result) {
+      item = [];
+      item.push(key);
+      for (var i = 0; i < newCols.length; i++) {
+        item.push(result[key][newCols[i]] || "-");
+      }
+      ret.push(item);
+    }
+    return ret;
   }
   clickedEvent(row: any, col: any, eve: any) {
     this.highlightedColArray.push(col);
@@ -141,21 +178,12 @@ export class GamesComponent implements OnInit {
       this.typeValidationForm.patchValue({
         gameID: info.gameID,
         gameName: info.gameName
-        // ,
-        // cell1Value: info.cell1Value,
-        // cell2Value: info.cell2Value,
-        // cell3Value: info.cell3Value,
-        // cell4Value: info.cell4Value
       });
     } else {
       this.typeValidationForm.patchValue({
         gameID: "-1",
         gameName: ""
-        // ,
-        // cell1Value: "",
-        // cell2Value: "",
-        // cell3Value: "",
-        // cell4Value: "",
+
       });
     }
 
@@ -172,30 +200,53 @@ export class GamesComponent implements OnInit {
    */
   typeSubmit() {
 
-    if (this.typeValidationForm.valid) {
+    if (this.typeValidationForm.valid && this.selectedCellForWinner.length > 5) {
       this.typesubmit = false;
 
+      var finalArray = [];
+      for (var i = 0; i < 300; i++) {
+        var j = i + 1;
+        var gameDetails = {
+          'gameID': 0,
+          'gameDetailID': 0,
+          'valueOfRow1': this.tableArray[0]['col' + j],
+          'valueOfRow2': this.tableArray[1]['col' + j],
+          'valueOfRow3': this.tableArray[2]['col' + j],
+          'valueOfRow4': this.tableArray[3]['col' + j],
+          'valueOfRow5': this.tableArray[4]['col' + j],
+          'valueOfRow6': this.tableArray[5]['col' + j],
+        };
+        finalArray.push(gameDetails);
+      }
 
-      var object = {
+
+      var objGameInfo = {
         'gameID': Number(this.typeValidationForm.get('gameID').value),
         'gameName': this.typeValidationForm.get('gameName').value,
-        // 'cell1Value': Number(this.typeValidationForm.get('cell1Value').value),
-        // 'cell2Value': Number(this.typeValidationForm.get('cell2Value').value),
-        // 'cell3Value': Number(this.typeValidationForm.get('cell3Value').value),
-        // 'cell4Value': Number(this.typeValidationForm.get('cell4Value').value),
+        'winValue1': Number(this.selectedCellForWinner[0]),
+        'winValue2': Number(this.selectedCellForWinner[1]),
+        'winValue3': Number(this.selectedCellForWinner[2]),
+        'winValue4': Number(this.selectedCellForWinner[3]),
+        'winValue5': Number(this.selectedCellForWinner[4]),
+        'winValue6': Number(this.selectedCellForWinner[5]),
         'IsDeleted': false
+      };
+
+      var objFinal = {
+        'gameInfo': objGameInfo,
+        'gameDetail': finalArray
       };
 
       if (this.typeValidationForm.get('gameID').value === "-1") {
 
-        this.gameService.postGame(object).subscribe(response => {
+        this.gameService.postGame(objFinal).subscribe(response => {
           this.statusMessage = 'Game is created Successfully.'
           this.loadAllGames();
         }, (error) => {
           console.log('error during post is ', error)
         });
       } else {
-        this.gameService.updateGame(object, this.typeValidationForm.get('gameID').value).subscribe(response => {
+        this.gameService.updateGame(objFinal, this.typeValidationForm.get('gameID').value).subscribe(response => {
           this.statusMessage = 'Game is updated Successfully.'
           this.loadAllGames();
         }, (error) => {

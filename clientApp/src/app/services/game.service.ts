@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { GameInfo } from '../pages/games/games.model';
+import { GameInfo, GameCompleteInfo } from '../pages/games/games.model';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -21,5 +21,8 @@ export class GameService {
 
     deleteGame(id: number) {
         return this.http.delete(`${environment.apiUrl}/api/GamesInfo/${id}`);
+    }
+    getGameDetails(gameID) {
+        return this.http.get<GameCompleteInfo[]>(`${environment.apiUrl}/api/GamesInfo/` + gameID);
     }
 }
