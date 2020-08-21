@@ -38,6 +38,7 @@ namespace WebApi
             //services.AddSingleton<IPlaceInfoService, PlaceInfoService>();
             services.AddSingleton<IUserInfoService, UserInfoService>();
             services.AddSingleton<IGameInfoService, GameInfoService>();
+            services.AddSingleton<IUserGameService, UserGameService>();
             services.AddSignalR();
             services.AddSwaggerGen(options =>
             {

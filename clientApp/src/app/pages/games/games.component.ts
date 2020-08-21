@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { first } from 'rxjs/operators';
 
 import { GameService } from '../../../app/services/game.service';
-import { GameInfo } from './games.model';
+import { GameInfo, UserGame } from './games.model';
 
 
 @Component({
@@ -55,17 +55,12 @@ export class GamesComponent implements OnInit {
      */
     this.loadAllGames();
 
-    this.generateRondomNumber();
     /**
      * Type validation form
      */
     this.typeValidationForm = this.formBuilder.group({
       gameID: ['-1'],
       gameName: ['', [Validators.required]],
-      // cell1Value: ['', [Validators.required]],
-      // cell2Value: ['', [Validators.required]],
-      // cell3Value: ['', [Validators.required]],
-      // cell4Value: ['', [Validators.required]],
     });
   }
 
@@ -167,6 +162,8 @@ export class GamesComponent implements OnInit {
 
   }
 
+
+
   openModal(largeDataModal: any, info: GameInfo) {
     this.typesubmit = false;
     this.modalService.open(largeDataModal, {
@@ -180,6 +177,7 @@ export class GamesComponent implements OnInit {
         gameName: info.gameName
       });
     } else {
+      this.generateRondomNumber();
       this.typeValidationForm.patchValue({
         gameID: "-1",
         gameName: ""
@@ -258,8 +256,12 @@ export class GamesComponent implements OnInit {
     } else {
       // validate all form fields
       this.typesubmit = true;
+      this.greaterThan();
     }
 
+  }
+  greaterThan() {
+    return this.selectedCellForWinner.length < 6 || this.selectedCellForWinner.length > 6;
   }
   reset() {
     this.typeValidationForm.reset();

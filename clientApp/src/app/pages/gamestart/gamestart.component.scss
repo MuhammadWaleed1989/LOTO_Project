@@ -9,3 +9,14 @@
   .table tr td {  
     cursor: pointer;
   }
+  .inlineDivs {
+    width: 50px;
+    height: 50px;
+    /* border-radius: 6px 12px 18px 24px; */
+    background-color: #808080 !important;
+    color: white;
+    display: inline-block;
+    margin-right: 5px;
+    text-align: center;
+    padding-top: 15px;
+  }

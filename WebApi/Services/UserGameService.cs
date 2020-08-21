@@ -27,23 +27,40 @@ namespace WebApi.Services
         #region Main functions
         public int Add(tblUserGame userGamedata)
         {
-            string sQry = "INSERT INTO [tblUserGame] ([UserID],[GameID],[Value1],[Value2],[Value3],[Value4],[Value5],[Value6]) " +
-                "VALUES('" + userGamedata.UserID + "','" + userGamedata.GameID + "','" + userGamedata.Value1 + "','" +
-                userGamedata.Value2 + "','" + userGamedata.Value3 + "','" + userGamedata.Value4 + "','" + userGamedata.Value5 + "','" + userGamedata.Value6 + "');SELECT SCOPE_IDENTITY();";
-            int retVal = ExecuteCRUDByQuery(sQry);
-            //retVal = AddGameDetails(gamedata.gameDetail, retVal);
+            //int retVal = 0;
+            //tblUserGame userGame = new tblUserGame();
+            //userGame = Find((int)userGamedata.GameID);
+            //if (userGame.GameID == (int)userGamedata.GameID && userGame.Value == userGamedata.Value)
+            //{
+            //    retVal = Update((int)userGamedata.GameID);
+            //}
+            //else {
+                string sQry = "INSERT INTO [tblUserGame] ([UserID],[GameID],[Value],[IsConfirmed],[IsDeleted]) " +
+                  "VALUES('" + userGamedata.UserID + "','" + userGamedata.GameID + "','" + userGamedata.Value + "','" + userGamedata.IsConfirmed + "','"+false+"');SELECT SCOPE_IDENTITY();";
+                int retVal = ExecuteCRUDByQuery(sQry);
+           // }
+          
             return retVal;
         }
-
-        public tblUserGame GetById(int id)
+        public int Update(List<tblUserGame> userGamedata)
         {
-            return Find(id);
+            int retVal = 0;
+            for (int i = 0; i < userGamedata.Count; i++)
+            {
+                string sQry = "UPDATE [tblUserGame] SET [IsConfirmed]=" + userGamedata[i].IsDeleted + ",[IsDeleted]='" + userGamedata[i].IsDeleted + "' WHERE [GameID]=" + userGamedata[i].GameID + " AND [Value]=" + userGamedata[i].Value + " AND [UserID]=" + userGamedata[i].UserID;
+                retVal = ExecuteCRUDByQuery(sQry); 
+            }
+            return retVal;
+        }
+        public tblUserGame GetById(int gameID)
+        {
+            return Find(gameID);
         }
 
-        public tblUserGame Find(int id)
+        public tblUserGame Find(int gameID)
         {
             tblUserGame userGameData = new tblUserGame();
-            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + id;
+            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + gameID;
             DataTable dtUserGameInfo = ExecuteQuery(sQry);
             if (dtUserGameInfo != null)
             {
@@ -54,36 +71,29 @@ namespace WebApi.Services
             return userGameData;
         }
 
-        public int Update(int gameId, tblUserGame userGameInfo)
+        public int[] GetAll(int? gameID, int? userID)
         {
-            string sQry = "UPDATE [tblUserGame] SET [Value1]='" + userGameInfo.Value1 + "',[Value2]='" + userGameInfo.Value2 + "',[Value3]='" + userGameInfo.Value3 + "',[Value4]='" + userGameInfo.Value4 + "',[Value5]='" + userGameInfo.Value5 + "',[Value6]='" + userGameInfo.Value6 + "' WHERE [GameID]=" + gameId;
-            int retVal = ExecuteCRUDByQuery(sQry);
-            return retVal;
-        }
-
-        public IEnumerable<tblUserGame> GetAll()
-        {
-            List<tblUserGame> userGameInfos = null;
-            string sQry = "SELECT * FROM [tblUserGame]";
+            int[] userGameInfos = null;
+            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + gameID + "AND [UserID]=" + userID;
             DataTable dtUserGameInfo = ExecuteQuery(sQry);
             if (dtUserGameInfo != null)
             {
-                userGameInfos = (from DataRow dr in dtUserGameInfo.Rows
-                             select new tblUserGame()
-                             {
-                                 GameID = Convert.ToInt32(dr["GameID"]),
-                                 UserID = Convert.ToInt32(dr["UserID"]),
-                                 Value1 = Convert.ToInt32(dr["Value1"]),
-                                 Value2 = Convert.ToInt32(dr["Value2"]),
-                                 Value3 = Convert.ToInt32(dr["Value3"]),
-                                 Value4 = Convert.ToInt32(dr["Value4"]),
-                                 Value5 = Convert.ToInt32(dr["Value5"]),
-                                 Value6 = Convert.ToInt32(dr["Value6"]),
-                             }).ToList();
+                userGameInfos = dtUserGameInfo.Rows.OfType<DataRow>().Select(k => Convert.ToInt32(k[2].ToString())).ToArray();
             }
             return userGameInfos;
         }
-
+        public int[] GetAllValue(int gameID)
+        {
+            int[] userGameInfos = null;
+            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + gameID;
+            DataTable dtUserGameInfo = ExecuteQuery(sQry);
+            if (dtUserGameInfo != null)
+            {
+                userGameInfos = dtUserGameInfo.Rows.OfType<DataRow>().Select(k => Convert.ToInt32(k[2].ToString())).ToArray();
+               
+            }
+            return userGameInfos;
+        }
         #endregion
 
         #region Functions to Convert Data Row to Class
@@ -93,12 +103,8 @@ namespace WebApi.Services
             tblUserGame userGame = new tblUserGame();
             userGame.GameID = Convert.ToInt32(dr["GameID"]);
             userGame.UserID = Convert.ToInt32(dr["UserID"]);
-            userGame.Value1 = Convert.ToInt32(dr["Value1"]);
-            userGame.Value2 = Convert.ToInt32(dr["Value2"]);
-            userGame.Value3 = Convert.ToInt32(dr["Value3"]);
-            userGame.Value4 = Convert.ToInt32(dr["Value4"]);
-            userGame.Value5 = Convert.ToInt32(dr["Value5"]);
-            userGame.Value6 = Convert.ToInt32(dr["Value6"]);
+            userGame.Value = Convert.ToInt32(dr["Value"]);
+            userGame.IsConfirmed = Convert.ToBoolean(dr["IsConfirmed"]);
             return userGame;
         }
 

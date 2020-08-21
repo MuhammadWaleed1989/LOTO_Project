@@ -48,6 +48,12 @@ namespace WebApi.Services
             }
             return retValFinal;
         }
+        public int Remove(int id)
+        {
+            string sQry = "DELETE FROM [tblGames] WHERE [GameID]=" + id;
+            int retVal = ExecuteCRUDByQuery(sQry);
+            return retVal;
+        }
 
         public GameData GetById(int id)
         {

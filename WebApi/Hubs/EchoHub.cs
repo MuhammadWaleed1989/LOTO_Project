@@ -8,14 +8,19 @@ using WebApi.Models;
 using System.Data;
 using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
-
+using WebApi.Services;
 
 namespace WebApi.Hubs
 {
     public class EchoHub: Hub
     {
-
+        //private readonly IUserGameService _userGameService;
+        //public EchoHub(IUserGameService userGameService)
+        //{
+        //    _userGameService = userGameService;
+        //}
         private static List<tblUser> _groups = new List<tblUser>();
+        private static List<NumbersGroup> _numbersGroup = new List<NumbersGroup>();
         private readonly AppSettings _appSettings;
         private readonly ConnectionStrings _connectionStrings;
 
@@ -26,13 +31,13 @@ namespace WebApi.Hubs
         }
         //public override Task OnDisconnectedAsync(Exception exception)
         //{
-        //    if (_groups.Any(g => g.UserName == Context.User))
+        //    if (_numbersGroup.Any(g => g.UserName == Context.User))
         //    {
-        //        var gs = _groups.Where(g => g.Owner == Context.ConnectionId).ToList();
+        //        var gs = _numbersGroup.Where(g => g.Owner == Context.ConnectionId).ToList();
         //        for (int i = 0; i < gs.Count; i++)
         //        {
         //            BroadcastGroup(gs[i], true);
-        //            _groups.Remove(gs[i]);
+        //            _numbersGroup.Remove(gs[i]);
         //        }
         //    }
         //    return base.OnDisconnectedAsync(exception);
@@ -40,11 +45,11 @@ namespace WebApi.Hubs
 
         //public void CreateOrJoin(string key, string email)
         //{
-        //    var group = _groups.FirstOrDefault(g => g.Key == key);
+        //    var group = _numbersGroup.FirstOrDefault(g => g.Key == key);
         //    if (group == null)
         //    {
-        //        group = new DrinkingGroup { Key = key, Owner = Context.ConnectionId };
-        //        _groups.Add(group);
+        //        group = new NumbersGroup { Key = key, Owner = Context.ConnectionId };
+        //        _numbersGroup.Add(group);
         //    }
 
         //    if (group.HasFinished || group.HasStarted)
@@ -54,9 +59,26 @@ namespace WebApi.Hubs
 
         //    group.Glasses.Add(new Glass { ConnectionId = Context.ConnectionId, Email = email });
 
-        //    BroadcastGroup(group);
+        //    BroadcastNumberGroup(group);
         //}
-
+        public void GameStart(int gameID)
+        {
+            //    var group = _numbersGroup.FirstOrDefault(g => g.Owner == Context.ConnectionId && !g.HasFinished && !g.HasStarted);
+            //    if (group != null)
+            //    {
+            //        group.HasStarted = true;
+            BroadcastGameNumberGroup(gameID);
+            //    }
+        }
+        public void StartGetNotConfirmedValue(int gameID,int userID)
+        {
+            //    var group = _numbersGroup.FirstOrDefault(g => g.Owner == Context.ConnectionId && !g.HasFinished && !g.HasStarted);
+            //    if (group != null)
+            //    {
+            //        group.HasStarted = true;
+            BroadcastNotConfirmedValues(gameID, userID);
+            //    }
+        }
         public void Start()
         {
             //var group = _groups.FirstOrDefault(g => g.Owner == Context.ConnectionId && !g.HasFinished && !g.HasStarted);
@@ -69,7 +91,7 @@ namespace WebApi.Hubs
 
         //public void Drink()
         //{
-        //    var group = _groups.FirstOrDefault(g => !g.HasFinished && g.HasStarted && g.Glasses.Any(gl => gl.ConnectionId == Context.ConnectionId));
+        //    var group = _numbersGroup.FirstOrDefault(g => !g.HasFinished && g.HasStarted && g.Glasses.Any(gl => gl.ConnectionId == Context.ConnectionId));
         //    if (group != null)
         //    {
         //        var glass = group.Glasses.First(g => g.ConnectionId == Context.ConnectionId);
@@ -80,10 +102,10 @@ namespace WebApi.Hubs
         //            group.WinnerConnectionId = Context.ConnectionId;
         //            group.WinnerEmail = glass.Email;
         //        }
-        //        BroadcastGroup(group);
+        //        BroadcastNumberGroup(group);
         //        if (group.HasFinished)
         //        {
-        //            _groups.Remove(group);
+        //            _numbersGroup.Remove(group);
         //        }
         //    }
         //}
@@ -92,6 +114,20 @@ namespace WebApi.Hubs
         {
             //var clients = group.Glasses.Select(g => g.ConnectionId).ToList();
             Clients.All.SendAsync("UserList", GetAll());
+        }
+        //private void BroadcastNumberGroup(NumbersGroup group, bool removing = false)
+        //{
+        //    var clients = group.Glasses.Select(g => g.ConnectionId).ToList();
+        //    Clients.Clients(clients).SendAsync("Group", removing ? null : group);
+        //}
+
+        private void BroadcastGameNumberGroup(int gameID)
+        {
+            Clients.All.SendAsync("GameAllValues", GetValues(gameID));
+        }
+        private void BroadcastNotConfirmedValues(int gameID,int userID)
+        {
+            Clients.All.SendAsync("GetNotConfirmedValue", GetNotConfirmedValue(gameID, userID));
         }
         public IEnumerable<tblUser> GetAll()
         {
@@ -116,6 +152,49 @@ namespace WebApi.Hubs
             }
             return userInfos;
         }
+        public int[] GetAllValue(int gameID)
+        {
+            int[] userGameInfos = null;
+            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + gameID + " AND IsNull(IsDeleted,0)=0";
+            DataTable dtUserGameInfo = ExecuteQuery(sQry);
+            if (dtUserGameInfo != null)
+            {
+                userGameInfos = dtUserGameInfo.Rows.OfType<DataRow>().Select(k => Convert.ToInt32(k[3].ToString())).ToArray();
+
+            }
+            return userGameInfos;
+        }
+        public int[] GetNotConfirmedValue(int gameID, int userID)
+        {
+            int[] userGameInfos = null;
+            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + gameID + " AND [UserID]=" + userID + " AND IsNull(IsDeleted,0)=0 AND IsNull(IsConfirmed,0)=0";
+            DataTable dtUserGameInfo = ExecuteQuery(sQry);
+            if (dtUserGameInfo != null)
+            {
+                userGameInfos = dtUserGameInfo.Rows.OfType<DataRow>().Select(k => Convert.ToInt32(k[3].ToString())).ToArray();
+
+            }
+            return userGameInfos;
+        }
+        public IEnumerable<tblUserGame> GetValues(int gameID)
+        {
+            List<tblUserGame> userGameInfos = null;
+            string sQry = "SELECT * FROM [tblUserGame] WHERE [GameID]=" + gameID + " AND IsNull(IsDeleted,0)=0";
+            DataTable dtUserGameInfo = ExecuteQuery(sQry);
+            if (dtUserGameInfo != null)
+            {
+                userGameInfos = (from DataRow dr in dtUserGameInfo.Rows
+                             select new tblUserGame()
+                             {
+                                 UserID = Convert.ToInt32(dr["UserID"]),
+                                 GameID = Convert.ToInt32(dr["GameID"]),
+                                 Value = Convert.ToInt32(dr["Value"]),
+                                 IsConfirmed = Convert.ToBoolean(dr["IsConfirmed"])
+                             }).ToList();
+
+            }
+            return userGameInfos;
+        }
         private DataTable ExecuteQuery(string strSql)
         {
             SqlConnection conn = null;
@@ -137,8 +216,9 @@ namespace WebApi.Hubs
             return dt;
         }
     }
-    public class DrinkingGroup
+    public class NumbersGroup
     {
+        public int GameID { get; set; }
         public bool HasStarted { get; set; }
         public bool HasFinished { get; set; }
         public string Key { get; set; }

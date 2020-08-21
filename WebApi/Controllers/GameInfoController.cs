@@ -13,46 +13,54 @@ namespace WebApi.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class UserGameController : ControllerBase
+    public class GamesInfoController : ControllerBase
     {
-        private readonly IUserGameService _userGameService;
-        public UserGameController(IUserGameService userGameService)
+        private readonly IGameInfoService _gameInfoService;
+        public GamesInfoController(IGameInfoService gameInfoService)
         {
-            _userGameService = userGameService;
+            _gameInfoService = gameInfoService;
         }
         // POST api/gameinfo
         [HttpPost]
-        public IActionResult PostGameInfo([FromBody]tblUserGame userGamedata)
+        public IActionResult PostGameInfo([FromBody]GameData gamedata)
         {
-           
-            if (userGamedata == null) return BadRequest();
-            int retVal = _userGameService.Add(userGamedata);
+
+            if (gamedata == null) return BadRequest();
+            int retVal = _gameInfoService.Add(gamedata);
             if (retVal > 0) return Ok(); else return NotFound();
         }
         // GET api/gameinfo/id
-        [HttpGet("{id}", Name = nameof(GetUserGameById))]
-        public IActionResult GetUserGameById(int id)
+        [HttpGet("{id}", Name = nameof(GetGameInfoById))]
+        public IActionResult GetGameInfoById(int id)
         {
-            tblUserGame userGamedata = _userGameService.Find(id);
-            if (userGamedata == null)
+            GameData gamedata = _gameInfoService.Find(id);
+            if (gamedata == null)
                 return NotFound();
             else
-                return new ObjectResult(userGamedata);
+                return new ObjectResult(gamedata);
         }
-        [HttpPut("{id}")]
-        public IActionResult PostGameInfo(int id, [FromBody] tblUserGame userGamedata)
-        {
-            if (userGamedata == null || id != userGamedata.GameID) return BadRequest();
-            if (_userGameService.Find(id) == null) return NotFound();
-            int retVal = _userGameService.Update(id, userGamedata);
-            if (retVal > 0) return Ok(); else return NotFound();
-        }
+        //[HttpPut("{id}")]
+        //public IActionResult PostGameInfo(int id, [FromBody] tblGames gameInfo)
+        //{
+        //    if (gameInfo == null || id != gameInfo.GameID) return BadRequest();
+        //    if (_gameInfoService.Find(id) == null) return NotFound();
+        //    int retVal = _gameInfoService.Update(id, gameInfo);
+        //    if (retVal > 0) return Ok(); else return NotFound();
+        //}
         [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
-            var games = _userGameService.GetAll();
+            var games = _gameInfoService.GetAll();
             return Ok(games);
+        }
+
+        // DELETE api/placeinfo/5
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            int retVal = _gameInfoService.Remove(id);
+            if (retVal > 0) return Ok(); else return NotFound();
         }
     }
 }

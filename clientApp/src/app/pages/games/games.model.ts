@@ -23,3 +23,9 @@ export class GameCompleteInfo {
     gameInfo: GameInfo;
     gameDetail: GameDetailInfo;
 }
+export class UserGame {
+    userGameID: number;
+    userID: number;
+    gameID: number;
+    value: number;
+}
