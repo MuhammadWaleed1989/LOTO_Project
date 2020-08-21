@@ -56,11 +56,23 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/placeinfo/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             int retVal = _gameInfoService.Remove(id);
             if (retVal > 0) return Ok(); else return NotFound();
+        }
+        [Authorize]
+        [HttpPost("UpdateWinner")]
+        public IActionResult UpdateWinner(tblUserGame winnerOfGame)
+        {
+            var response = _gameInfoService.UpdateWinner(winnerOfGame);
+
+            if (response == null)
+                return BadRequest(new { message = "Wrong Attempt!!!" });
+
+            return Ok(response);
         }
     }
 }

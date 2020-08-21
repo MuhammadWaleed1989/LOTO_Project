@@ -29,9 +29,9 @@ namespace WebApi.Services
         }
         public int Add(GameData gamedata)
         {
-            string sQry = "INSERT INTO [tblGames] ([GameName],[WinValue1],[WinValue2],[WinValue3],[WinValue4],[WinValue5],[WinValue6],[IsDeleted]) " +
+            string sQry = "INSERT INTO [tblGames] ([GameName],[WinValue1],[WinValue2],[WinValue3],[WinValue4],[WinValue5],[WinValue6],[WinnerID],[IsDeleted]) " +
                 "VALUES('" + gamedata.gameInfo.GameName + "','" + gamedata.gameInfo.WinValue1 + "','" + gamedata.gameInfo.WinValue2 + "','" +
-                gamedata.gameInfo.WinValue3 + "','" + gamedata.gameInfo.WinValue4 + "','" + gamedata.gameInfo.WinValue5 + "','" + gamedata.gameInfo.WinValue6 + "','" + false + "');SELECT SCOPE_IDENTITY();";
+                gamedata.gameInfo.WinValue3 + "','" + gamedata.gameInfo.WinValue4 + "','" + gamedata.gameInfo.WinValue5 + "','" + gamedata.gameInfo.WinValue6 + "',0,'" + false + "');SELECT SCOPE_IDENTITY();";
             int retVal=ExecuteCRUDByQuery(sQry);
             retVal = AddGameDetails(gamedata.gameDetail, retVal);
             return retVal;
@@ -59,7 +59,13 @@ namespace WebApi.Services
         {
             return Find(id);
         }
+        public int UpdateWinner(tblUserGame winnerOfGame)
+        {
 
+            string sQry = "UPDATE [tblGames] SET [WinnerID]='" + winnerOfGame.UserID + "' WHERE [GameID]=" + winnerOfGame.GameID;
+            int retVal = ExecuteUpdateQuery(sQry);
+            return retVal;
+        }
         public GameData Find(int id)
         {
             GameData gameData = new GameData();
@@ -203,7 +209,23 @@ namespace WebApi.Services
             gameInfo.IsDeleted = Convert.ToBoolean(dr["IsDeleted"].ToString());
             return gameInfo;
         }
-
+        private int ExecuteUpdateQuery(string strSql)
+        {
+            SqlConnection conn = null;
+            int iR = 0;
+            try
+            {
+                conn = new SqlConnection(_connectionStrings.connectionStr);
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.CommandType = CommandType.Text;
+                conn.Open();
+                //Execute the command
+                iR = cmd.ExecuteNonQuery();
+            }
+            catch { iR = 0; }
+            finally { if (conn.State != 0) conn.Close(); }
+            return iR;
+        }
         private tblGamesDetail GetGameDetailInfoByRow(DataRow dr)
         {
             tblGamesDetail gameDetail = new tblGamesDetail();

@@ -47,11 +47,12 @@ namespace WebApi.Services
             int retVal = 0;
             for (int i = 0; i < userGamedata.Count; i++)
             {
-                string sQry = "UPDATE [tblUserGame] SET [IsConfirmed]=" + userGamedata[i].IsDeleted + ",[IsDeleted]='" + userGamedata[i].IsDeleted + "' WHERE [GameID]=" + userGamedata[i].GameID + " AND [Value]=" + userGamedata[i].Value + " AND [UserID]=" + userGamedata[i].UserID;
-                retVal = ExecuteCRUDByQuery(sQry); 
+                string sQry = "UPDATE [tblUserGame] SET [IsConfirmed]='" + userGamedata[i].IsConfirmed + "',[IsDeleted]='" + userGamedata[i].IsDeleted + "' WHERE [GameID]=" + userGamedata[i].GameID + " AND [Value]=" + userGamedata[i].Value + " AND [UserID]=" + userGamedata[i].UserID;
+                retVal = ExecuteUpdateQuery(sQry); 
             }
             return retVal;
         }
+       
         public tblUserGame GetById(int gameID)
         {
             return Find(gameID);
@@ -158,7 +159,23 @@ namespace WebApi.Services
             return iR;
         }
 
-
+        private int ExecuteUpdateQuery(string strSql)
+        {
+            SqlConnection conn = null;
+            int iR = 0;
+            try
+            {
+                conn = new SqlConnection(_connectionStrings.connectionStr);
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.CommandType = CommandType.Text;
+                conn.Open();
+                //Execute the command
+                iR = cmd.ExecuteNonQuery();
+            }
+            catch { iR = 0; }
+            finally { if (conn.State != 0) conn.Close(); }
+            return iR;
+        }
         private DataTable ExecuteQuery(string strSql)
         {
             SqlConnection conn = null;

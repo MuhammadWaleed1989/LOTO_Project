@@ -21,6 +21,7 @@ namespace WebApi.Hubs
         //}
         private static List<tblUser> _groups = new List<tblUser>();
         private static List<NumbersGroup> _numbersGroup = new List<NumbersGroup>();
+        
         private readonly AppSettings _appSettings;
         private readonly ConnectionStrings _connectionStrings;
 
@@ -123,11 +124,26 @@ namespace WebApi.Hubs
 
         private void BroadcastGameNumberGroup(int gameID)
         {
-            Clients.All.SendAsync("GameAllValues", GetValues(gameID));
+            // var clients = group.Glasses.Select(g => g.ConnectionId).ToList();
+            GameFinal _gameFinal = new GameFinal();
+            _gameFinal.gameValues = GetValues(gameID);
+            _gameFinal.gameWinner = GetGameWinnerName(gameID);
+            Clients.All.SendAsync("GameAllValues", _gameFinal);
         }
         private void BroadcastNotConfirmedValues(int gameID,int userID)
         {
             Clients.All.SendAsync("GetNotConfirmedValue", GetNotConfirmedValue(gameID, userID));
+        }
+        public string GetGameWinnerName(int gameID)
+        {
+            string winnerName = string.Empty;
+            string sQry = "SELECT ISNULL(U.FirstName +' '+U.LastName,'') WinnerName FROM dbo.tblGames G JOIN dbo.tblUser U ON g.WinnerID=u.UserID WHERE G.[GameID]="+ gameID;
+            DataTable dtUserGameInfo = ExecuteQuery(sQry);
+            if (dtUserGameInfo != null)
+            {
+                winnerName = Convert.ToString(dtUserGameInfo.Rows[0]["WinnerName"]);
+            }
+            return winnerName;
         }
         public IEnumerable<tblUser> GetAll()
         {
@@ -195,6 +211,9 @@ namespace WebApi.Hubs
             }
             return userGameInfos;
         }
+
+
+
         private DataTable ExecuteQuery(string strSql)
         {
             SqlConnection conn = null;
@@ -216,6 +235,13 @@ namespace WebApi.Hubs
             return dt;
         }
     }
+
+    public class GameFinal
+    {
+        public IEnumerable<tblUserGame> gameValues { get; set; }
+        public string gameWinner { get; set; }
+    }
+
     public class NumbersGroup
     {
         public int GameID { get; set; }

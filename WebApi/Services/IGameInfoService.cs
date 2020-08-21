@@ -15,6 +15,7 @@ namespace WebApi.Services
         GameData Find(int id);
         //int Update(int gameId, tblGames gameInfo);
         int Remove(int id);
+        int UpdateWinner(tblUserGame winnerOfGame);
         //int Update(PlaceInfo placeInfo);
     }
 }

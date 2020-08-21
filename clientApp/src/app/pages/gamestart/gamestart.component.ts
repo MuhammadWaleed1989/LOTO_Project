@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { first } from 'rxjs/operators';
 
+import { Users } from '../usermanagement/users.model';
+
 import { GameCompleteInfo, GameDetailInfo, GameInfo } from '../games/games.model';
 import { environment } from '../../../environments/environment';
 
@@ -44,6 +46,11 @@ export class GameStartComponent implements OnInit {
   public AllConfirmedValuesByUser = [];
   public AllNotConfirmedValuesByUser = [];
   currentUserID: number;
+  public winnerName: string;
+  users: Users[] = [];
+  intervalId: number = 0;
+  message: string = '';
+  seconds: number = 121;
   constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute) {
     this.typesubmit = false;
   }
@@ -57,45 +64,49 @@ export class GameStartComponent implements OnInit {
       label: 'Game Details',
       active: true
     }];
-
+    this.winnerName = "";
     this.currentpage = 1;
     this.currentUserID = Number(localStorage.getItem('id'));
     this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
 
     this._hubConnection.on('GameAllValues', (data: any) => {
       this.AllConfirmedValues = [];
+      this.AllNotConfirmedValues = [];
+      this.AllNotConfirmedValuesByUser = [];
+      this.AllConfirmedValuesByUser = [];
       if (data) {
-        for (var i = 0; i < data.length; i++) {
-          if (data[i]['isConfirmed'] === true) {
-            this.AllConfirmedValues.push(data[i]['value']);
+        if (data.gameValues) {
+          var gameValuesList = data.gameValues
+          for (var i = 0; i < gameValuesList.length; i++) {
+            if (gameValuesList[i]['isConfirmed'] === true) {
+              this.AllConfirmedValues.push(gameValuesList[i]['value']);
+            }
+            if (gameValuesList[i]['isConfirmed'] === false) {
+              this.AllNotConfirmedValues.push(gameValuesList[i]['value']);
+            }
+            if (gameValuesList[i]['isConfirmed'] === false && gameValuesList[i]['userID'] === this.currentUserID) {
+              this.AllNotConfirmedValuesByUser.push(gameValuesList[i]['value']);
+            }
+            if (gameValuesList[i]['isConfirmed'] === true && gameValuesList[i]['userID'] === this.currentUserID) {
+              this.AllConfirmedValuesByUser.push(gameValuesList[i]['value']);
+            }
           }
-          if (data[i]['isConfirmed'] === false) {
-            this.AllNotConfirmedValues.push(data[i]['value']);
-          }
-          if (data[i]['isConfirmed'] === false && data[i]['userID'] === this.currentUserID) {
-            this.AllNotConfirmedValuesByUser.push(data[i]['value']);
-          }
-          if (data[i]['isConfirmed'] === true && data[i]['userID'] === this.currentUserID) {
-            this.AllConfirmedValuesByUser.push(data[i]['value']);
-          }
-
+        }
+        if (data.gameWinner) {
+          this.winnerName = data.gameWinner;
         }
       }
     });
-    // this._hubConnection.on('GetNotConfirmedValue', (data: any) => {
-    //   this.AllNotConfirmedValuesByUser = [];
-    //   if (data) {
-    //     for (var i = 0; i < data.length; i++) {
-    //       this.AllNotConfirmedValuesByUser.push(data[i]);
-    //     }
-    //   }
+    // this._hubConnection.on('UserList', (data: any) => {
+    //   this.users = data;
     // });
 
     this._hubConnection.start()
       .then(() => {
         this.actRoute.paramMap.subscribe(params => {
+          // this.winnerOfTheGame(Number(params.get('id')));
           this._hubConnection.invoke('GameStart', Number(params.get('id')));
-          //this._hubConnection.invoke('StartGetNotConfirmedValue', Number(params.get('id')), this.currentUserID);
+          // this._hubConnection.invoke('Start');
         })
         console.log('Hub connection started')
       })
@@ -177,48 +188,120 @@ export class GameStartComponent implements OnInit {
     });
   }
   clickedEvent(eve: any) {
+    if (this.winnerName !== "") { return; }
+    var allIndex = this.AllConfirmedValues.indexOf(Number(eve.currentTarget.innerText));
+    if (allIndex > -1) {
+      return;
+    }
 
+    var notByUserindex = this.AllNotConfirmedValuesByUser.indexOf(Number(eve.currentTarget.innerText));
+    var allNotIndex = this.AllNotConfirmedValues.indexOf(Number(eve.currentTarget.innerText));
 
-    const index = this.AllNotConfirmedValuesByUser.indexOf(eve.currentTarget.innerText);
-    if (index > -1) {
+    if (notByUserindex < 0 && allNotIndex < 0) {
+      eve.currentTarget.classList.add("current");
+      this.AllNotConfirmedValuesByUser.push(Number(eve.currentTarget.innerText));
+      this.actRoute.paramMap.subscribe(params => {
+        this.StartGame(Number(eve.currentTarget.innerText), Number(params.get('id')));
+      })
+    }
+    else if (notByUserindex > -1) {
       eve.currentTarget.classList.remove("current");
-      this.AllNotConfirmedValuesByUser.splice(index, 1);
+      this.AllNotConfirmedValuesByUser.splice(notByUserindex, 1);
+      this.actRoute.paramMap.subscribe(params => {
+        this.removeValueFromConfirmValue(Number(eve.currentTarget.innerText), Number(params.get('id')));
+      })
     }
     else {
-      eve.currentTarget.classList.add("current");
-      this.AllNotConfirmedValuesByUser.push(eve.currentTarget.innerText);
+      return;
     }
-    this.actRoute.paramMap.subscribe(params => {
-      this.StartGame(Number(eve.currentTarget.innerText), Number(params.get('id')));
-    })
-
-
+    if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+    else { this.stop() }
   }
 
   ConfirmValues() {
     this.actRoute.paramMap.subscribe(params => {
-      this.gameService.ConfirmValue(Number(params.get('id')), this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
-        for (var i = 0; i < this.AllNotConfirmedValuesByUser.length; i++) {
-          const index: number = this.AllNotConfirmedValuesByUser.indexOf(this.AllNotConfirmedValuesByUser[i]);
-          if (index !== -1) {
+      this.gameService.confirmValue(Number(params.get('id')), this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
+        var tempArray = JSON.parse(JSON.stringify(this.AllNotConfirmedValuesByUser));
+        //var tempArray = this.AllNotConfirmedValuesByUser;
+        for (var i = 0; i < tempArray.length; i++) {
+          var index = tempArray.indexOf(tempArray[i]);
+          if (index > -1) {
+            this.AllConfirmedValues.push(tempArray[i]);
+            this.AllConfirmedValuesByUser.push(tempArray[i]);
             this.AllNotConfirmedValuesByUser.splice(index, 1);
-            this.AllConfirmedValues.push(this.AllNotConfirmedValuesByUser[i]);
           }
         }
+        if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+        else { this.stop() }
         this._hubConnection.invoke('GameStart', Number(params.get('id')));
+        this.winnerOfTheGame(Number(params.get('id')));
+
+
       });
     })
 
   }
-
+  removeValueFromConfirmValue(value: number, gameID: number) {
+    this.gameService.removeValueFromConfirmValue(gameID, value).subscribe((resp: Response) => {
+      if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+      else { this.stop() }
+      this._hubConnection.invoke('GameStart', gameID);
+    });
+  }
   StartGame(value: number, gameID: number) {
     this.gameService.StartGame(gameID, value, false).subscribe((resp: Response) => {
+      if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+      else { this.stop() }
       this._hubConnection.invoke('GameStart', gameID);
     });
   }
 
-  ReturnNotConfirmedValues() {
+  winnerOfTheGame(gameID: number) {
+    var isWinner = true;
+    for (var i = 0; i < this.selectedCellForWinner.length; i++) {
+      var index = this.AllConfirmedValuesByUser.indexOf(this.selectedCellForWinner[i]);
+      if (index < 0) {
+        isWinner = false;
+      }
+    }
+    if (isWinner) {
+      this.gameService.UpdateWinner(gameID).subscribe((resp: Response) => {
+        if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+        else { this.stop() }
+        this._hubConnection.invoke('GameStart', gameID);
+      });
+    }
 
   }
+  ngOnDestroy() { this.clearTimer(); }
 
+  clearTimer(): void { clearInterval(this.intervalId); }
+
+  start(): void { this.countDown(); }
+  stop(): void {
+    this.seconds = 121;
+    this.clearTimer();
+    //this.message = `Holding at T-${this.seconds} seconds`;
+  }
+
+  private countDown(): void {
+    this.clearTimer();
+    this.intervalId = window.setInterval(() => {
+      this.seconds -= 1;
+      if (this.seconds === 0) {
+        if (this.AllNotConfirmedValuesByUser.length > 0) {
+          this.actRoute.paramMap.subscribe(params => {
+            this.gameService.bulkRemoveValueFromGame(Number(params.get('id')), this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
+              this._hubConnection.invoke('GameStart', Number(params.get('id')));
+              if (this.AllNotConfirmedValuesByUser.length === 0) { this.stop(); }
+            });
+          })
+        }
+
+      } else {
+        if (this.seconds < 0) { this.seconds = 120; } // reset
+        this.message = `${this.seconds} seconds and counting`;
+      }
+    }, 1000);
+  }
 }

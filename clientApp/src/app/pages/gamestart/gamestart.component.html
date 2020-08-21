@@ -8,13 +8,13 @@
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-centered table-nowrap">
-              <thead>
+              <!-- <thead>
                 <tr>
                   <th *ngFor="let column of tableHeader">
                     {{column}}
                   </th>
                 </tr>
-              </thead>
+              </thead> -->
               <tbody>
                 <tr *ngFor="let row of tableArray; let i = index">
                   <td *ngFor="let column of tableHeader; let j = index" [ngClass]="{
@@ -40,9 +40,15 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <div *ngFor="let value of AllNotConfirmedValuesByUser" class="inlineDivs">{{value}}</div>
-          <br /><br />
-          <button class="btn btn-primary" type="button" (click)="ConfirmValues()">Confirm Value</button>
+          <div *ngIf='AllNotConfirmedValuesByUser.length>0 && winnerName=="" '>
+            <div>{{message}}</div>
+            <div *ngFor="let value of AllNotConfirmedValuesByUser" class="inlineDivs">{{value}}</div>
+            <br /><br />
+            <button class="btn btn-primary" type="button" (click)="ConfirmValues()">Confirm Value</button>
+          </div>
+          <div *ngIf='winnerName !==""  '>
+            <h3>Winner is {{winnerName}}!!!</h3>
+          </div>
         </div>
       </div>
     </div>

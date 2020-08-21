@@ -32,7 +32,7 @@
                 <tr>
                   <!-- <th>#</th> -->
                   <th>Game Name</th>
-                  <th>Joined People</th>
+                  <!-- <th>Joined People</th> -->
                   <!-- <th>Cell 1 Value</th>
                   <th>Cell 2 Value</th>
                   <th>Cell 3 Value</th>
@@ -43,7 +43,7 @@
               <tbody>
                 <tr *ngFor="let game of gameInfo  | filter:term ;let i = index;">
                   <td><a [routerLink]="['/gamestart/', game.gameID]">{{game.gameName}}</a></td>
-                  <td>10</td>
+                  <!-- <td>10</td> -->
                   <td>
                     <a [routerLink]="['/gamestart/', game.gameID]" title="Start" class="inlineItem"><i
                         class="fas fa-hourglass-start mr-1"></i>

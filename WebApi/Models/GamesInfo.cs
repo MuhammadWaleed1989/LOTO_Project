@@ -22,6 +22,7 @@ namespace WebApi.Models
         public int? WinValue5 { get; set; }
 
         public int? WinValue6 { get; set; }
+        public int? WinnerID { get; set; }
 
         public bool? IsDeleted { get; set; }
     }

@@ -12,6 +12,7 @@ namespace WebApi.Models
         public int? GameID { get; set; }
         public int? Value { get; set; }
         public bool? IsConfirmed { get; set; }
+
         public bool? IsDeleted { get; set; }
 
     }
