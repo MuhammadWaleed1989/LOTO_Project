@@ -7,20 +7,17 @@
       <div class="card">
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-centered table-nowrap">
-              <!-- <thead>
+            <table id="tblGameValues" class="table table-centered table-nowrap">
+              <thead>
                 <tr>
-                  <th *ngFor="let column of tableHeader">
+                  <th *ngFor="let column of tableHeader" (click)="clickedEvent($event)">
                     {{column}}
                   </th>
                 </tr>
-              </thead> -->
+              </thead>
               <tbody>
-                <tr *ngFor="let row of tableArray; let i = index">
-                  <td *ngFor="let column of tableHeader; let j = index" [ngClass]="{
-                    'active' : AllConfirmedValues.indexOf(row[column])>-1,
-                    'current':AllNotConfirmedValues.indexOf(row[column])>-1
-                 }" (click)="clickedEvent($event)">
+                <tr id="tr_{{i}}" *ngFor="let row of tableArray; let i = index">
+                  <td id="td_{{i}}_{{column}}" *ngFor="let column of tableHeader; let j = index">
                     {{row[column]}}
                   </td>
                 </tr>
@@ -36,7 +33,7 @@
     </div>
   </div>
   <!-- end row -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
@@ -52,5 +49,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

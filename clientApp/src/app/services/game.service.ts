@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { GameInfo, GameCompleteInfo, UserGame } from '../pages/games/games.model';
+import { GameInfo, GameCompleteInfo, UserGame, GameValues } from '../pages/games/games.model';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -10,7 +10,9 @@ export class GameService {
     getAll() {
         return this.http.get<GameInfo[]>(`${environment.apiUrl}/api/GamesInfo`);
     }
-
+    getGameValues() {
+        return this.http.get<GameValues[]>(`${environment.apiUrl}/api/UserGame/GetGameValues`);
+    }
     postGame(gameInfo: any) {
         return this.http.post(`${environment.apiUrl}/api/GamesInfo`, gameInfo);
     }

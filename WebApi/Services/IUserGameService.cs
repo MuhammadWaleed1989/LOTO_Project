@@ -8,6 +8,7 @@ namespace WebApi.Services
 {
     public interface IUserGameService
     {
+        IEnumerable<tblGameValues> GetGameValues();
         int Add(tblUserGame userGameInfo);
         int[] GetAll(int? gameID,int? userID);
         int[] GetAllValue(int gameID);

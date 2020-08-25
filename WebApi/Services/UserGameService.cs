@@ -25,6 +25,27 @@ namespace WebApi.Services
             _connectionStrings = connectionStrings.Value;
         }
         #region Main functions
+        public IEnumerable<tblGameValues> GetGameValues()
+        {
+            List<tblGameValues> gameValues = null;
+            string sQry = "SELECT * FROM [tblGameValues]";
+            DataTable dtGameValues = ExecuteQuery(sQry);
+            if (dtGameValues != null)
+            {
+                gameValues = (from DataRow dr in dtGameValues.Rows
+                              select new tblGameValues()
+                              {
+                                  GameValueID = Convert.ToInt32(dr["GameValueID"]),
+                                  RowNum1 = Convert.ToInt32(dr["RowNum1"]),
+                                  RowNum2 = Convert.ToInt32(dr["RowNum2"]),
+                                  RowNum3 = Convert.ToInt32(dr["RowNum3"]),
+                                  RowNum4 = Convert.ToInt32(dr["RowNum4"]),
+                                  RowNum5 = Convert.ToInt32(dr["RowNum5"]),
+                                  RowNum6 = Convert.ToInt32(dr["RowNum6"]),
+                              }).ToList();
+            }
+            return gameValues;
+        }
         public int Add(tblUserGame userGamedata)
         {
             //int retVal = 0;

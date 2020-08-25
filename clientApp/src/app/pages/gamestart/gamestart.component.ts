@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 
 import { Users } from '../usermanagement/users.model';
 
-import { GameCompleteInfo, GameDetailInfo, GameInfo } from '../games/games.model';
+import { GameCompleteInfo, GameValues, GameDetailInfo, GameInfo } from '../games/games.model';
 import { environment } from '../../../environments/environment';
 
 import { GameService } from '../../../app/services/game.service';
@@ -48,6 +48,7 @@ export class GameStartComponent implements OnInit {
   currentUserID: number;
   public winnerName: string;
   users: Users[] = [];
+  gameValues: GameValues[] = [];
   intervalId: number = 0;
   message: string = '';
   seconds: number = 121;
@@ -69,58 +70,140 @@ export class GameStartComponent implements OnInit {
     this.currentUserID = Number(localStorage.getItem('id'));
     this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
 
-    this._hubConnection.on('GameAllValues', (data: any) => {
-      this.AllConfirmedValues = [];
-      this.AllNotConfirmedValues = [];
-      this.AllNotConfirmedValuesByUser = [];
-      this.AllConfirmedValuesByUser = [];
-      if (data) {
-        if (data.gameValues) {
-          var gameValuesList = data.gameValues
-          for (var i = 0; i < gameValuesList.length; i++) {
-            if (gameValuesList[i]['isConfirmed'] === true) {
-              this.AllConfirmedValues.push(gameValuesList[i]['value']);
-            }
-            if (gameValuesList[i]['isConfirmed'] === false) {
-              this.AllNotConfirmedValues.push(gameValuesList[i]['value']);
-            }
-            if (gameValuesList[i]['isConfirmed'] === false && gameValuesList[i]['userID'] === this.currentUserID) {
-              this.AllNotConfirmedValuesByUser.push(gameValuesList[i]['value']);
-            }
-            if (gameValuesList[i]['isConfirmed'] === true && gameValuesList[i]['userID'] === this.currentUserID) {
-              this.AllConfirmedValuesByUser.push(gameValuesList[i]['value']);
-            }
-          }
-        }
-        if (data.gameWinner) {
-          this.winnerName = data.gameWinner;
-        }
-      }
-    });
+    // this._hubConnection.on('GameAllValues', (data: any) => {
+    //   this.AllConfirmedValues = [];
+    //   this.AllNotConfirmedValues = [];
+    //   this.AllNotConfirmedValuesByUser = [];
+    //   this.AllConfirmedValuesByUser = [];
+    //   if (data) {
+    //     if (data.gameValues) {
+    //       var gameValuesList = data.gameValues
+    //       for (var i = 0; i < gameValuesList.length; i++) {
+    //         if (gameValuesList[i]['isConfirmed'] === true) {
+    //           this.AllConfirmedValues.push(gameValuesList[i]['value']);
+    //         }
+    //         if (gameValuesList[i]['isConfirmed'] === false) {
+    //           this.AllNotConfirmedValues.push(gameValuesList[i]['value']);
+    //         }
+    //         if (gameValuesList[i]['isConfirmed'] === false && gameValuesList[i]['userID'] === this.currentUserID) {
+    //           this.AllNotConfirmedValuesByUser.push(gameValuesList[i]['value']);
+    //         }
+    //         if (gameValuesList[i]['isConfirmed'] === true && gameValuesList[i]['userID'] === this.currentUserID) {
+    //           this.AllConfirmedValuesByUser.push(gameValuesList[i]['value']);
+    //         }
+    //       }
+    //     }
+    //     if (data.gameWinner) {
+    //       this.winnerName = data.gameWinner;
+    //     }
+    //   }
+    // });
     // this._hubConnection.on('UserList', (data: any) => {
     //   this.users = data;
     // });
 
-    this._hubConnection.start()
-      .then(() => {
-        this.actRoute.paramMap.subscribe(params => {
-          // this.winnerOfTheGame(Number(params.get('id')));
-          this._hubConnection.invoke('GameStart', Number(params.get('id')));
-          // this._hubConnection.invoke('Start');
-        })
-        console.log('Hub connection started')
-      })
-      .catch(err => {
-        console.log('Error while establishing connection')
-      });
+    // this._hubConnection.start()
+    //   .then(() => {
+    //     this.actRoute.paramMap.subscribe(params => {
+    //       // this.winnerOfTheGame(Number(params.get('id')));
+    //       this._hubConnection.invoke('GameStart', Number(params.get('id')));
+    //       // this._hubConnection.invoke('Start');
+    //     })
+    //     console.log('Hub connection started')
+    //   })
+    //   .catch(err => {
+    //     console.log('Error while establishing connection')
+    //   });
 
-    this.actRoute.paramMap.subscribe(params => {
-      this.getGameDetails(params.get('id'));
-    })
+    // this.actRoute.paramMap.subscribe(params => {
+    //   this.getGameDetails(params.get('id'));
+    // })
+    this.getGameValues();
   }
 
+  private getGameValues() {
+    this.gameService.getGameValues().pipe(first()).subscribe(data => {
 
-  private getGameDetails(gameID: any) {
+      for (var i = 1; i <= 300; i++) {
+        var col = 'Col ' + i;
+        this.tableHeader.push(col);
+      }
+      this.gameValues = data;
+      let arrayGameDetail = [];
+
+      for (let key in this.gameValues) {
+        if (this.gameValues.hasOwnProperty(key)) {
+          arrayGameDetail.push(this.gameValues[key]);
+        }
+      }
+      var jsonDataOfRow1 = {};
+      var jsonDataOfRow2 = {};
+      var jsonDataOfRow3 = {};
+      var jsonDataOfRow4 = {};
+      var jsonDataOfRow5 = {};
+      var jsonDataOfRow6 = {};
+      for (var j = 0; j < arrayGameDetail.length; j++) {
+        var k = j + 1;
+        jsonDataOfRow1['Col ' + k] = arrayGameDetail[j]['rowNum1'];
+        jsonDataOfRow2['Col ' + k] = arrayGameDetail[j]['rowNum2'];
+        jsonDataOfRow3['Col ' + k] = arrayGameDetail[j]['rowNum3'];
+        jsonDataOfRow4['Col ' + k] = arrayGameDetail[j]['rowNum4'];
+        jsonDataOfRow5['Col ' + k] = arrayGameDetail[j]['rowNum5'];
+        jsonDataOfRow6['Col ' + k] = arrayGameDetail[j]['rowNum6'];
+      }
+      this.tableArray.push(jsonDataOfRow1);
+      this.tableArray.push(jsonDataOfRow2);
+      this.tableArray.push(jsonDataOfRow3);
+      this.tableArray.push(jsonDataOfRow4);
+      this.tableArray.push(jsonDataOfRow5);
+      this.tableArray.push(jsonDataOfRow6);
+    });
+  }
+  clickedEvent(eve: any) {
+    //if (this.winnerName !== "") { return; }
+    var columnNumber = Number(eve.currentTarget.innerText.replace("Col", "").trim());
+    var allIndex = eve.currentTarget.innerText;
+    eve.currentTarget.classList.add("current");
+    var row1 = document.getElementById("td_0_Col " + columnNumber);
+    var row2 = document.getElementById("td_1_Col " + columnNumber);
+    var row3 = document.getElementById("td_2_Col " + columnNumber);
+    var row4 = document.getElementById("td_3_Col " + columnNumber);
+    var row5 = document.getElementById("td_4_Col " + columnNumber);
+    var row6 = document.getElementById("td_5_Col " + columnNumber);
+    row1.classList.add("borderRightAndLeft");
+    row2.classList.add("borderRightAndLeft");
+    row3.classList.add("borderRightAndLeft");
+    row4.classList.add("borderRightAndLeft");
+    row5.classList.add("borderRightAndLeft");
+    row6.classList.add("borderRightAndLeft");
+    // if (allIndex > -1) {
+    //   return;
+    // }
+
+    // var notByUserindex = this.AllNotConfirmedValuesByUser.indexOf(Number(eve.currentTarget.innerText));
+    // var allNotIndex = this.AllNotConfirmedValues.indexOf(Number(eve.currentTarget.innerText));
+
+    // if (notByUserindex < 0 && allNotIndex < 0) {
+    //   eve.currentTarget.classList.add("current");
+    //   this.AllNotConfirmedValuesByUser.push(Number(eve.currentTarget.innerText));
+    //   this.actRoute.paramMap.subscribe(params => {
+    //     this.StartGame(Number(eve.currentTarget.innerText), Number(params.get('id')));
+    //   })
+    // }
+    // else if (notByUserindex > -1) {
+    //   eve.currentTarget.classList.remove("current");
+    //   this.AllNotConfirmedValuesByUser.splice(notByUserindex, 1);
+    //   this.actRoute.paramMap.subscribe(params => {
+    //     this.removeValueFromConfirmValue(Number(eve.currentTarget.innerText), Number(params.get('id')));
+    //   })
+    // }
+    // else {
+    //   return;
+    // }
+    // if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+    // else { this.stop() }
+  }
+  /*private getGameDetails(gameID: any) {
     this.gameService.getGameDetails(gameID).pipe(first()).subscribe(returnedData => {
       for (var i = 1; i <= 300; i++) {
         var col = 'col' + i;
@@ -281,7 +364,6 @@ export class GameStartComponent implements OnInit {
   stop(): void {
     this.seconds = 121;
     this.clearTimer();
-    //this.message = `Holding at T-${this.seconds} seconds`;
   }
 
   private countDown(): void {
@@ -303,5 +385,5 @@ export class GameStartComponent implements OnInit {
         this.message = `${this.seconds} seconds and counting`;
       }
     }, 1000);
-  }
+  }*/
 }

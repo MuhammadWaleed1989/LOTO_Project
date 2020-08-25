@@ -22,31 +22,23 @@ namespace WebApi.Controllers
         }
         // POST api/gameinfo
         [HttpPost]
-        public IActionResult PostGameInfo([FromBody]GameData gamedata)
+        public IActionResult PostGameInfo([FromBody]tblGames gameInfo)
         {
 
-            if (gamedata == null) return BadRequest();
-            int retVal = _gameInfoService.Add(gamedata);
+            if (gameInfo == null) return BadRequest();
+            int retVal = _gameInfoService.Add(gameInfo);
             if (retVal > 0) return Ok(); else return NotFound();
         }
         // GET api/gameinfo/id
         [HttpGet("{id}", Name = nameof(GetGameInfoById))]
         public IActionResult GetGameInfoById(int id)
         {
-            GameData gamedata = _gameInfoService.Find(id);
-            if (gamedata == null)
+            tblGames gameInfo = _gameInfoService.Find(id);
+            if (gameInfo == null)
                 return NotFound();
             else
-                return new ObjectResult(gamedata);
+                return new ObjectResult(gameInfo);
         }
-        //[HttpPut("{id}")]
-        //public IActionResult PostGameInfo(int id, [FromBody] tblGames gameInfo)
-        //{
-        //    if (gameInfo == null || id != gameInfo.GameID) return BadRequest();
-        //    if (_gameInfoService.Find(id) == null) return NotFound();
-        //    int retVal = _gameInfoService.Update(id, gameInfo);
-        //    if (retVal > 0) return Ok(); else return NotFound();
-        //}
         [Authorize]
         [HttpGet]
         public IActionResult GetAll()
@@ -63,16 +55,14 @@ namespace WebApi.Controllers
             int retVal = _gameInfoService.Remove(id);
             if (retVal > 0) return Ok(); else return NotFound();
         }
-        [Authorize]
-        [HttpPost("UpdateWinner")]
-        public IActionResult UpdateWinner(tblUserGame winnerOfGame)
+        // PUT api/GameInfo/guid
+        [HttpPut("{id}")]
+        public IActionResult PutGameInfo(int id, [FromBody] tblGames gameInfo)
         {
-            var response = _gameInfoService.UpdateWinner(winnerOfGame);
-
-            if (response == null)
-                return BadRequest(new { message = "Wrong Attempt!!!" });
-
-            return Ok(response);
+            if (gameInfo == null || id != gameInfo.GameID) return BadRequest();
+            if (_gameInfoService.Find(id) == null) return NotFound();
+            int retVal = _gameInfoService.Update(id,gameInfo);
+            if (retVal > 0) return Ok(); else return NotFound();
         }
     }
 }

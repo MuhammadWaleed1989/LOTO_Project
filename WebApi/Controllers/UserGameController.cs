@@ -20,6 +20,17 @@ namespace WebApi.Controllers
         {
             _userGameService = userGameService;
         }
+
+        [Authorize]
+        [HttpGet("GetGameValues")]
+        public IActionResult GetGameValues()
+        {
+            var games = _userGameService.GetGameValues();
+            return Ok(games);
+        }
+
+
+
         // POST api/gameinfo
         [HttpPost]
         public IActionResult PostUserGame([FromBody]tblUserGame userGamedata)
@@ -39,13 +50,7 @@ namespace WebApi.Controllers
             else
                 return new ObjectResult(userGamedata);
         }
-        [Authorize]
-        [HttpPost("GetAll")]
-        public IActionResult GetAll([FromBody]tblUserGame userGamedata)
-        {
-            var games = _userGameService.GetAll(userGamedata.GameID, userGamedata.UserID);
-            return Ok(games);
-        }
+        
         [Authorize]
         [HttpPost("GetAllValue")]
         public IActionResult GetAllValue(int gameID)

@@ -8,14 +8,12 @@ namespace WebApi.Services
 {
     public interface IGameInfoService
     {
-        int Add(GameData gameInfo);
         IEnumerable<tblGames> GetAll();
-        GameData GetById(int id);
-
-        GameData Find(int id);
-        //int Update(int gameId, tblGames gameInfo);
+        int Add(tblGames gameInfo);
+        int Update(int gameId, tblGames gameInfo);
+        tblGames GetById(int id);
+        tblGames Find(int id);
         int Remove(int id);
-        int UpdateWinner(tblUserGame winnerOfGame);
-        //int Update(PlaceInfo placeInfo);
+        
     }
 }

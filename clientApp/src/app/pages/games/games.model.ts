@@ -7,7 +7,17 @@ export class GameInfo {
     winValue4: number;
     winValue5: number;
     winValue6: number;
+    winValueList: any;
     isDeleted: boolean;
+}
+export class GameValues {
+    gameValueID: number;
+    rowNum1: number;
+    rowNum2: number;
+    rowNum3: number;
+    rowNum4: number;
+    rowNum5: number;
+    rowNum6: number;
 }
 export class GameDetailInfo {
     gameDetailID: number;

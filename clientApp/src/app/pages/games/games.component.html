@@ -30,19 +30,17 @@
             <table class="table table-centered table-nowrap">
               <thead>
                 <tr>
-                  <!-- <th>#</th> -->
                   <th>Game Name</th>
-                  <!-- <th>Joined People</th> -->
-                  <!-- <th>Cell 1 Value</th>
-                  <th>Cell 2 Value</th>
-                  <th>Cell 3 Value</th>
-                  <th>Cell 4 Value</th> -->
+                  <th>Winning Numbers</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let game of gameInfo  | filter:term ;let i = index;">
                   <td><a [routerLink]="['/gamestart/', game.gameID]">{{game.gameName}}</a></td>
+                  <td>
+                    <div *ngFor="let value of game.winValueList" class="inlineDivs">{{value}}</div>
+                  </td>
                   <!-- <td>10</td> -->
                   <td>
                     <a [routerLink]="['/gamestart/', game.gameID]" title="Start" class="inlineItem"><i
@@ -90,28 +88,53 @@
             </div>
           </div>
           <div class="form-group">
-            <div *ngIf="greaterThan()" class="winnerNumberIncomplete">
-              <span *ngIf="greaterThan()"><label>Please select 6 numbers</label></span>
+            <label>Win Value 1</label>
+            <input type="number" class="form-control" formControlName="winValue1"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue1.errors}" placeholder="Enter Win Value 1" />
+            <div *ngIf="typesubmit && type.winValue1.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue1.errors.required">Win Value 1 is required.</span>
             </div>
-            <div class="table-responsive">
-              <table class="table table-centered table-nowrap">
-                <thead>
-                  <th *ngFor="let column of tableHeader">
-                    {{column}}
-                  </th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of tableArray; let i = index">
-                    <td *ngFor="let column of tableHeader; let j = index" (click)="clickedEvent(i,j,$event)">
-                      {{row[column]}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
           </div>
-
+          <div class="form-group">
+            <label>Win Value 2</label>
+            <input type="number" class="form-control" formControlName="winValue2"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue2.errors}" placeholder="Enter Win Value 2" />
+            <div *ngIf="typesubmit && type.winValue2.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue2.errors.required">Win Value 2 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 3</label>
+            <input type="number" class="form-control" formControlName="winValue3"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue3.errors}" placeholder="Enter Win Value 3" />
+            <div *ngIf="typesubmit && type.winValue3.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue3.errors.required">Win Value 3 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 4</label>
+            <input type="number" class="form-control" formControlName="winValue4"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue4.errors}" placeholder="Enter Win Value 4" />
+            <div *ngIf="typesubmit && type.winValue4.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue4.errors.required">Win Value 4 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 5</label>
+            <input type="number" class="form-control" formControlName="winValue5"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue5.errors}" placeholder="Enter Win Value 5" />
+            <div *ngIf="typesubmit && type.winValue5.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue5.errors.required">Win Value 5 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 6</label>
+            <input type="number" class="form-control" formControlName="winValue6"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue6.errors}" placeholder="Enter Win Value 6" />
+            <div *ngIf="typesubmit && type.winValue6.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue6.errors.required">Win Value 6 is required.</span>
+            </div>
+          </div>
           <div class="form-group mb-0">
             <div>
               <button type="submit" class="btn btn-primary mr-1">
