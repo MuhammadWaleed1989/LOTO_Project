@@ -41,6 +41,7 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(data.firstName));
                     localStorage.setItem('id', data.id);
                     localStorage.setItem('access_token', data.token);
+                    localStorage.setItem('isAdmin', data.isAdmin);
                     this.currentUserSubject.next(data.firstName);
                 }
 

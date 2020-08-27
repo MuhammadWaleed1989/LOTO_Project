@@ -75,7 +75,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(
         data => {
           this._hubConnection.invoke('Start');
-          this.router.navigate(['/usermanagement']);
+          if (!localStorage.getItem('isAdmin')) { this.router.navigate(['/usermanagement']); }
+          else {
+            this.router.navigate(['/games']);
+          }
+
         },
         error => {
           // this.alertService.error(error);

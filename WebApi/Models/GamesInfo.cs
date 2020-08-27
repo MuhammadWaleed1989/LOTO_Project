@@ -25,6 +25,11 @@ namespace WebApi.Models
         public int[] WinValueList { get; set; }
 
         public bool? IsDeleted { get; set; }
+        public bool? IsGameStart { get; set; }
+
+        public bool? IsGamePause { get; set; }
+
+        public bool? IsGameFinish { get; set; }
     }
     public class GameData
     { 

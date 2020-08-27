@@ -21,6 +21,7 @@ namespace WebApi.Models
         public string Password { get; set; }
 
         public bool? IsDeleted { get; set; }
+        public string Phone { get; set; }
 
         public bool? IsAdmin { get; set; }
         public bool? IsUserOnline { get; set; }

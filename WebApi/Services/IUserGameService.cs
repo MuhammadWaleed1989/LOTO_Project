@@ -15,5 +15,6 @@ namespace WebApi.Services
         tblUserGame GetById(int gameID);
         tblUserGame Find(int gameID);
         int Update(List<tblUserGame> userGamedata);
+        int Update(int gameId, tblGames gameInfo);
     }
 }

@@ -73,7 +73,16 @@
                     <div *ngIf="f.Email.errors.email">Email must be a valid email address</div>
                   </div>
                 </div>
+                <div class="form-group mb-3">
+                  <label for="Phone">Phone</label>
 
+                  <input type="text" formControlName="Phone" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.Phone.errors }" id="Phone" placeholder="Phone" />
+
+                  <div *ngIf="submitted && f.Phone.errors" class="invalid-feedback">
+                    <div *ngIf="f.Phone.errors.required">Phone is required</div>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label for="Password">Password</label>
 

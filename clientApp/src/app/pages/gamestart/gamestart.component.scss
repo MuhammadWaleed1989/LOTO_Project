@@ -2,6 +2,10 @@
     background-color:#48da24 !important;  
     color: white;  
   }
+  .winningCells {  
+    background-color:#347a23 !important;  
+    color: white;  
+  }
   .table tr .current {  
     background-color:#808080 !important;  
     color: white;  
@@ -21,6 +25,36 @@
     padding-top: 15px;
   }
   .borderRightAndLeft{
-    border-right: 5px solid #808080;
-    border-left: 5px solid #808080;
+    border-right: 2px solid #808080;
+    border-left: 2px solid #808080;
+  }
+  .borderRightAndLeftGreen{
+    border-right: 2px solid #48da24;
+    border-left: 2px solid #48da24;
+  }
+  ul#user-list li {
+    width: auto;
+    height: 34px;
+    background-color: #296b97 !important;
+    color: white;
+    display: inline-block;
+    margin-right: 5px;
+    text-align: center;
+    padding-top: 9px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+  ul#values-list li {
+    width: auto;
+    height: 34px;
+    background-color: #296b97 !important;
+    color: white;
+    margin-right: 5px;
+    text-align: center;
+    padding-top: 9px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+  ul#values-list{
+    display: inline-block;
   }

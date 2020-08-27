@@ -38,7 +38,7 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     // setup the top lables
     this.breadCrumbItems = [{
-      label: 'Skote'
+      label: 'LOTO Game'
     }, {
       label: 'User Management',
       active: true

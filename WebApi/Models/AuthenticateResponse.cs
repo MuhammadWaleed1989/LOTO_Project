@@ -13,6 +13,7 @@ namespace WebApi.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
+        public bool? IsAdmin { get; set; }
 
 
         public AuthenticateResponse(tblUser user, string token)
@@ -23,6 +24,7 @@ namespace WebApi.Models
             Username = user.UserName;
             Token = token;
             Email = user.Email;
+            IsAdmin= user.IsAdmin;
         }
     }
 }

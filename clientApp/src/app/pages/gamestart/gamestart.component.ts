@@ -40,87 +40,239 @@ export class GameStartComponent implements OnInit {
   public _state: HubConnectionState;
   public tableArray = [];
   public tableHeader = [];
+  public resultTableHeader = [];
+  public resultTable = [];
+  public resultTableFooter = []
   public selectedCellForWinner = [];
   public AllConfirmedValues = [];
+  public AllRowsConfirmedValues = [];
   public AllNotConfirmedValues = [];
   public AllConfirmedValuesByUser = [];
   public AllNotConfirmedValuesByUser = [];
+  public AllRowsNotConfirmedValuesByUser = [];
+  public AllRowsNotConfirmedValues = [];
+  public WinListArray = [];
   currentUserID: number;
-  public winnerName: string;
+  public gameID: number;
+  public isGameStart: boolean = false;
+  public isGamePause: boolean = false;
+  public isGameFinish: boolean = false;
   users: Users[] = [];
   gameValues: GameValues[] = [];
   intervalId: number = 0;
   message: string = '';
   seconds: number = 121;
+  public isAdmin: boolean = false;
+  public gameData: any;
   constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute) {
     this.typesubmit = false;
   }
 
+  private getBoolean(value) {
+    switch (value) {
+      case true:
+      case "true":
+      case 1:
+      case "1":
+      case "on":
+      case "yes":
+        return true;
+      default:
+        return false;
+    }
+  }
   ngOnInit() {
-
+    this.typeValidationForm = this.formBuilder.group({
+      winValue1: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      winValue2: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      winValue3: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      winValue4: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      winValue5: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      winValue6: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+    });
     // setup the top lables
     this.breadCrumbItems = [{
-      label: 'Skote'
+      label: 'LOTO Game'
     }, {
       label: 'Game Details',
       active: true
     }];
-    this.winnerName = "";
+
     this.currentpage = 1;
     this.currentUserID = Number(localStorage.getItem('id'));
+    this.isAdmin = this.getBoolean(localStorage.getItem('isAdmin'));
     this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
+    this.actRoute.paramMap.subscribe(params => {
+      this.gameID = Number(params.get('id'));
+    })
+    this._hubConnection.on('GetGameInfo', (data: any) => {
+      this.AllConfirmedValues = [];
+      this.AllNotConfirmedValues = [];
+      this.AllRowsNotConfirmedValues = [];
+      this.AllNotConfirmedValuesByUser = [];
+      this.AllConfirmedValuesByUser = [];
+      this.AllRowsNotConfirmedValuesByUser = [];
+      this.AllRowsConfirmedValues = [];
+      this.WinListArray = [];
+      this.isGameStart = false;
+      this.isGamePause = false;
+      this.isGameFinish = false;
+      if (data) {
+        var gameInfo = data.gameInfo;
+        if (gameInfo && gameInfo.length > 0) {
+          this.gameData = gameInfo[0];
+          this.isGameStart = gameInfo[0].isGameStart;
+          this.isGamePause = gameInfo[0].isGamePause;
+          this.isGameFinish = gameInfo[0].isGameFinish;
 
-    // this._hubConnection.on('GameAllValues', (data: any) => {
-    //   this.AllConfirmedValues = [];
-    //   this.AllNotConfirmedValues = [];
-    //   this.AllNotConfirmedValuesByUser = [];
-    //   this.AllConfirmedValuesByUser = [];
-    //   if (data) {
-    //     if (data.gameValues) {
-    //       var gameValuesList = data.gameValues
-    //       for (var i = 0; i < gameValuesList.length; i++) {
-    //         if (gameValuesList[i]['isConfirmed'] === true) {
-    //           this.AllConfirmedValues.push(gameValuesList[i]['value']);
-    //         }
-    //         if (gameValuesList[i]['isConfirmed'] === false) {
-    //           this.AllNotConfirmedValues.push(gameValuesList[i]['value']);
-    //         }
-    //         if (gameValuesList[i]['isConfirmed'] === false && gameValuesList[i]['userID'] === this.currentUserID) {
-    //           this.AllNotConfirmedValuesByUser.push(gameValuesList[i]['value']);
-    //         }
-    //         if (gameValuesList[i]['isConfirmed'] === true && gameValuesList[i]['userID'] === this.currentUserID) {
-    //           this.AllConfirmedValuesByUser.push(gameValuesList[i]['value']);
-    //         }
-    //       }
-    //     }
-    //     if (data.gameWinner) {
-    //       this.winnerName = data.gameWinner;
-    //     }
-    //   }
-    // });
-    // this._hubConnection.on('UserList', (data: any) => {
-    //   this.users = data;
-    // });
+          this.WinListArray.push(gameInfo[0].winValue1, gameInfo[0].winValue2, gameInfo[0].winValue3, gameInfo[0].winValue4, gameInfo[0].winValue5, gameInfo[0].winValue6);
+        }
+        var gameValuesList = data.gameValues;
+        if (gameValuesList) {
+          for (var i = 0; i < gameValuesList.length; i++) {
+            if (gameValuesList[i]['isConfirmed'] === true) {
+              this.AllConfirmedValues.push(gameValuesList[i]['gameValueID']);
 
-    // this._hubConnection.start()
-    //   .then(() => {
-    //     this.actRoute.paramMap.subscribe(params => {
-    //       // this.winnerOfTheGame(Number(params.get('id')));
-    //       this._hubConnection.invoke('GameStart', Number(params.get('id')));
-    //       // this._hubConnection.invoke('Start');
-    //     })
-    //     console.log('Hub connection started')
-    //   })
-    //   .catch(err => {
-    //     console.log('Error while establishing connection')
-    //   });
+              var tempObj = [];
+              tempObj.push(gameValuesList[i]['rowNum1'], gameValuesList[i]['rowNum2'], gameValuesList[i]['rowNum3'], gameValuesList[i]['rowNum4'], gameValuesList[i]['rowNum5'], gameValuesList[i]['rowNum6']);
+              const elementsIndex = this.AllRowsConfirmedValues.findIndex(element => element.userID == gameValuesList[i]['userID']);
+              if (elementsIndex < 0) {
+                var userDetail = {
+                  userName: gameValuesList[i]['userName'],
+                  userID: gameValuesList[i]['userID'],
+                  valuesList: tempObj,
+                  machedResult: 0
+                };
+                this.AllRowsConfirmedValues.push(userDetail);
+              }
+              else {
+                //Log object to Console.
 
-    // this.actRoute.paramMap.subscribe(params => {
-    //   this.getGameDetails(params.get('id'));
-    // })
+                var newArray = this.AllRowsConfirmedValues[elementsIndex]['valuesList'].concat(tempObj)
+
+                this.AllRowsConfirmedValues[elementsIndex].valuesList = newArray;
+
+              }
+
+
+
+            }
+            if (gameValuesList[i]['isConfirmed'] === false) {
+              this.AllNotConfirmedValues.push(gameValuesList[i]['gameValueID']);
+
+              var tempObj = [];
+              tempObj.push(gameValuesList[i]['rowNum1'], gameValuesList[i]['rowNum2'], gameValuesList[i]['rowNum3'], gameValuesList[i]['rowNum4'], gameValuesList[i]['rowNum5'], gameValuesList[i]['rowNum6']);
+              this.AllRowsNotConfirmedValues.push(tempObj);
+            }
+            if (gameValuesList[i]['isConfirmed'] === false && gameValuesList[i]['userID'] === this.currentUserID) {
+              this.AllNotConfirmedValuesByUser.push(gameValuesList[i]['gameValueID']);
+              var tempObj = [];
+              tempObj.push(gameValuesList[i]['rowNum1'], gameValuesList[i]['rowNum2'], gameValuesList[i]['rowNum3'], gameValuesList[i]['rowNum4'], gameValuesList[i]['rowNum5'], gameValuesList[i]['rowNum6']);
+              this.AllRowsNotConfirmedValuesByUser.push(tempObj);
+
+            }
+            if (gameValuesList[i]['isConfirmed'] === true && gameValuesList[i]['userID'] === this.currentUserID) {
+              this.AllConfirmedValuesByUser.push(gameValuesList[i]['gameValueID']);
+            }
+          }
+        }
+        this.CalculateResult();
+      }
+    });
+    this._hubConnection.start()
+      .then(() => {
+
+        this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
+
+        console.log('Hub connection started')
+      })
+      .catch(err => {
+        console.log('Error while establishing connection')
+      });
     this.getGameValues();
   }
+  CalculateResult() {
+    this.resultTableHeader = [];
+    this.resultTable = [];
+    for (var i = 0; i < this.AllRowsConfirmedValues.length; i++) {
+      var col = 'col' + i;
+      this.resultTableHeader.push(col);
+    }
 
+    console.log(this.resultTableHeader);
+    var maxLength = 0;
+    for (var i = 0; i < this.AllRowsConfirmedValues.length; i++) {
+      var lengthOfList = this.AllRowsConfirmedValues[i]['valuesList'].length;
+      if (maxLength < lengthOfList) {
+        maxLength = lengthOfList;
+      }
+    }
+
+    for (var i = 0; i < maxLength; i++) {
+      var jsonDataOfRow = {};
+      for (var j = 0; j < this.AllRowsConfirmedValues.length; j++) {
+        jsonDataOfRow['col' + j] = -1;
+      }
+      this.resultTable.push(jsonDataOfRow);
+    }
+
+    for (var i = 0; i < this.AllRowsConfirmedValues.length; i++) {
+      var lengthOfList = this.AllRowsConfirmedValues[i]['valuesList'].length;
+      var valuesList = this.AllRowsConfirmedValues[i]['valuesList'];
+      for (var j = 0; j < lengthOfList; j++) {
+        this.resultTable[j]['col' + i] = valuesList[j];
+      }
+      var intersection = valuesList.filter(element => this.WinListArray.includes(element));
+      var resultLenght = intersection.length;
+      this.AllRowsConfirmedValues[i]['machedResult'] = resultLenght;
+    }
+
+    console.log(this.resultTable);
+  }
+  GetNotConfirmedList() {
+    const filteredUserMenus = this.tableArray.filter((item) => {
+      return item.roles.find((role) => role === '2');
+    });
+  }
+  ChangeGameStatus(status: string) {
+    var isStart = false;
+    var isStop = false;
+    var isFinish = false;
+    if (status == 'start') {
+      isStart = true;
+      isStop = false;
+      isFinish = false;
+    }
+    if (status == 'pause') {
+      isStart = false;
+      isStop = true;
+      isFinish = false;
+    }
+    if (status == 'finish') {
+      isStart = false;
+      isStop = false;
+      isFinish = true;
+    }
+
+    var objGameInfo = {
+      'gameID': this.gameID,
+      'gameName': '',
+      'winValue1': 0,
+      'winValue2': 0,
+      'winValue3': 0,
+      'winValue4': 0,
+      'winValue5': 0,
+      'winValue6': 0,
+      'isDeleted': false,
+      'isGameStart': isStart,
+      'isGamePause': isStop,
+      'isGameFinish': isFinish,
+    };
+    this.gameService.UpdateGameStatus(objGameInfo).pipe(first()).subscribe(data => {
+      this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
+    });
+
+  }
   private getGameValues() {
     this.gameService.getGameValues().pipe(first()).subscribe(data => {
 
@@ -157,12 +309,21 @@ export class GameStartComponent implements OnInit {
       this.tableArray.push(jsonDataOfRow4);
       this.tableArray.push(jsonDataOfRow5);
       this.tableArray.push(jsonDataOfRow6);
+
     });
   }
   clickedEvent(eve: any) {
-    //if (this.winnerName !== "") { return; }
+    if (!this.isGameStart) {
+      return;
+    }
+    if (this.isGamePause || this.isGameFinish) {
+      return;
+    }
     var columnNumber = Number(eve.currentTarget.innerText.replace("Col", "").trim());
-    var allIndex = eve.currentTarget.innerText;
+    var allIndex = this.AllConfirmedValues.indexOf(columnNumber);
+    if (allIndex > -1) {
+      return;
+    }
     eve.currentTarget.classList.add("current");
     var row1 = document.getElementById("td_0_Col " + columnNumber);
     var row2 = document.getElementById("td_1_Col " + columnNumber);
@@ -170,191 +331,91 @@ export class GameStartComponent implements OnInit {
     var row4 = document.getElementById("td_3_Col " + columnNumber);
     var row5 = document.getElementById("td_4_Col " + columnNumber);
     var row6 = document.getElementById("td_5_Col " + columnNumber);
-    row1.classList.add("borderRightAndLeft");
-    row2.classList.add("borderRightAndLeft");
-    row3.classList.add("borderRightAndLeft");
-    row4.classList.add("borderRightAndLeft");
-    row5.classList.add("borderRightAndLeft");
-    row6.classList.add("borderRightAndLeft");
-    // if (allIndex > -1) {
-    //   return;
-    // }
-
-    // var notByUserindex = this.AllNotConfirmedValuesByUser.indexOf(Number(eve.currentTarget.innerText));
-    // var allNotIndex = this.AllNotConfirmedValues.indexOf(Number(eve.currentTarget.innerText));
-
-    // if (notByUserindex < 0 && allNotIndex < 0) {
-    //   eve.currentTarget.classList.add("current");
-    //   this.AllNotConfirmedValuesByUser.push(Number(eve.currentTarget.innerText));
-    //   this.actRoute.paramMap.subscribe(params => {
-    //     this.StartGame(Number(eve.currentTarget.innerText), Number(params.get('id')));
-    //   })
-    // }
-    // else if (notByUserindex > -1) {
-    //   eve.currentTarget.classList.remove("current");
-    //   this.AllNotConfirmedValuesByUser.splice(notByUserindex, 1);
-    //   this.actRoute.paramMap.subscribe(params => {
-    //     this.removeValueFromConfirmValue(Number(eve.currentTarget.innerText), Number(params.get('id')));
-    //   })
-    // }
-    // else {
-    //   return;
-    // }
-    // if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
-    // else { this.stop() }
-  }
-  /*private getGameDetails(gameID: any) {
-    this.gameService.getGameDetails(gameID).pipe(first()).subscribe(returnedData => {
-      for (var i = 1; i <= 300; i++) {
-        var col = 'col' + i;
-        this.tableHeader.push(col);
-      }
-      var gameData = JSON.stringify(returnedData);
-      const gameParsedJSON = JSON.parse(gameData);
-      const gameCompleteInfoObj: GameCompleteInfo = gameParsedJSON as GameCompleteInfo;
-      this.gameCompleteInfo = returnedData;
 
 
-      //Start --  Get game info and store in array list
-      var gameInfo = gameCompleteInfoObj.gameInfo;
-
-      let arrayGameInfo = [];
-      for (let key in gameInfo) {
-        if (gameInfo.hasOwnProperty(key)) {
-          arrayGameInfo.push(gameInfo[key]);
-        }
-      }
-
-      this.selectedCellForWinner.push(gameInfo['winValue1']);
-      this.selectedCellForWinner.push(gameInfo['winValue2']);
-      this.selectedCellForWinner.push(gameInfo['winValue3']);
-      this.selectedCellForWinner.push(gameInfo['winValue4']);
-      this.selectedCellForWinner.push(gameInfo['winValue5']);
-      this.selectedCellForWinner.push(gameInfo['winValue6']);
-      //console.log(this.selectedCellForWinner)
-      //End --  Get game info and store in array list
+    var rowValue1 = Number(row1.innerText.trim());
+    var rowValue2 = Number(row2.innerText.trim());
+    var rowValue3 = Number(row3.innerText.trim());
+    var rowValue4 = Number(row4.innerText.trim());
+    var rowValue5 = Number(row5.innerText.trim());
+    var rowValue6 = Number(row6.innerText.trim());
 
 
-      //Start --  Get game details and convert columns to row
-      var gameDetail = gameCompleteInfoObj.gameDetail;
-      let arrayGameDetail = [];
+    var rowValuesArray = [];
+    rowValuesArray.push(rowValue1);
+    rowValuesArray.push(rowValue2);
+    rowValuesArray.push(rowValue3);
+    rowValuesArray.push(rowValue4);
+    rowValuesArray.push(rowValue5);
+    rowValuesArray.push(rowValue6);
 
-      for (let key in gameDetail) {
-        if (gameDetail.hasOwnProperty(key)) {
-          arrayGameDetail.push(gameDetail[key]);
-        }
-      }
 
-      var jsonDataOfRow1 = {};
-      var jsonDataOfRow2 = {};
-      var jsonDataOfRow3 = {};
-      var jsonDataOfRow4 = {};
-      var jsonDataOfRow5 = {};
-      var jsonDataOfRow6 = {};
-      for (var j = 0; j < arrayGameDetail.length; j++) {
-        var k = j + 1;
-        jsonDataOfRow1['col' + k] = arrayGameDetail[j]['valueOfRow1'];
-        jsonDataOfRow2['col' + k] = arrayGameDetail[j]['valueOfRow2'];
-        jsonDataOfRow3['col' + k] = arrayGameDetail[j]['valueOfRow3'];
-        jsonDataOfRow4['col' + k] = arrayGameDetail[j]['valueOfRow4'];
-        jsonDataOfRow5['col' + k] = arrayGameDetail[j]['valueOfRow5'];
-        jsonDataOfRow6['col' + k] = arrayGameDetail[j]['valueOfRow6'];
-      }
-      this.tableArray.push(jsonDataOfRow1);
-      this.tableArray.push(jsonDataOfRow2);
-      this.tableArray.push(jsonDataOfRow3);
-      this.tableArray.push(jsonDataOfRow4);
-      this.tableArray.push(jsonDataOfRow5);
-      this.tableArray.push(jsonDataOfRow6);
-      //End --  Get game details and convert columns to row
-
-    });
-  }
-  clickedEvent(eve: any) {
-    if (this.winnerName !== "") { return; }
-    var allIndex = this.AllConfirmedValues.indexOf(Number(eve.currentTarget.innerText));
-    if (allIndex > -1) {
-      return;
-    }
-
-    var notByUserindex = this.AllNotConfirmedValuesByUser.indexOf(Number(eve.currentTarget.innerText));
-    var allNotIndex = this.AllNotConfirmedValues.indexOf(Number(eve.currentTarget.innerText));
-
+    var objColDetailWithRows = {
+      gameValueID: columnNumber,
+      gameID: this.gameID,
+      userID: this.currentUserID,
+      isConfirmed: false,
+      isDeleted: false
+    };
+    var notByUserindex = this.AllNotConfirmedValuesByUser.indexOf(columnNumber);
+    var allNotIndex = this.AllNotConfirmedValues.indexOf(columnNumber);
     if (notByUserindex < 0 && allNotIndex < 0) {
+      row1.classList.add("borderRightAndLeft");
+      row2.classList.add("borderRightAndLeft");
+      row3.classList.add("borderRightAndLeft");
+      row4.classList.add("borderRightAndLeft");
+      row5.classList.add("borderRightAndLeft");
+      row6.classList.add("borderRightAndLeft");
       eve.currentTarget.classList.add("current");
-      this.AllNotConfirmedValuesByUser.push(Number(eve.currentTarget.innerText));
-      this.actRoute.paramMap.subscribe(params => {
-        this.StartGame(Number(eve.currentTarget.innerText), Number(params.get('id')));
-      })
+      //this.AllNotConfirmedValuesByUser.splice(notByUserindex, 1);
+      this.AllNotConfirmedValues.push(columnNumber);
+      this.InsertSelectedColValue(objColDetailWithRows);
     }
     else if (notByUserindex > -1) {
       eve.currentTarget.classList.remove("current");
       this.AllNotConfirmedValuesByUser.splice(notByUserindex, 1);
-      this.actRoute.paramMap.subscribe(params => {
-        this.removeValueFromConfirmValue(Number(eve.currentTarget.innerText), Number(params.get('id')));
-      })
+
+      this.removeValueFromConfirmValue(columnNumber, this.gameID);
     }
     else {
       return;
     }
+
     if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
     else { this.stop() }
   }
-
-  ConfirmValues() {
-    this.actRoute.paramMap.subscribe(params => {
-      this.gameService.confirmValue(Number(params.get('id')), this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
-        var tempArray = JSON.parse(JSON.stringify(this.AllNotConfirmedValuesByUser));
-        //var tempArray = this.AllNotConfirmedValuesByUser;
-        for (var i = 0; i < tempArray.length; i++) {
-          var index = tempArray.indexOf(tempArray[i]);
-          if (index > -1) {
-            this.AllConfirmedValues.push(tempArray[i]);
-            this.AllConfirmedValuesByUser.push(tempArray[i]);
-            this.AllNotConfirmedValuesByUser.splice(index, 1);
-          }
-        }
-        if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
-        else { this.stop() }
-        this._hubConnection.invoke('GameStart', Number(params.get('id')));
-        this.winnerOfTheGame(Number(params.get('id')));
-
-
-      });
-    })
-
-  }
   removeValueFromConfirmValue(value: number, gameID: number) {
-    this.gameService.removeValueFromConfirmValue(gameID, value).subscribe((resp: Response) => {
+    var valuesToRemove = [];
+    valuesToRemove.push(value);
+    this.gameService.bulkRemoveValueFromGame(gameID, valuesToRemove).subscribe((resp: Response) => {
       if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
       else { this.stop() }
-      this._hubConnection.invoke('GameStart', gameID);
+      this._hubConnection.invoke('GameStart', gameID, this.currentUserID);
     });
   }
-  StartGame(value: number, gameID: number) {
-    this.gameService.StartGame(gameID, value, false).subscribe((resp: Response) => {
-      if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
-      else { this.stop() }
-      this._hubConnection.invoke('GameStart', gameID);
+  private InsertSelectedColValue(objColDetailWithRows: any) {
+    this.gameService.InsertSelectedColValue(objColDetailWithRows).subscribe((resp: Response) => {
+      // if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+      // else { this.stop() }
+      this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
     });
   }
+  ConfirmValues() {
 
-  winnerOfTheGame(gameID: number) {
-    var isWinner = true;
-    for (var i = 0; i < this.selectedCellForWinner.length; i++) {
-      var index = this.AllConfirmedValuesByUser.indexOf(this.selectedCellForWinner[i]);
-      if (index < 0) {
-        isWinner = false;
+    this.gameService.confirmValue(this.gameID, this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
+      var tempArray = JSON.parse(JSON.stringify(this.AllNotConfirmedValuesByUser));
+      for (var i = 0; i < tempArray.length; i++) {
+        var index = tempArray.indexOf(tempArray[i]);
+        if (index > -1) {
+          this.AllConfirmedValues.push(tempArray[i]);
+          this.AllConfirmedValuesByUser.push(tempArray[i]);
+          this.AllNotConfirmedValuesByUser.splice(index, 1);
+        }
       }
-    }
-    if (isWinner) {
-      this.gameService.UpdateWinner(gameID).subscribe((resp: Response) => {
-        if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
-        else { this.stop() }
-        this._hubConnection.invoke('GameStart', gameID);
-      });
-    }
-
+      // if (this.AllNotConfirmedValuesByUser.length > 0) { this.start() }
+      // else { this.stop() }
+      this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
+    });
   }
   ngOnDestroy() { this.clearTimer(); }
 
@@ -365,19 +426,27 @@ export class GameStartComponent implements OnInit {
     this.seconds = 121;
     this.clearTimer();
   }
-
+  ShowStartButton() {
+    return !this.isGameStart && !this.isGameFinish && this.isAdmin;
+  }
+  ShowPauseButton() {
+    return !this.isGamePause && !this.isGameFinish && this.isAdmin;
+  }
+  ShowEndButton() {
+    return !this.isGameFinish && this.isAdmin;
+  }
   private countDown(): void {
     this.clearTimer();
     this.intervalId = window.setInterval(() => {
       this.seconds -= 1;
       if (this.seconds === 0) {
         if (this.AllNotConfirmedValuesByUser.length > 0) {
-          this.actRoute.paramMap.subscribe(params => {
-            this.gameService.bulkRemoveValueFromGame(Number(params.get('id')), this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
-              this._hubConnection.invoke('GameStart', Number(params.get('id')));
-              if (this.AllNotConfirmedValuesByUser.length === 0) { this.stop(); }
-            });
-          })
+
+          this.gameService.bulkRemoveValueFromGame(this.gameID, this.AllNotConfirmedValuesByUser).subscribe((resp: Response) => {
+            this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
+            if (this.AllNotConfirmedValuesByUser.length === 0) { this.stop(); }
+          });
+
         }
 
       } else {
@@ -385,5 +454,82 @@ export class GameStartComponent implements OnInit {
         this.message = `${this.seconds} seconds and counting`;
       }
     }, 1000);
-  }*/
+  }
+  typeSubmit() {
+
+    if (this.typeValidationForm.valid) {
+      this.typesubmit = false;
+
+      var objGameInfo = {
+        'gameID': this.gameID,
+        'gameName': '',
+        'winValue1': Number(this.typeValidationForm.get('winValue1').value),
+        'winValue2': Number(this.typeValidationForm.get('winValue2').value),
+        'winValue3': Number(this.typeValidationForm.get('winValue3').value),
+        'winValue4': Number(this.typeValidationForm.get('winValue4').value),
+        'winValue5': Number(this.typeValidationForm.get('winValue5').value),
+        'winValue6': Number(this.typeValidationForm.get('winValue6').value),
+        'isDeleted': false,
+        'isGameStart': false,
+        'isGamePause': false,
+        'isGameFinish': false,
+      };
+
+      if (this.gameID === -1) {
+
+        this.gameService.postGame(objGameInfo).subscribe(response => {
+
+          this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
+        });
+      } else {
+        this.gameService.UpdateWinnigValues(objGameInfo).subscribe(response => {
+          this._hubConnection.invoke('GameStart', this.gameID, this.currentUserID);
+        });
+      }
+      this.modalService.dismissAll();
+
+    } else {
+      // validate all form fields
+      this.typesubmit = true;
+
+    }
+
+  }
+
+  /**
+ * Returns the type validation form
+ */
+  get type() {
+    return this.typeValidationForm.controls;
+  }
+  openModal(largeDataModal: any) {
+    this.typesubmit = false;
+    this.modalService.open(largeDataModal, {
+      backdrop: 'static',
+      size: 'xl',
+      scrollable: true
+    });
+    if (this.gameData) {
+      this.typeValidationForm.patchValue({
+
+        winValue1: this.gameData.winValue1 == -1 ? "" : this.gameData.winValue1,
+        winValue2: this.gameData.winValue2 == -1 ? "" : this.gameData.winValue2,
+        winValue3: this.gameData.winValue3 == -1 ? "" : this.gameData.winValue3,
+        winValue4: this.gameData.winValue4 == -1 ? "" : this.gameData.winValue4,
+        winValue5: this.gameData.winValue5 == -1 ? "" : this.gameData.winValue5,
+        winValue6: this.gameData.winValue6 == -1 ? "" : this.gameData.winValue1,
+      });
+    } else {
+
+      this.typeValidationForm.patchValue({
+        winValue1: "",
+        winValue2: "",
+        winValue3: "",
+        winValue4: "",
+        winValue5: "",
+        winValue6: "",
+      });
+    }
+  }
+
 }

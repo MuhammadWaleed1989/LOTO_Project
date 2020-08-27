@@ -27,57 +27,9 @@ export class GameService {
     getGameDetails(gameID) {
         return this.http.get<GameCompleteInfo[]>(`${environment.apiUrl}/api/GamesInfo/` + gameID);
     }
-    confirmValue(gameID: number, confirmedValues: any) {
-        var id = localStorage.getItem('id');
-        var userid: number = +id;
-        var finalConfirmedValues = [];
-        for (var i = 0; i < confirmedValues.length; i++) {
-            var userGameObject = {
-                userGameID: -1,
-                userID: userid,
-                gameID: gameID,
-                value: confirmedValues[i],
-                isConfirmed: true
-            };
-            finalConfirmedValues.push(userGameObject);
-        }
 
-        return this.http.post(`${environment.apiUrl}/api/UserGame/ConfirmedUserGameValues`, finalConfirmedValues);
-    }
-    removeValueFromConfirmValue(gameID: number, notConfirmedValues: any) {
-        var id = localStorage.getItem('id');
-        var userid: number = +id;
-        var finalConfirmedValues = [];
 
-        var userGameObject = {
-            userGameID: -1,
-            userID: userid,
-            gameID: gameID,
-            value: notConfirmedValues,
-            isConfirmed: false,
-            isDeleted: true
-        };
-        finalConfirmedValues.push(userGameObject);
-        return this.http.post(`${environment.apiUrl}/api/UserGame/ConfirmedUserGameValues`, finalConfirmedValues);
-    }
-    bulkRemoveValueFromGame(gameID: number, notConfirmedValues: any) {
-        var id = localStorage.getItem('id');
-        var userid: number = +id;
-        var finalConfirmedValues = [];
-        for (var i = 0; i < notConfirmedValues.length; i++) {
-            var userGameObject = {
-                userGameID: -1,
-                userID: userid,
-                gameID: gameID,
-                value: notConfirmedValues[i],
-                isConfirmed: false,
-                isDeleted: true
-            };
-            finalConfirmedValues.push(userGameObject);
-        }
 
-        return this.http.post(`${environment.apiUrl}/api/UserGame/ConfirmedUserGameValues`, finalConfirmedValues);
-    }
     StartGame(gameID: number, value: number, isConfirmed: boolean) {
         var id = localStorage.getItem('id');
         var userid: number = +id;
@@ -113,5 +65,54 @@ export class GameService {
             isConfirmed: true
         };
         return this.http.post(`${environment.apiUrl}/api/GamesInfo/UpdateWinner`, userGameObject);
+    }
+
+
+    /** New changes */
+    InsertSelectedColValue(objColDetailWithRows: any) {
+        return this.http.post(`${environment.apiUrl}/api/UserGame`, objColDetailWithRows);
+    }
+    bulkRemoveValueFromGame(gameID: number, notConfirmedValues: any) {
+        var id = localStorage.getItem('id');
+        var userid: number = +id;
+        var finalConfirmedValues = [];
+        for (var i = 0; i < notConfirmedValues.length; i++) {
+            var userGameObject = {
+                userGameID: -1,
+                userID: userid,
+                gameID: gameID,
+                gameValueID: notConfirmedValues[i],
+                isConfirmed: false,
+                isDeleted: true
+            };
+            finalConfirmedValues.push(userGameObject);
+        }
+
+        return this.http.post(`${environment.apiUrl}/api/UserGame/ConfirmedUserGameValues`, finalConfirmedValues);
+    }
+    confirmValue(gameID: number, confirmedValues: any) {
+        var id = localStorage.getItem('id');
+        var userid: number = +id;
+        var finalConfirmedValues = [];
+        for (var i = 0; i < confirmedValues.length; i++) {
+            var userGameObject = {
+                userGameID: -1,
+                userID: userid,
+                gameID: gameID,
+                gameValueID: confirmedValues[i],
+                isConfirmed: true
+            };
+            finalConfirmedValues.push(userGameObject);
+        }
+        return this.http.post(`${environment.apiUrl}/api/UserGame/ConfirmedUserGameValues`, finalConfirmedValues);
+    }
+    UpdateGameStatus(gameInfo: any) {
+        return this.http.post(`${environment.apiUrl}/api/UserGame/UpdateGameStatus`, gameInfo);
+    }
+    UpdateWinnigValues(gameInfo: any) {
+        return this.http.post(`${environment.apiUrl}/api/GamesInfo/UpdateWinnigValues`, gameInfo);
+    }
+    InsertUserOfGame(userOfGame: any) {
+        return this.http.post(`${environment.apiUrl}/api/GamesInfo/InsertUserOfGame`, userOfGame);
     }
 }

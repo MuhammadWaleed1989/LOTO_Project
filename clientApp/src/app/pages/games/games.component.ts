@@ -36,14 +36,28 @@ export class GamesComponent implements OnInit {
   highlightedRowArray = [];
   selectedCellForWinner = [];
   typeValidationForm: FormGroup; // type validation form
+  public isAdmin: boolean = false;
+  public currentUserID: number;
   constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder) {
     this.typesubmit = false;
   }
-
+  private getBoolean(value) {
+    switch (value) {
+      case true:
+      case "true":
+      case 1:
+      case "1":
+      case "on":
+      case "yes":
+        return true;
+      default:
+        return false;
+    }
+  }
   ngOnInit() {
     // setup the top lables
     this.breadCrumbItems = [{
-      label: 'LOTO'
+      label: 'LOTO Game'
     }, {
       label: 'Games',
       active: true
@@ -54,19 +68,20 @@ export class GamesComponent implements OnInit {
      * Fetches the games data
      */
     this.loadAllGames();
-
+    this.isAdmin = this.getBoolean(localStorage.getItem('isAdmin'));
+    this.currentUserID = Number(localStorage.getItem('id'));
     /**
      * Type validation form
      */
     this.typeValidationForm = this.formBuilder.group({
       gameID: ['-1'],
       gameName: ['', [Validators.required]],
-      winValue1: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      winValue2: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      winValue3: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      winValue4: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      winValue5: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      winValue6: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      // winValue1: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      // winValue2: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      // winValue3: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      // winValue4: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      // winValue5: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      // winValue6: ['', [Validators.required, Validators.pattern('[0-9]+')]],
     });
   }
 
@@ -75,8 +90,15 @@ export class GamesComponent implements OnInit {
    */
   private loadAllGames() {
     this.gameService.getAll().pipe(first()).subscribe(games => {
-      this.gameInfo = games;
-      this.totalPages = 0;
+      if (games) {
+        this.gameInfo = games;
+        this.totalPages = games.length;
+      }
+      else {
+        this.gameInfo = [];
+        this.totalPages = 0;
+      }
+
     });
   }
 
@@ -86,7 +108,16 @@ export class GamesComponent implements OnInit {
         this.loadAllGames();
     });
   }
+  InsertUserOfGame(gameID: any) {
+    var obj = {
+      gameID: gameID,
+      GameUserID: -1,
+      isDeleted: false,
+      userID: this.currentUserID
 
+    };
+    this.gameService.InsertUserOfGame(obj).subscribe((resp: Response) => { });
+  }
   openModal(largeDataModal: any, info: GameInfo) {
     this.typesubmit = false;
     this.modalService.open(largeDataModal, {
@@ -98,24 +129,24 @@ export class GamesComponent implements OnInit {
       this.typeValidationForm.patchValue({
         gameID: info.gameID,
         gameName: info.gameName,
-        winValue1: info.winValue1,
-        winValue2: info.winValue2,
-        winValue3: info.winValue3,
-        winValue4: info.winValue4,
-        winValue5: info.winValue5,
-        winValue6: info.winValue6,
+        // winValue1: info.winValue1,
+        // winValue2: info.winValue2,
+        // winValue3: info.winValue3,
+        // winValue4: info.winValue4,
+        // winValue5: info.winValue5,
+        // winValue6: info.winValue6,
       });
     } else {
 
       this.typeValidationForm.patchValue({
         gameID: "-1",
         gameName: "",
-        winValue1: "",
-        winValue2: "",
-        winValue3: "",
-        winValue4: "",
-        winValue5: "",
-        winValue6: "",
+        // winValue1: "",
+        // winValue2: "",
+        // winValue3: "",
+        // winValue4: "",
+        // winValue5: "",
+        // winValue6: "",
       });
     }
   }
@@ -137,13 +168,22 @@ export class GamesComponent implements OnInit {
       var objGameInfo = {
         'gameID': Number(this.typeValidationForm.get('gameID').value),
         'gameName': this.typeValidationForm.get('gameName').value,
-        'winValue1': Number(this.typeValidationForm.get('winValue1').value),
-        'winValue2': Number(this.typeValidationForm.get('winValue2').value),
-        'winValue3': Number(this.typeValidationForm.get('winValue3').value),
-        'winValue4': Number(this.typeValidationForm.get('winValue4').value),
-        'winValue5': Number(this.typeValidationForm.get('winValue5').value),
-        'winValue6': Number(this.typeValidationForm.get('winValue6').value),
-        'IsDeleted': false
+        // 'winValue1': Number(this.typeValidationForm.get('winValue1').value),
+        // 'winValue2': Number(this.typeValidationForm.get('winValue2').value),
+        // 'winValue3': Number(this.typeValidationForm.get('winValue3').value),
+        // 'winValue4': Number(this.typeValidationForm.get('winValue4').value),
+        // 'winValue5': Number(this.typeValidationForm.get('winValue5').value),
+        // 'winValue6': Number(this.typeValidationForm.get('winValue6').value),
+        'winValue1': -1,
+        'winValue2': -1,
+        'winValue3': -1,
+        'winValue4': -1,
+        'winValue5': -1,
+        'winValue6': -1,
+        'isDeleted': false,
+        'isGameStart': false,
+        'isGamePause': false,
+        'isGameFinish': false,
       };
 
       if (this.typeValidationForm.get('gameID').value === "-1") {

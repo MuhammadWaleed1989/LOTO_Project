@@ -53,15 +53,28 @@ namespace WebApi.Services
         }
         public int Add(tblGames gameInfo)
         {
-            string sQry = "INSERT INTO [tblGames] ([GameName],[WinValue1],[WinValue2],[WinValue3],[WinValue4],[WinValue5],[WinValue6],[IsDeleted]) " +
+            string sQry = "INSERT INTO [tblGames] ([GameName],[WinValue1],[WinValue2],[WinValue3],[WinValue4],[WinValue5],[WinValue6],[IsDeleted],[IsGameStart],[IsGamePause],[IsGameFinish]) " +
                 "VALUES('" + gameInfo.GameName + "','" + gameInfo.WinValue1 + "','" + gameInfo.WinValue2 + "','" +
-                gameInfo.WinValue3 + "','" + gameInfo.WinValue4 + "','" + gameInfo.WinValue5 + "','" + gameInfo.WinValue6 + "','" + false + "');SELECT SCOPE_IDENTITY();";
+                gameInfo.WinValue3 + "','" + gameInfo.WinValue4 + "','" + gameInfo.WinValue5 + "','" + gameInfo.WinValue6 + "','" + false + "','" + gameInfo.IsGameStart + "','" + gameInfo.IsGamePause + "','" + gameInfo.IsGameFinish + "');SELECT SCOPE_IDENTITY();";
+            int retVal = ExecuteCRUDByQuery(sQry);
+            return retVal;
+        }
+        public int InsertUserOfGame(tblUserOfGame usersOfGame)
+        {
+            string sQry = "INSERT INTO [tblUserOfGame] ([UserID],[GameID],[IsDeleted]) " +
+                "VALUES('" + usersOfGame.UserID + "','" + usersOfGame.GameID + "','" + false + "');SELECT SCOPE_IDENTITY();";
             int retVal = ExecuteCRUDByQuery(sQry);
             return retVal;
         }
         public int Update(int gameId, tblGames gameInfo)
         {
-            string sQry = "UPDATE [tblGames] SET [GameName]='" + gameInfo.GameName + "',[WinValue1]='" + gameInfo.WinValue1 + "',[WinValue2]='" + gameInfo.WinValue2 + "',[WinValue3]='" + gameInfo.WinValue3 + "',[WinValue4]='" + gameInfo.WinValue4 + "',[WinValue5]='" + gameInfo.WinValue5 + "',[WinValue6]='" + gameInfo.WinValue6 + "' WHERE [GameID]=" + gameId;
+            string sQry = "UPDATE [tblGames] SET [GameName]='" + gameInfo.GameName + "' WHERE [GameID]=" + gameId;
+            int retVal = ExecuteUpdateQuery(sQry);
+            return retVal;
+        }
+        public int UpdateWinnigValues(tblGames gameInfo)
+        {
+            string sQry = "UPDATE [tblGames] SET [WinValue1]='" + gameInfo.WinValue1 + "',[WinValue2]='" + gameInfo.WinValue2 + "',[WinValue3]='" + gameInfo.WinValue3 + "',[WinValue4]='" + gameInfo.WinValue4 + "',[WinValue5]='" + gameInfo.WinValue5 + "',[WinValue6]='" + gameInfo.WinValue6 + "' WHERE [GameID]=" + gameInfo.GameID;
             int retVal = ExecuteUpdateQuery(sQry);
             return retVal;
         }

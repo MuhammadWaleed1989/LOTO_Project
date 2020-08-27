@@ -46,7 +46,7 @@
         </a>
       </li> -->
 
-      <li>
+      <li *ngIf="isAdmin">
         <a routerLink="/usermanagement" routerLinkActive="active" class="side-nav-link-ref">
           <i class="bx bxs-user-detail"></i>
           <span>User Management</span>

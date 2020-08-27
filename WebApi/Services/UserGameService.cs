@@ -48,19 +48,9 @@ namespace WebApi.Services
         }
         public int Add(tblUserGame userGamedata)
         {
-            //int retVal = 0;
-            //tblUserGame userGame = new tblUserGame();
-            //userGame = Find((int)userGamedata.GameID);
-            //if (userGame.GameID == (int)userGamedata.GameID && userGame.Value == userGamedata.Value)
-            //{
-            //    retVal = Update((int)userGamedata.GameID);
-            //}
-            //else {
-                string sQry = "INSERT INTO [tblUserGame] ([UserID],[GameID],[Value],[IsConfirmed],[IsDeleted]) " +
-                  "VALUES('" + userGamedata.UserID + "','" + userGamedata.GameID + "','" + userGamedata.Value + "','" + userGamedata.IsConfirmed + "','"+false+"');SELECT SCOPE_IDENTITY();";
-                int retVal = ExecuteCRUDByQuery(sQry);
-           // }
-          
+                string sQry = "INSERT INTO [tblUserGame] ([UserID],[GameID],[GameValueID],[IsConfirmed],[IsDeleted]) " +
+                  "VALUES('" + userGamedata.UserID + "','" + userGamedata.GameID + "','" + userGamedata.GameValueID + "','" + userGamedata.IsConfirmed + "','"+false+"');SELECT SCOPE_IDENTITY();";
+                int retVal = ExecuteCRUDByQuery(sQry);          
             return retVal;
         }
         public int Update(List<tblUserGame> userGamedata)
@@ -68,12 +58,18 @@ namespace WebApi.Services
             int retVal = 0;
             for (int i = 0; i < userGamedata.Count; i++)
             {
-                string sQry = "UPDATE [tblUserGame] SET [IsConfirmed]='" + userGamedata[i].IsConfirmed + "',[IsDeleted]='" + userGamedata[i].IsDeleted + "' WHERE [GameID]=" + userGamedata[i].GameID + " AND [Value]=" + userGamedata[i].Value + " AND [UserID]=" + userGamedata[i].UserID;
+                string sQry = "UPDATE [tblUserGame] SET [IsConfirmed]='" + userGamedata[i].IsConfirmed + "',[IsDeleted]='" + userGamedata[i].IsDeleted + "' WHERE [GameID]=" + userGamedata[i].GameID + " AND [GameValueID]=" + userGamedata[i].GameValueID + " AND [UserID]=" + userGamedata[i].UserID;
                 retVal = ExecuteUpdateQuery(sQry); 
             }
             return retVal;
         }
-       
+        public int Update(int gameId, tblGames gameInfo)
+        {
+            string sQry = "UPDATE [tblGames] SET [IsGameStart]='" + gameInfo.IsGameStart + "',[IsGamePause]='" + gameInfo.IsGamePause + "',[IsGameFinish]='" + gameInfo.IsGameFinish + "' WHERE [GameID]=" + gameId;
+            int retVal = ExecuteUpdateQuery(sQry);
+            return retVal;
+        }
+
         public tblUserGame GetById(int gameID)
         {
             return Find(gameID);
@@ -125,7 +121,7 @@ namespace WebApi.Services
             tblUserGame userGame = new tblUserGame();
             userGame.GameID = Convert.ToInt32(dr["GameID"]);
             userGame.UserID = Convert.ToInt32(dr["UserID"]);
-            userGame.Value = Convert.ToInt32(dr["Value"]);
+            userGame.GameValueID = Convert.ToInt32(dr["GameValueID"]);
             userGame.IsConfirmed = Convert.ToBoolean(dr["IsConfirmed"]);
             return userGame;
         }

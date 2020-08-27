@@ -11,9 +11,12 @@ namespace WebApi.Services
         IEnumerable<tblGames> GetAll();
         int Add(tblGames gameInfo);
         int Update(int gameId, tblGames gameInfo);
+        int UpdateWinnigValues(tblGames gameInfo);
+        
         tblGames GetById(int id);
         tblGames Find(int id);
         int Remove(int id);
-        
+        int InsertUserOfGame(tblUserOfGame usersOfGame);
+
     }
 }

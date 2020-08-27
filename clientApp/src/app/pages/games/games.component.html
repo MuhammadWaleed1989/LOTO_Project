@@ -15,7 +15,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-8" *ngIf="isAdmin">
               <div class="text-sm-right">
                 <button type="button" (click)="openModal(largeDataModal,null)"
                   class="btn btn-success btn-rounded mb-2 mr-2">
@@ -39,17 +39,17 @@
                 <tr *ngFor="let game of gameInfo  | filter:term ;let i = index;">
                   <td><a [routerLink]="['/gamestart/', game.gameID]">{{game.gameName}}</a></td>
                   <td>
-                    <div *ngFor="let value of game.winValueList" class="inlineDivs">{{value}}</div>
+                    <div *ngFor="let value of game.winValueList" class="inlineDivs">{{value===-1?'':value}}</div>
                   </td>
                   <!-- <td>10</td> -->
                   <td>
                     <a [routerLink]="['/gamestart/', game.gameID]" title="Start" class="inlineItem"><i
                         class="fas fa-hourglass-start mr-1"></i>
                     </a>
-                    <a (click)="openModal(largeDataModal,game)" title="Edit" class="inlineItem"><i
+                    <a (click)="openModal(largeDataModal,game)" title="Edit" class="inlineItem" *ngIf="isAdmin"><i
                         class="fas fa-pencil-alt text-success mr-1"></i>
                     </a>
-                    <a (click)="deleteGame(game)" title="Delete" class="inlineItem"><i
+                    <a (click)="deleteGame(game)" title="Delete" class="inlineItem" *ngIf="isAdmin"><i
                         class="fas fa-trash-alt text-danger mr-1"></i>
                     </a>
                   </td>
@@ -87,7 +87,7 @@
               <span *ngIf="type.gameName.errors.required">Game name is required.</span>
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Win Value 1</label>
             <input type="number" class="form-control" formControlName="winValue1"
               [ngClass]="{'is-invalid': typesubmit && type.winValue1.errors}" placeholder="Enter Win Value 1" />
@@ -134,7 +134,7 @@
             <div *ngIf="typesubmit && type.winValue6.errors" class="invalid-feedback">
               <span *ngIf="type.winValue6.errors.required">Win Value 6 is required.</span>
             </div>
-          </div>
+          </div> -->
           <div class="form-group mb-0">
             <div>
               <button type="submit" class="btn btn-primary mr-1">

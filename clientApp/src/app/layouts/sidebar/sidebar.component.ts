@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() isCondensed = false;
   menu: any;
   configData;
-
+  public isAdmin: boolean = false;
   @ViewChild('sideMenu') sideMenu: ElementRef;
 
   constructor(private eventService: EventService, private router: Router) {
@@ -27,8 +27,21 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
       }
     });
   }
-
+  private getBoolean(value) {
+    switch (value) {
+      case true:
+      case "true":
+      case 1:
+      case "1":
+      case "on":
+      case "yes":
+        return true;
+      default:
+        return false;
+    }
+  }
   ngOnInit() {
+    this.isAdmin = this.getBoolean(localStorage.getItem('isAdmin'));
     document.body.setAttribute('data-sidebar', 'dark');
 
     this.configData = {

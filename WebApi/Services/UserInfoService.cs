@@ -29,9 +29,9 @@ namespace WebApi.Services
         {
 
             var saltedpassword = helper.Helper.ComputeHash(userInfo.Password, "SHA512", null);
-            string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin],[IsUserOnline]) " +
+            string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin],[IsUserOnline],[Phone]) " +
                 "VALUES('" + userInfo.UserName + "','" + userInfo.Email + "','" + userInfo.FirstName + "','" + 
-                userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "','" + false + "')";
+                userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "','" + false + "','" + userInfo.Phone + "')";
             int retVal=ExecuteCRUDByQuery(sQry);
             return retVal;
         }
@@ -126,6 +126,7 @@ namespace WebApi.Services
                                    FirstName = dr["FirstName"].ToString(),
                                    LastName = dr["LastName"].ToString(),
                                    Email = dr["Email"].ToString(),
+                                   Phone = dr["Phone"].ToString(),
                                    IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"].ToString())
                                }).ToList();
             }

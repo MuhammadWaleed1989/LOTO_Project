@@ -67,5 +67,15 @@ namespace WebApi.Controllers
             int retVal = _userGameService.Update(userGamedata);
             if (retVal > 0) return Ok(); else return NotFound();
         }
+
+        [Authorize]
+        [HttpPost("UpdateGameStatus")]
+        public IActionResult UpdateGameStatus([FromBody] tblGames gameInfo)
+        {
+
+            if (gameInfo == null) return BadRequest();
+            int retVal = _userGameService.Update(gameInfo.GameID, gameInfo);
+            if (retVal > 0) return Ok(); else return NotFound();
+        }
     }
 }

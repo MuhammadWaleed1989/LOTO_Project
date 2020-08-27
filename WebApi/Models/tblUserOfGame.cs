@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 
 namespace WebApi.Models
 {
-    public class tblUserGame
+    public class tblUserOfGame
     {
-        public int UserGameID { get; set; }
+        public int GameUserID { get; set; }
+
         public int? UserID { get; set; }
+
         public int? GameID { get; set; }
-        public int? GameValueID { get; set; }
-        public bool? IsConfirmed { get; set; }
 
         public bool? IsDeleted { get; set; }
-
+        public string ConnectionId { get; set; }
     }
+
 }

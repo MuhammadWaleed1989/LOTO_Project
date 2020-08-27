@@ -6,48 +6,230 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+
+              <h4>
+                {{isGameStart?'Game is started':isGamePause?'Game Paused':isGameFinish?'Game is finished':'Yet Game is not started'}}
+              </h4>
+              <hr />
+            </div>
+            <div class="col-sm-8" *ngIf="isAdmin">
+              <div class="text-sm-right">
+                <button type="button" class="btn btn-success btn-rounded mb-2 mr-2" *ngIf='ShowStartButton()'
+                  (click)="ChangeGameStatus('start')">
+                  Start Game
+                </button>
+                <button type="button" class="btn btn-success btn-rounded mb-2 mr-2" *ngIf='ShowPauseButton()'
+                  (click)="ChangeGameStatus('pause')">
+                  Pause Game
+                </button>
+                <button type="button" class="btn btn-success btn-rounded mb-2 mr-2" (click)="ChangeGameStatus('finish')"
+                  *ngIf='ShowEndButton()'>
+                  Finish Game
+                </button>
+              </div>
+            </div>
+            <!-- end col-->
+          </div>
           <div class="table-responsive">
             <table id="tblGameValues" class="table table-centered table-nowrap">
               <thead>
                 <tr>
-                  <th *ngFor="let column of tableHeader" (click)="clickedEvent($event)">
+                  <th *ngFor="let column of tableHeader; let i = index" (click)="clickedEvent($event)" [ngClass]="{
+                    'active' : AllConfirmedValues.indexOf(i+1)>-1,
+                    'current': AllNotConfirmedValues.indexOf(i+1)>-1
+                 }">
                     {{column}}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr id="tr_{{i}}" *ngFor="let row of tableArray; let i = index">
-                  <td id="td_{{i}}_{{column}}" *ngFor="let column of tableHeader; let j = index">
+                  <td id="td_{{i}}_{{column}}" *ngFor="let column of tableHeader; let j = index" [ngClass]="{
+                    'borderRightAndLeftGreen' : AllConfirmedValues.indexOf(j+1)>-1,
+                    'borderRightAndLeft': AllNotConfirmedValues.indexOf(j+1)>-1
+                 }">
                     {{row[column]}}
                   </td>
                 </tr>
               </tbody>
+
             </table>
           </div>
-          <!-- pagination -->
-          <ngb-pagination [collectionSize]="totalPages" [(page)]="currentpage"
-            class="pagination pagination-rounded justify-content-end mb-2" aria-label="Default pagination">
-          </ngb-pagination>
+
         </div>
       </div>
     </div>
   </div>
   <!-- end row -->
-  <!-- <div class="row">
+  <div class="row" *ngIf='AllRowsNotConfirmedValuesByUser.length>0 '>
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <div *ngIf='AllNotConfirmedValuesByUser.length>0 && winnerName=="" '>
-            <div>{{message}}</div>
-            <div *ngFor="let value of AllNotConfirmedValuesByUser" class="inlineDivs">{{value}}</div>
+          <h4>Not Confirmed values</h4>
+          <hr />
+          <div>{{message}}</div>
+          <div *ngFor="let item of AllRowsNotConfirmedValuesByUser">
+            <div *ngFor="let value of item" class="inlineDivs">
+              {{value}}
+            </div>
             <br /><br />
-            <button class="btn btn-primary" type="button" (click)="ConfirmValues()">Confirm Value</button>
           </div>
-          <div *ngIf='winnerName !==""  '>
-            <h3>Winner is {{winnerName}}!!!</h3>
+          <br /><br />
+          <button class="btn btn-primary" type="button" (click)="ConfirmValues()">Confirm Value</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="isAdmin && isGameFinish">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-8" *ngIf="isAdmin">
+              <div class="text-sm-right">
+                <button type="button" (click)="openModal(largeDataModal)" class="btn btn-success btn-rounded mb-2 mr-2">
+                  <i class="mdi mdi-plus mr-1"></i> Add Winning Values
+                </button>
+              </div>
+            </div>
+            <!-- end col-->
           </div>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
+  <div class="row" *ngIf="isGameFinish">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <h4>Winning Values from TV</h4>
+              <div class="table-responsive">
+                <table class="table table-centered table-nowrap">
+                  <tbody>
+                    <tr *ngFor="let column of WinListArray; let j = index">
+                      <td *ngIf="column!==-1">
+                        {{column}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-8">
+              <h4>Result of Game</h4>
+              <div class="table-responsive">
+                <table class="table table-centered table-nowrap">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let item of AllRowsConfirmedValues; let i = index">
+                        {{item.userName}}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of resultTable; let i = index">
+                      <td *ngFor="let column of resultTableHeader; let j = index" [ngClass]="{
+                        'winningCells' : WinListArray.indexOf(row[column])>-1
+                     }">
+                        {{row[column]==-1?'':row[column]}}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <th *ngFor="let item of AllRowsConfirmedValues; let i = index">
+                      {{item.machedResult}}
+                    </th>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<ng-template #largeDataModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">Edit Game</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12">
+
+
+        <form (ngSubmit)="typeSubmit()" [formGroup]="typeValidationForm">
+
+          <div class="form-group">
+            <label>Win Value 1</label>
+            <input type="number" class="form-control" formControlName="winValue1"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue1.errors}" placeholder="Enter Win Value 1" />
+            <div *ngIf="typesubmit && type.winValue1.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue1.errors.required">Win Value 1 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 2</label>
+            <input type="number" class="form-control" formControlName="winValue2"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue2.errors}" placeholder="Enter Win Value 2" />
+            <div *ngIf="typesubmit && type.winValue2.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue2.errors.required">Win Value 2 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 3</label>
+            <input type="number" class="form-control" formControlName="winValue3"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue3.errors}" placeholder="Enter Win Value 3" />
+            <div *ngIf="typesubmit && type.winValue3.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue3.errors.required">Win Value 3 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 4</label>
+            <input type="number" class="form-control" formControlName="winValue4"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue4.errors}" placeholder="Enter Win Value 4" />
+            <div *ngIf="typesubmit && type.winValue4.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue4.errors.required">Win Value 4 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 5</label>
+            <input type="number" class="form-control" formControlName="winValue5"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue5.errors}" placeholder="Enter Win Value 5" />
+            <div *ngIf="typesubmit && type.winValue5.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue5.errors.required">Win Value 5 is required.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Win Value 6</label>
+            <input type="number" class="form-control" formControlName="winValue6"
+              [ngClass]="{'is-invalid': typesubmit && type.winValue6.errors}" placeholder="Enter Win Value 6" />
+            <div *ngIf="typesubmit && type.winValue6.errors" class="invalid-feedback">
+              <span *ngIf="type.winValue6.errors.required">Win Value 6 is required.</span>
+            </div>
+          </div>
+          <div class="form-group mb-0">
+            <div>
+              <button type="submit" class="btn btn-primary mr-1">
+                Submit
+              </button>
+              <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-secondary">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</ng-template>

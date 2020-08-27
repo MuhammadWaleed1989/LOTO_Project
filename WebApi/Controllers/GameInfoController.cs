@@ -64,5 +64,22 @@ namespace WebApi.Controllers
             int retVal = _gameInfoService.Update(id,gameInfo);
             if (retVal > 0) return Ok(); else return NotFound();
         }
+        [Authorize]
+        [HttpPost("UpdateWinnigValues")]
+        public IActionResult UpdateWinnigValues([FromBody] tblGames gameInfo)
+        {
+            if (_gameInfoService.Find(gameInfo.GameID) == null) return NotFound();
+            int retVal = _gameInfoService.UpdateWinnigValues(gameInfo);
+            if (retVal > 0) return Ok(); else return NotFound();
+        }
+        [Authorize]
+        [HttpPost("InsertUserOfGame")]
+        public IActionResult InsertUserOfGame([FromBody]tblUserOfGame usersOfGame)
+        {
+
+            if (usersOfGame == null) return BadRequest();
+            int retVal = _gameInfoService.InsertUserOfGame(usersOfGame);
+            if (retVal > 0) return Ok(); else return NotFound();
+        }
     }
 }

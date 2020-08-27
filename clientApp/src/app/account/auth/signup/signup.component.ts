@@ -29,6 +29,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       FirstName: ['', Validators.required],
       LastName: ['', Validators.required],
       Password: ['', Validators.required],
+      Phone: ['', Validators.required],
     });
   }
 
@@ -56,7 +57,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     var object = {
       'UserID': -1, 'FirstName': this.signupForm.get('FirstName').value, 'LastName': this.signupForm.get('LastName').value,
       'UserName': this.signupForm.get('FirstName').value + sDate, 'Email': this.signupForm.get('Email').value,
-      'IsAdmin': false, 'IsDeleted': false, 'Password': this.signupForm.get('Password').value
+      'IsAdmin': false, 'IsDeleted': false, 'Password': this.signupForm.get('Password').value, 'Phone': this.signupForm.get('Phone').value
     };
 
     this.authenticationService.register(object).subscribe(response => {
@@ -64,7 +65,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // this.loadAllUsers();
       this.successmsg = true;
       if (this.successmsg) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/usermanagement']);
       }
     }, (error) => {
       console.log('error during post is ', error)
