@@ -10,7 +10,7 @@
             <div class="col-sm-4">
 
               <h4>
-                {{isGameStart?'Game is started':isGamePause?'Game Paused':isGameFinish?'Game is finished':'Yet Game is not started'}}
+                {{isGameStart?'Please select columns':isGamePause?'You cannot select the columns for now':isGameFinish?'Game is over, now you have to wait for winner':'Please wait once administrator starts the game'}}
               </h4>
               <hr />
             </div>
@@ -54,7 +54,19 @@
                   </td>
                 </tr>
               </tbody>
-
+              <tfoot *ngIf="isGameFinish">
+                <th *ngFor="let item of tableFooter; let i = index" [ngClass]="{
+                  'match6' : item === 6,
+                  'match5' : item === 5,
+                  'match4' : item === 4,
+                  'match3' : item === 3,
+                  'match2' : item === 2,
+                  'match1' : item === 1,
+                  'match0' : item === 0
+               }">
+                  {{item}}
+                </th>
+              </tfoot>
             </table>
           </div>
 
@@ -67,7 +79,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h4>Not Confirmed values</h4>
+          <h4>Please confirm the below columns of your game</h4>
           <hr />
           <div>{{message}}</div>
           <div *ngFor="let item of AllRowsNotConfirmedValuesByUser">
@@ -93,7 +105,7 @@
             <div class="col-sm-8" *ngIf="isAdmin">
               <div class="text-sm-right">
                 <button type="button" (click)="openModal(largeDataModal)" class="btn btn-success btn-rounded mb-2 mr-2">
-                  <i class="mdi mdi-plus mr-1"></i> Add Winning Values
+                  <i class="mdi mdi-plus mr-1"></i> Add/Update LOTO Numbers
                 </button>
               </div>
             </div>
@@ -109,49 +121,82 @@
         <div class="card-body">
           <div class="row">
             <div class="col-4">
-              <h4>Winning Values from TV</h4>
-              <div class="table-responsive">
-                <table class="table table-centered table-nowrap">
-                  <tbody>
-                    <tr *ngFor="let column of WinListArray; let j = index">
-                      <td *ngIf="column!==-1">
-                        {{column}}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="row">
+                <div class="col-12">
+                  <h4>LOTO Numbers from TV</h4>
+                  <div class="table-responsive">
+                    <table class="table table-centered table-nowrap">
+                      <tbody>
+                        <tr *ngFor="let column of WinListArray; let j = index">
+                          <td *ngIf="column!==-1">
+                            {{column}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
+              <div class="row">
+                <div class="col-12">
+                  <h4>Players with selected columns</h4>
+                  <div class="table-responsive">
+                    <table class="table table-centered table-nowrap">
+                      <thead>
+                        <tr>
+                          <th *ngFor="let item of AllRowsConfirmedValues; let i = index">
+                            {{item.userName}}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td *ngFor="let item of AllRowsConfirmedValues; let i = index">
+                            <div *ngFor="let value of item.userCols" class="inlineDivs">{{value===-1?'':value}}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
             </div>
             <div class="col-8">
-              <h4>Result of Game</h4>
+              <h4>Statistic</h4>
               <div class="table-responsive">
                 <table class="table table-centered table-nowrap">
                   <thead>
                     <tr>
-                      <th *ngFor="let item of AllRowsConfirmedValues; let i = index">
-                        {{item.userName}}
+                      <th *ngFor="let item of resultColHeader; let i = index" [ngClass]="{
+                        'match6' : item === 6,
+                        'match5' : item === 5,
+                        'match4' : item === 4,
+                        'match3' : item === 3,
+                        'match2' : item === 2,
+                        'match1' : item === 1,
+                        'match0' : item === 0
+                     }">
+                        {{item}}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of resultTable; let i = index">
-                      <td *ngFor="let column of resultTableHeader; let j = index" [ngClass]="{
-                        'winningCells' : WinListArray.indexOf(row[column])>-1
-                     }">
+                    <tr>
+                      <th *ngFor="let item of ColValuesArray; let i = index" class="result">
+                        <b>{{item.countOfMatchedCol}}</b>
+                      </th>
+                    </tr>
+                    <tr *ngFor="let row of resultColBody; let i = index">
+                      <td *ngFor="let column of resultColTable; let j = index">
                         {{row[column]==-1?'':row[column]}}
                       </td>
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <th *ngFor="let item of AllRowsConfirmedValues; let i = index">
-                      {{item.machedResult}}
-                    </th>
-                  </tfoot>
                 </table>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

@@ -40,9 +40,12 @@ export class GameStartComponent implements OnInit {
   public _state: HubConnectionState;
   public tableArray = [];
   public tableHeader = [];
+  public tableFooter = [];
+
   public resultTableHeader = [];
   public resultTable = [];
   public resultTableFooter = []
+
   public selectedCellForWinner = [];
   public AllConfirmedValues = [];
   public AllRowsConfirmedValues = [];
@@ -51,7 +54,15 @@ export class GameStartComponent implements OnInit {
   public AllNotConfirmedValuesByUser = [];
   public AllRowsNotConfirmedValuesByUser = [];
   public AllRowsNotConfirmedValues = [];
+
   public WinListArray = [];
+
+  public resultColHeader = [];
+  public resultColBody = [];
+  public resultColFooter = [];
+  public resultColTable = [];
+  public ColValuesArray = [];
+
   currentUserID: number;
   public gameID: number;
   public isGameStart: boolean = false;
@@ -106,6 +117,7 @@ export class GameStartComponent implements OnInit {
       this.gameID = Number(params.get('id'));
     })
     this._hubConnection.on('GetGameInfo', (data: any) => {
+
       this.AllConfirmedValues = [];
       this.AllNotConfirmedValues = [];
       this.AllRowsNotConfirmedValues = [];
@@ -117,9 +129,13 @@ export class GameStartComponent implements OnInit {
       this.isGameStart = false;
       this.isGamePause = false;
       this.isGameFinish = false;
+
       if (data) {
+
         var gameInfo = data.gameInfo;
+
         if (gameInfo && gameInfo.length > 0) {
+
           this.gameData = gameInfo[0];
           this.isGameStart = gameInfo[0].isGameStart;
           this.isGamePause = gameInfo[0].isGamePause;
@@ -131,31 +147,40 @@ export class GameStartComponent implements OnInit {
         if (gameValuesList) {
           for (var i = 0; i < gameValuesList.length; i++) {
             if (gameValuesList[i]['isConfirmed'] === true) {
+
               this.AllConfirmedValues.push(gameValuesList[i]['gameValueID']);
 
               var tempObj = [];
               tempObj.push(gameValuesList[i]['rowNum1'], gameValuesList[i]['rowNum2'], gameValuesList[i]['rowNum3'], gameValuesList[i]['rowNum4'], gameValuesList[i]['rowNum5'], gameValuesList[i]['rowNum6']);
+
+              var tempCol = [];
+              tempCol.push(gameValuesList[i]['gameValueID']);
+
               const elementsIndex = this.AllRowsConfirmedValues.findIndex(element => element.userID == gameValuesList[i]['userID']);
+
               if (elementsIndex < 0) {
+
                 var userDetail = {
                   userName: gameValuesList[i]['userName'],
                   userID: gameValuesList[i]['userID'],
                   valuesList: tempObj,
-                  machedResult: 0
+                  machedResult: 0,
+                  userCols: tempCol
                 };
+
                 this.AllRowsConfirmedValues.push(userDetail);
+
               }
               else {
-                //Log object to Console.
 
-                var newArray = this.AllRowsConfirmedValues[elementsIndex]['valuesList'].concat(tempObj)
 
+                var newArray = this.AllRowsConfirmedValues[elementsIndex]['valuesList'].concat(tempObj);
                 this.AllRowsConfirmedValues[elementsIndex].valuesList = newArray;
 
+                var currentUserCols = this.AllRowsConfirmedValues[elementsIndex]['userCols'].concat(tempCol);
+                this.AllRowsConfirmedValues[elementsIndex].userCols = currentUserCols;
+
               }
-
-
-
             }
             if (gameValuesList[i]['isConfirmed'] === false) {
               this.AllNotConfirmedValues.push(gameValuesList[i]['gameValueID']);
@@ -192,6 +217,7 @@ export class GameStartComponent implements OnInit {
     this.getGameValues();
   }
   CalculateResult() {
+    /**Make a header for resultant table */
     this.resultTableHeader = [];
     this.resultTable = [];
     for (var i = 0; i < this.AllRowsConfirmedValues.length; i++) {
@@ -199,14 +225,21 @@ export class GameStartComponent implements OnInit {
       this.resultTableHeader.push(col);
     }
 
-    console.log(this.resultTableHeader);
+    /**Make a body for resultant table */
     var maxLength = 0;
+
     for (var i = 0; i < this.AllRowsConfirmedValues.length; i++) {
+
       var lengthOfList = this.AllRowsConfirmedValues[i]['valuesList'].length;
+
       if (maxLength < lengthOfList) {
+
         maxLength = lengthOfList;
       }
+
     }
+
+    /**Push values in temp table */
 
     for (var i = 0; i < maxLength; i++) {
       var jsonDataOfRow = {};
@@ -216,6 +249,7 @@ export class GameStartComponent implements OnInit {
       this.resultTable.push(jsonDataOfRow);
     }
 
+    /**Update a table body with values for each table */
     for (var i = 0; i < this.AllRowsConfirmedValues.length; i++) {
       var lengthOfList = this.AllRowsConfirmedValues[i]['valuesList'].length;
       var valuesList = this.AllRowsConfirmedValues[i]['valuesList'];
@@ -227,7 +261,68 @@ export class GameStartComponent implements OnInit {
       this.AllRowsConfirmedValues[i]['machedResult'] = resultLenght;
     }
 
-    console.log(this.resultTable);
+    this.tableFooter = [];
+    console.log(this.tableArray)
+    /**Start-  Logic for column footer */
+    for (var i = 0; i < this.gameValues.length; i++) {
+      var arrayGameDetail = [];
+
+      for (let key in this.gameValues[i]) {
+        if (this.gameValues[i].hasOwnProperty(key)) {
+          arrayGameDetail.push(this.gameValues[i][key]);
+        }
+      }
+      var matched = arrayGameDetail.filter(element => this.WinListArray.includes(element));
+      this.tableFooter.push(matched.length);
+    }
+    /**End-  Logic for column footer */
+
+    /*Make table of numbers and columns*/
+    this.resultColHeader = [];
+    this.resultColHeader.push(0, 1, 2, 3, 4, 5, 6);
+    var lengthOfResultTable = 0;
+    for (var i = 0; i < this.resultColHeader.length; i++) {
+      let count = this.GetTheNumberCount(this.tableFooter, this.resultColHeader[i]);
+      if (lengthOfResultTable < count) {
+
+        lengthOfResultTable = count;
+      }
+    }
+
+    /**Push values in temp table */
+    this.resultColTable = [];
+    this.resultColBody = [];
+    this.ColValuesArray = [];
+    for (var i = 0; i < this.resultColHeader.length; i++) {
+      const indexes = this.tableFooter.reduce((r, n, k) => {
+        n === this.resultColHeader[i] && r.push(k);
+
+        return r;
+      }, []);
+      var col = 'col' + i;
+      this.resultColTable.push(col);
+      this.ColValuesArray.push({ colNumber: i, colValues: indexes, countOfMatchedCol: indexes.length });
+    }
+    for (var i = 0; i < lengthOfResultTable; i++) {
+      var jsonDataOfRow = {};
+      for (var j = 0; j < this.resultColHeader.length; j++) {
+        jsonDataOfRow['col' + j] = -1;
+      }
+      this.resultColBody.push(jsonDataOfRow);
+    }
+    /** */
+    /**Update a resultant table body with values for each table */
+    for (var i = 0; i < this.ColValuesArray.length; i++) {
+      var lengthOfList = this.ColValuesArray[i]['colValues'].length;
+      var valuesList = this.ColValuesArray[i]['colValues'];
+      for (var j = 0; j < lengthOfList; j++) {
+        this.resultColBody[j]['col' + i] = valuesList[j] + 1;
+      }
+    }
+    console.log(this.resultColBody);
+  }
+  GetTheNumberCount(arr: any, num: number) {
+    return arr.reduce((n, x) => n + (x === num), 0)
   }
   GetNotConfirmedList() {
     const filteredUserMenus = this.tableArray.filter((item) => {
@@ -517,7 +612,7 @@ export class GameStartComponent implements OnInit {
         winValue3: this.gameData.winValue3 == -1 ? "" : this.gameData.winValue3,
         winValue4: this.gameData.winValue4 == -1 ? "" : this.gameData.winValue4,
         winValue5: this.gameData.winValue5 == -1 ? "" : this.gameData.winValue5,
-        winValue6: this.gameData.winValue6 == -1 ? "" : this.gameData.winValue1,
+        winValue6: this.gameData.winValue6 == -1 ? "" : this.gameData.winValue6,
       });
     } else {
 
