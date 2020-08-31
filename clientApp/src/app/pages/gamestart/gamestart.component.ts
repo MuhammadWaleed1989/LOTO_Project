@@ -101,7 +101,6 @@ export class GameStartComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.error = '';
     // reset alerts on submit
     this.alertService.clear();
 
@@ -151,9 +150,14 @@ export class GameStartComponent implements OnInit {
         var gameInfo = data.gameInfo;
         var userInfo = data.userInfo;
         if (userInfo) {
-          this.coinsCost = userInfo.coinsCost;
-          this.usedCoins = userInfo.usedCoins;
-          this.remainingCoins = userInfo.remainingCoins;
+          if (userInfo.userID === this.currentUserID) {
+            var lblTotalCoins = document.getElementById("lblTotalCoins" + this.currentUserID);//.value = this.currentUserID);
+            lblTotalCoins.innerText = "" + userInfo.coinsCost === null ? 0 : userInfo.coinsCost;
+            var lblUsedCoins = document.getElementById("lblUsedCoins" + this.currentUserID);//.value = this.currentUserID);
+            lblUsedCoins.innerText = "" + userInfo.usedCoins === null ? 0 : userInfo.usedCoins;
+            var lblRemainingCoins = document.getElementById("lblRemainingCoins" + this.currentUserID);//.value = this.currentUserID);
+            lblRemainingCoins.innerText = "" + userInfo.remainingCoins === null ? 0 : userInfo.remainingCoins;
+          }
 
         }
         if (gameInfo && gameInfo.length > 0) {
@@ -430,17 +434,19 @@ export class GameStartComponent implements OnInit {
     });
   }
   clickedEvent(eve: any) {
-    if (this.remainingCoins == 0 || this.remainingCoins < 100) {
-      this.error = 'You can not select further columns as your coins are less than $100. Please contact your administrator for further coins';
-      return;
-    }
-    this.error = '';
+    var remainingCoins = Number(document.getElementById("lblRemainingCoins" + this.currentUserID).innerText);//.value = this.currentUserID);
     if (!this.isGameStart) {
       return;
     }
     if (this.isGamePause || this.isGameFinish) {
       return;
     }
+    if (remainingCoins == 0 || remainingCoins < 100) {
+      this.error = 'You can not select further columns as your coins are less than $100. Please contact your administrator for further coins';
+      return;
+    }
+    this.error = '';
+
     var columnNumber = Number(eve.currentTarget.innerText.replace("Col", "").trim());
     var allIndex = this.AllConfirmedValues.indexOf(columnNumber);
     if (allIndex > -1) {

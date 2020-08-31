@@ -109,7 +109,7 @@ namespace WebApi.Hubs
             string sQry = "SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
             sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
             sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
-            sQry += " JOIN [tblUserGame]  UG ON UG.UserID= u.UserID ";
+            sQry += " Left JOIN [tblUserGame]  UG ON UG.UserID= u.UserID ";
             sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND U.UserID=" + userID;
             sQry += " GROUP BY U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] ,U.[CoinsCost] ";
             DataTable dtUserInfo = ExecuteQuery(sQry);
@@ -133,7 +133,11 @@ namespace WebApi.Hubs
                 // userInfos = ConvertDataTable<tblUser>(dtUserInfo);
             }
             tblUser tblUserInfo = new tblUser();
-            if (userInfos.Any()) { tblUserInfo = userInfos[0]; }
+            if (userInfos != null)
+            {
+                if (userInfos.Any()) { tblUserInfo = userInfos[0]; }
+            }
+            
             
             return tblUserInfo;
         }
@@ -143,7 +147,7 @@ namespace WebApi.Hubs
             string sQry = "SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
             sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
             sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
-            sQry += " JOIN [tblUserGame]  UG ON UG.UserID= u.UserID AND UG.GameID= 2 ";
+            sQry += " LEFT JOIN [tblUserGame]  UG ON UG.UserID= u.UserID AND UG.GameID= 2 ";
             sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 ";
             sQry += " GROUP BY U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] ,U.[CoinsCost] ";
             DataTable dtUserInfo = ExecuteQuery(sQry);
