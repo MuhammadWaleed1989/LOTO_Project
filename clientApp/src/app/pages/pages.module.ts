@@ -72,7 +72,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     UsersModule,
     GamesModule,
-    GameStartModule
+    GameStartModule,
+
   ],
   providers: [
     {

@@ -13,6 +13,8 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+
 const config: DropzoneConfigInterface = {
   // Change this to your upload POST address:
   url: 'https://httpbin.org/post',
@@ -36,7 +38,8 @@ const config: DropzoneConfigInterface = {
     Ng5SliderModule,
     NgSelectModule,
     NgbPaginationModule,
-    NgxMaskModule
+    NgxMaskModule,
+    NgbAlertModule,
   ],
   providers: []
 })

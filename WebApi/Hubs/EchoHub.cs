@@ -110,7 +110,7 @@ namespace WebApi.Hubs
             sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
             sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
             sQry += " JOIN [tblUserGame]  UG ON UG.UserID= u.UserID ";
-            sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND ISNULL(UG.IsConfirmed,0)=1 AND U.UserID=" + userID;
+            sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND U.UserID=" + userID;
             sQry += " GROUP BY U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] ,U.[CoinsCost] ";
             DataTable dtUserInfo = ExecuteQuery(sQry);
             if (dtUserInfo != null)
@@ -144,7 +144,7 @@ namespace WebApi.Hubs
             sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
             sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
             sQry += " JOIN [tblUserGame]  UG ON UG.UserID= u.UserID AND UG.GameID= 2 ";
-            sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND ISNULL(UG.IsConfirmed,0)=1";
+            sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 ";
             sQry += " GROUP BY U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] ,U.[CoinsCost] ";
             DataTable dtUserInfo = ExecuteQuery(sQry);
             if (dtUserInfo != null)

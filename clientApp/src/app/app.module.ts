@@ -13,12 +13,13 @@ import { AppComponent } from './app.component';
 import { initFirebaseBackend } from './authUtils';
 import { AuthInterceptor } from './_helpers/jwt.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { AlertComponent } from '../app/_components';
 initFirebaseBackend(environment.firebaseConfig);
 
 @NgModule({
   declarations: [
     AppComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

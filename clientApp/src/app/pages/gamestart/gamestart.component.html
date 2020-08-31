@@ -8,7 +8,7 @@
         <div class="card-body">
           <div class="row mb-2">
             <div class="col-sm-6">
-
+              <ngb-alert type="danger" *ngIf="error">{{ error }}</ngb-alert>
               <h4>
                 {{isGameStart?'Please select columns':isGamePause?'You cannot select the columns for now !!!':isGameFinish?'Game is over, now you have to wait for winner !!!':'Please wait once administrator starts the game'}}
               </h4>

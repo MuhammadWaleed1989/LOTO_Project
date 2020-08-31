@@ -9,6 +9,7 @@ import { Users } from '../usermanagement/users.model';
 
 import { GameCompleteInfo, GameValues, GameDetailInfo, GameInfo } from '../games/games.model';
 import { environment } from '../../../environments/environment';
+import { AlertService } from '../../../app/services/alert.service';
 
 import { GameService } from '../../../app/services/game.service';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@aspnet/signalr';
@@ -80,7 +81,9 @@ export class GameStartComponent implements OnInit {
   seconds: number = 121;
   public isAdmin: boolean = false;
   public gameData: any;
-  constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute) {
+  public error = '';
+  constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute,
+    private alertService: AlertService) {
     this.typesubmit = false;
   }
 
@@ -98,6 +101,10 @@ export class GameStartComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.error = '';
+    // reset alerts on submit
+    this.alertService.clear();
+
     this.typeValidationForm = this.formBuilder.group({
       winValue1: ['', [Validators.required, Validators.pattern('[0-9]+')]],
       winValue2: ['', [Validators.required, Validators.pattern('[0-9]+')]],
@@ -423,6 +430,11 @@ export class GameStartComponent implements OnInit {
     });
   }
   clickedEvent(eve: any) {
+    if (this.remainingCoins == 0 || this.remainingCoins < 100) {
+      this.error = 'You can not select further columns as your coins are less than $100. Please contact your administrator for further coins';
+      return;
+    }
+    this.error = '';
     if (!this.isGameStart) {
       return;
     }
