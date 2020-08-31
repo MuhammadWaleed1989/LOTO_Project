@@ -25,6 +25,10 @@ namespace WebApi.Models
 
         public bool? IsAdmin { get; set; }
         public bool? IsUserOnline { get; set; }
+        public long? CoinsCost { get; set; }
+        public long? UsedCoins { get; set; }
+        public long? RemainingCoins { get; set; }
+        
 
     }
 }

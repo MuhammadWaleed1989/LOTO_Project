@@ -68,6 +68,11 @@ export class GameStartComponent implements OnInit {
   public isGameStart: boolean = false;
   public isGamePause: boolean = false;
   public isGameFinish: boolean = false;
+
+  public coinsCost: number = 0;
+  public usedCoins: number = 0;
+  public remainingCoins: number = 0;
+
   users: Users[] = [];
   gameValues: GameValues[] = [];
   intervalId: number = 0;
@@ -130,10 +135,20 @@ export class GameStartComponent implements OnInit {
       this.isGamePause = false;
       this.isGameFinish = false;
 
+      this.coinsCost = 0;
+      this.usedCoins = 0;
+      this.remainingCoins = 0;
+
       if (data) {
 
         var gameInfo = data.gameInfo;
+        var userInfo = data.userInfo;
+        if (userInfo) {
+          this.coinsCost = userInfo.coinsCost;
+          this.usedCoins = userInfo.usedCoins;
+          this.remainingCoins = userInfo.remainingCoins;
 
+        }
         if (gameInfo && gameInfo.length > 0) {
 
           this.gameData = gameInfo[0];

@@ -7,14 +7,19 @@
       <div class="card">
         <div class="card-body">
           <div class="row mb-2">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
 
               <h4>
-                {{isGameStart?'Please select columns':isGamePause?'You cannot select the columns for now':isGameFinish?'Game is over, now you have to wait for winner':'Please wait once administrator starts the game'}}
+                {{isGameStart?'Please select columns':isGamePause?'You cannot select the columns for now !!!':isGameFinish?'Game is over, now you have to wait for winner !!!':'Please wait once administrator starts the game'}}
               </h4>
               <hr />
+              <h6>
+                Total Coins: {{coinsCost}}, Used Coins: {{usedCoins}}, Remaining Coins: {{remainingCoins}}
+              </h6>
+              <hr />
+
             </div>
-            <div class="col-sm-8" *ngIf="isAdmin">
+            <div class="col-sm-6" *ngIf="isAdmin">
               <div class="text-sm-right">
                 <button type="button" class="btn btn-success btn-rounded mb-2 mr-2" *ngIf='ShowStartButton()'
                   (click)="ChangeGameStatus('start')">
@@ -124,6 +129,7 @@
               <div class="row">
                 <div class="col-12">
                   <h4>LOTO Numbers from TV</h4>
+                  <hr />
                   <div class="table-responsive">
                     <table class="table table-centered table-nowrap">
                       <tbody>
@@ -140,7 +146,17 @@
               <div class="row">
                 <div class="col-12">
                   <h4>Players with selected columns</h4>
-                  <div class="table-responsive">
+                  <hr />
+                  <div *ngFor="let item of AllRowsConfirmedValues; let i = index">
+                    <label>{{item.userName}}</label>
+                    <br>
+                    <hr />
+                    <div *ngFor="let value of item.userCols" class="inlineDivs">{{value===-1?'':value}}</div>
+                    <br>
+                    <br>
+                    <hr />
+                  </div>
+                  <!-- <div class="table-responsive">
                     <table class="table table-centered table-nowrap">
                       <thead>
                         <tr>
@@ -157,13 +173,14 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
             </div>
             <div class="col-8">
               <h4>Statistic</h4>
+              <hr />
               <div class="table-responsive">
                 <table class="table table-centered table-nowrap">
                   <thead>

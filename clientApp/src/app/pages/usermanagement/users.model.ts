@@ -5,4 +5,7 @@ export interface Users {
     firstName: string;
     lastName: string;
     isUserOnline: boolean;
+    coinsCost: number;
+    remainingCoins: number;
+    usedCoins: number;
 }

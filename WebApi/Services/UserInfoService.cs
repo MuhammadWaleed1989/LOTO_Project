@@ -29,13 +29,18 @@ namespace WebApi.Services
         {
 
             var saltedpassword = helper.Helper.ComputeHash(userInfo.Password, "SHA512", null);
-            string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin],[IsUserOnline],[Phone]) " +
+            string sQry = "INSERT INTO [tblUser] ([UserName],[Email],[FirstName],[LastName],[Password],[IsDeleted],[IsAdmin],[IsUserOnline],[Phone],[CoinsCost]) " +
                 "VALUES('" + userInfo.UserName + "','" + userInfo.Email + "','" + userInfo.FirstName + "','" + 
-                userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "','" + false + "','" + userInfo.Phone + "')";
+                userInfo.LastName + "','" + saltedpassword + "','" + false + "','" + false + "','" + false + "','" + userInfo.Phone + "','" + userInfo.CoinsCost + "')";
             int retVal=ExecuteCRUDByQuery(sQry);
             return retVal;
         }
-
+        public int Update(int userID, tblUser userInfo)
+        {
+            string sQry = "UPDATE [tblUser] SET [CoinsCost]='" + userInfo.CoinsCost + "' WHERE [UserID]=" + userID;
+            int retVal = ExecuteUpdateQuery(sQry);
+            return retVal;
+        }
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
 
@@ -161,6 +166,23 @@ namespace WebApi.Services
         }
 
         private int ExecuteCRUDByQuery(string strSql)
+        {
+            SqlConnection conn = null;
+            int iR = 0;
+            try
+            {
+                conn = new SqlConnection(_connectionStrings.connectionStr);
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.CommandType = CommandType.Text;
+                conn.Open();
+                //Execute the command
+                iR = cmd.ExecuteNonQuery();
+            }
+            catch { iR = 0; }
+            finally { if (conn.State != 0) conn.Close(); }
+            return iR;
+        }
+        private int ExecuteUpdateQuery(string strSql)
         {
             SqlConnection conn = null;
             int iR = 0;

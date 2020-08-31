@@ -57,7 +57,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
     var object = {
       'UserID': -1, 'FirstName': this.signupForm.get('FirstName').value, 'LastName': this.signupForm.get('LastName').value,
       'UserName': this.signupForm.get('FirstName').value + sDate, 'Email': this.signupForm.get('Email').value,
-      'IsAdmin': false, 'IsDeleted': false, 'Password': this.signupForm.get('Password').value, 'Phone': this.signupForm.get('Phone').value
+      'IsAdmin': false, 'IsDeleted': false, 'Password': this.signupForm.get('Password').value, 'Phone': this.signupForm.get('Phone').value,
+      'coinsCost': 0
     };
 
     this.authenticationService.register(object).subscribe(response => {

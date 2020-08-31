@@ -64,5 +64,13 @@ namespace WebApi.Controllers
             var users = _userInfoService.GetAll();
             return Ok(users);
         }
+        [Authorize]
+        [HttpPost("UpdatedCoinsDetail")]
+        public IActionResult UpdatedCoinsDetail([FromBody] tblUser userInfo)
+        {
+            if (_userInfoService.Find(userInfo.UserID) == null) return NotFound();
+            int retVal = _userInfoService.Update(userInfo.UserID, userInfo);
+            if (retVal > 0) return Ok(); else return NotFound();
+        }
     }
 }

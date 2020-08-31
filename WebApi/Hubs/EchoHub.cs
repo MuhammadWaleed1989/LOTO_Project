@@ -31,7 +31,7 @@ namespace WebApi.Hubs
         {
   
             InsertUserOfGame(gameID, userID);
-            BroadcastGameNumberGroup(gameID);
+            BroadcastGameNumberGroup(gameID,userID);
  
         }
         public int InsertUserOfGame(int gameID, int userID)
@@ -67,30 +67,25 @@ namespace WebApi.Hubs
         }
         public void Start()
         {
-            //var group = _groups.FirstOrDefault(g => g.Owner == Context.ConnectionId && !g.HasFinished && !g.HasStarted);
-            //if (group != null)
-            //{
-            //    group.HasStarted = true;
                 BroadcastGroup();
-            //}
         }
 
         
 
         private void BroadcastGroup()
         {
-            //var clients = group.Glasses.Select(g => g.ConnectionId).ToList();
             Clients.All.SendAsync("UserList", GetAll());
         }
 
 
-        private void BroadcastGameNumberGroup(int gameID)
+        private void BroadcastGameNumberGroup(int gameID,int userID)
         {
              var clients = GetGameUsers(gameID);
             var gameClients = clients.Select(g => g.ConnectionId).ToList();
             GameFinal _gameFinal = new GameFinal();
             _gameFinal.gameInfo = GetGameInfo(gameID);
             _gameFinal.gameValues = GetValues(gameID);
+            _gameFinal.userInfo = GetCurrentUser(userID);
             Clients.Clients(gameClients).SendAsync("GetGameInfo", _gameFinal);
         }
         private void BroadcastNotConfirmedValues(int gameID,int userID)
@@ -108,14 +103,18 @@ namespace WebApi.Hubs
             }
             return winnerName;
         }
-        public IEnumerable<tblUser> GetAll()
+        public tblUser GetCurrentUser(int userID)
         {
             List<tblUser> userInfos = null;
-            string sQry = "SELECT * FROM [tblUser]";
+            string sQry = "SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
+            sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
+            sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
+            sQry += " JOIN [tblUserGame]  UG ON UG.UserID= u.UserID ";
+            sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND ISNULL(UG.IsConfirmed,0)=1 AND U.UserID=" + userID;
+            sQry += " GROUP BY U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] ,U.[CoinsCost] ";
             DataTable dtUserInfo = ExecuteQuery(sQry);
             if (dtUserInfo != null)
             {
-                //userInfos = new List<tblUser>();
                 userInfos = (from DataRow dr in dtUserInfo.Rows
                              select new tblUser()
                              {
@@ -125,7 +124,44 @@ namespace WebApi.Hubs
                                  LastName = dr["LastName"].ToString(),
                                  Email = dr["Email"].ToString(),
                                  Phone = dr["Phone"].ToString(),
-                                 IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"].ToString())
+                                 IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"].ToString()),
+                                 CoinsCost = Convert.ToInt32(dr["CoinsCost"]),
+                                 UsedCoins = Convert.ToInt32(dr["UsedCoins"]),
+                                 RemainingCoins = Convert.ToInt32(dr["RemainingCoins"]),
+                             }).ToList();
+
+                // userInfos = ConvertDataTable<tblUser>(dtUserInfo);
+            }
+            tblUser tblUserInfo = new tblUser();
+            if (userInfos.Any()) { tblUserInfo = userInfos[0]; }
+            
+            return tblUserInfo;
+        }
+        public IEnumerable<tblUser> GetAll()
+        {
+            List<tblUser> userInfos = null;
+            string sQry = "SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
+            sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
+            sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
+            sQry += " JOIN [tblUserGame]  UG ON UG.UserID= u.UserID AND UG.GameID= 2 ";
+            sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND ISNULL(UG.IsConfirmed,0)=1";
+            sQry += " GROUP BY U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] ,U.[CoinsCost] ";
+            DataTable dtUserInfo = ExecuteQuery(sQry);
+            if (dtUserInfo != null)
+            {
+                userInfos = (from DataRow dr in dtUserInfo.Rows
+                             select new tblUser()
+                             {
+                                 UserID = Convert.ToInt32(dr["UserID"]),
+                                 UserName = dr["UserName"].ToString(),
+                                 FirstName = dr["FirstName"].ToString(),
+                                 LastName = dr["LastName"].ToString(),
+                                 Email = dr["Email"].ToString(),
+                                 Phone = dr["Phone"].ToString(),
+                                 IsUserOnline = Convert.ToBoolean(dr["IsUserOnline"].ToString()),
+                                 CoinsCost = Convert.ToInt32(dr["CoinsCost"]),
+                                 UsedCoins= Convert.ToInt32(dr["UsedCoins"]),
+                                 RemainingCoins = Convert.ToInt32(dr["RemainingCoins"]),
                              }).ToList();
 
                 // userInfos = ConvertDataTable<tblUser>(dtUserInfo);
@@ -347,6 +383,7 @@ namespace WebApi.Hubs
     {
         public IEnumerable<tblGameWithValues> gameValues { get; set; }
         public IEnumerable<tblGames> gameInfo { get; set; }
+        public tblUser userInfo { get; set; }
     }
 
  
