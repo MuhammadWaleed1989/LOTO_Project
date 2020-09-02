@@ -74,7 +74,7 @@ namespace WebApi.Services
                 configInfo = (from DataRow dr in dtConfigInfo.Rows
                                select new tblAdminConfig()
                                {
-
+                                   Adminid = Convert.ToInt32(dr["Adminid"]),
                                    Coinprice = Convert.ToInt32(dr["Coinprice"]),
                                    confirmseconds = Convert.ToInt32(dr["confirmseconds"]),
             

@@ -15,6 +15,8 @@ import { GameService } from '../../../app/services/game.service';
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@aspnet/signalr';
 import { Subscription, Observable, timer, of } from 'rxjs';
 import * as moment from 'moment';
+import { AdminConfig } from '../adminconfiguration/adminconfig.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-customers',
@@ -78,11 +80,13 @@ export class GameStartComponent implements OnInit {
   gameValues: GameValues[] = [];
   intervalId: number = 0;
   message: string = '';
-  seconds: number = 121;
+  seconds: number = 181;
   public isAdmin: boolean = false;
   public gameData: any;
   public error = '';
-  constructor(private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute,
+  public coinPrice: number = 100;
+  adminConfig: AdminConfig[] = [];
+  constructor(private userService: UserService, private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute,
     private alertService: AlertService) {
     this.typesubmit = false;
   }
@@ -101,6 +105,7 @@ export class GameStartComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.loadConfiguration();
     // reset alerts on submit
     this.alertService.clear();
 
@@ -288,7 +293,7 @@ export class GameStartComponent implements OnInit {
     }
 
     this.tableFooter = [];
-    console.log(this.tableArray)
+
     /**Start-  Logic for column footer */
     for (var i = 0; i < this.gameValues.length; i++) {
       var arrayGameDetail = [];
@@ -345,7 +350,7 @@ export class GameStartComponent implements OnInit {
         this.resultColBody[j]['col' + i] = valuesList[j] + 1;
       }
     }
-    console.log(this.resultColBody);
+
   }
   GetTheNumberCount(arr: any, num: number) {
     return arr.reduce((n, x) => n + (x === num), 0)
@@ -441,8 +446,8 @@ export class GameStartComponent implements OnInit {
     if (this.isGamePause || this.isGameFinish) {
       return;
     }
-    if (remainingCoins == 0 || remainingCoins < 100) {
-      this.error = 'You can not select further columns as your coins are less than $100. Please contact your administrator for further coins';
+    if (remainingCoins == 0 || remainingCoins < this.coinPrice) {
+      this.error = 'You can not select further columns as your coins are less than $`' + this.coinPrice + '`. Please contact your administrator for further coins';
       return;
     }
     this.error = '';
@@ -659,5 +664,13 @@ export class GameStartComponent implements OnInit {
       });
     }
   }
-
+  private loadConfiguration() {
+    this.userService.getAllConfiguration().pipe(first()).subscribe(adminConfig => {
+      this.adminConfig = adminConfig;
+      if (this.adminConfig) {
+        this.seconds = adminConfig[0].confirmseconds;
+        this.coinPrice = adminConfig[0].coinprice;
+      }
+    });
+  }
 }

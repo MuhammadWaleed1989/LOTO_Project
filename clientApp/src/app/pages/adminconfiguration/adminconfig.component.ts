@@ -48,7 +48,7 @@ export class AdminConfigComponent implements OnInit {
   ngOnInit() {
     this.currentUserID = Number(localStorage.getItem('id'));
     this.isAdmin = this.getBoolean(localStorage.getItem('isAdmin'));
-    this.loadConfiguration();
+
     // setup the top lables
     this.breadCrumbItems = [{
       label: 'LOTO Game'
@@ -62,7 +62,7 @@ export class AdminConfigComponent implements OnInit {
       coinprice: ['', [Validators.required]],
       confirmseconds: ['', [Validators.required]]
     });
-
+    this.loadConfiguration();
   }
 
   get configType() {
@@ -82,14 +82,16 @@ export class AdminConfigComponent implements OnInit {
 
       if (this.typeAdminForm.get('adminid').value === "-1") {
 
-        this.userService.updateConfiguration(objUserInfo).subscribe(response => {
+        this.userService.AddConfiguration(objUserInfo).subscribe(response => {
           this.statusMessage = 'Details added successfully'
+          this.loadConfiguration();
         }, (error) => {
           console.log('error during post is ', error)
         });
       } else {
-        this.userService.updateConfiguration(objUserInfo).subscribe(response => {
+        this.userService.updateConfiguration(objUserInfo, Number(this.typeAdminForm.get('adminid').value)).subscribe(response => {
           this.statusMessage = 'Details updated successfully'
+          this.loadConfiguration();
         }, (error) => {
           console.log('error during post is ', error)
         });
@@ -104,6 +106,7 @@ export class AdminConfigComponent implements OnInit {
   private loadConfiguration() {
     this.userService.getAllConfiguration().pipe(first()).subscribe(adminConfig => {
       this.adminConfig = adminConfig;
+      this.statusMessage = '';
       if (this.adminConfig) {
         this.typeAdminForm.patchValue({
 

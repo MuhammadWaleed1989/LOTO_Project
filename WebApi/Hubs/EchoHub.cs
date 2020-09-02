@@ -106,8 +106,8 @@ namespace WebApi.Hubs
         public tblUser GetCurrentUser(int userID)
         {
             List<tblUser> userInfos = null;
-            string sQry = "SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
-            sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
+            string sQry = "DECLARE @COINPRICE INT =100; SET @COINPRICE = ISNULL((SELECT Coinprice FROM dbo.tblAdminConfig),100) SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
+            sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *@COINPRICE) AS BIGINT) AS RemainingCoins, ";
             sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
             sQry += " Left JOIN [tblUserGame]  UG ON UG.UserID= u.UserID ";
             sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 AND U.UserID=" + userID;
@@ -144,8 +144,8 @@ namespace WebApi.Hubs
         public IEnumerable<tblUser> GetAll()
         {
             List<tblUser> userInfos = null;
-            string sQry = "SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
-            sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *100) AS BIGINT) AS RemainingCoins, ";
+            string sQry = "DECLARE @COINPRICE INT =100;SET @COINPRICE = ISNULL((SELECT Coinprice FROM dbo.tblAdminConfig),100) SELECT U.[UserID],U.[UserName],U.[Email] ,U.[FirstName],U.[LastName] ,U.[Phone] ,U.[Password] ,U.[IsDeleted] ,U.[IsAdmin] ,U.[IsUserOnline] , ";
+            sQry += " U.[CoinsCost] ,CAST(U.CoinsCost-(COUNT(UG.GameValueID) *@COINPRICE) AS BIGINT) AS RemainingCoins, ";
             sQry += " CAST((COUNT(UG.GameValueID) * 100) AS BIGINT) AS UsedCoins  FROM dbo.[tblUser] U ";
             sQry += " LEFT JOIN [tblUserGame]  UG ON UG.UserID= u.UserID AND UG.GameID= 2 ";
             sQry += " WHERE ISNULL(U.IsDeleted,0)=0 AND ISNULL(UG.IsDeleted,0)=0 ";

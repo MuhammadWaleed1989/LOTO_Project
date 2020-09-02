@@ -25,8 +25,11 @@ export class UserService {
     getAllConfiguration() {
         return this.http.get<AdminConfig[]>(`${environment.apiUrl}/api/AdminConfig`);
     }
-    updateConfiguration(config: any) {
+    AddConfiguration(config: any) {
         return this.http.post<AdminConfig[]>(`${environment.apiUrl}/api/AdminConfig`, config);
+    }
+    updateConfiguration(config: any, id: number) {
+        return this.http.put<AdminConfig[]>(`${environment.apiUrl}/api/AdminConfig/` + id, config);
     }
 
     // deleteUser(id: number) {
