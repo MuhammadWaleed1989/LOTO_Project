@@ -18,5 +18,7 @@ namespace WebApi.Services
         int UpdateOnlineStatus(int userID, bool isOnline);
         //int Remove(int id);
         int Update(int userID, tblUser userInfo);
+        int UpdateUserPassword(int userID, tblUser userInfo);
+        
     }
 }

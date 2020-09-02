@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { MustMatch } from './validation.mustmatch';
 import { AuthenticationService } from '../../../core/services/auth.service';
 
 @Component({
@@ -30,7 +30,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
       LastName: ['', Validators.required],
       Password: ['', Validators.required],
       Phone: ['', Validators.required],
+      confirmpwd: ['', Validators.required]
+    }, {
+      validator: MustMatch('Password', 'confirmpwd'),
     });
+
   }
 
   ngAfterViewInit() {

@@ -1,0 +1,56 @@
+<div class="container-fluid">
+
+  <app-page-title title="Admin Configuration" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div>{{statusMessage}}</div>
+          <form (ngSubmit)="typeAdminConfigSubmit()" [formGroup]="typeAdminForm">
+            <div class="form-group" style="display: none;">
+              <label>User ID</label>
+              <input type="hidden" class="form-control" formControlName="adminid"
+                [ngClass]="{'is-invalid': typeAdminIsSubmit && configType.adminid.errors}" placeholder="" />
+              <div *ngIf="typeAdminIsSubmit && configType.adminid.errors" class="invalid-feedback">
+                <span *ngIf="configType.adminid.errors.required">User ID is required.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Coin Price</label>
+              <input type="number" class="form-control" formControlName="coinprice"
+                [ngClass]="{'is-invalid': typeAdminIsSubmit && configType.coinprice.errors}"
+                placeholder="Enter coin price" />
+              <div *ngIf="typeAdminIsSubmit && configType.coinprice.errors" class="invalid-feedback">
+                <span *ngIf="configType.coinprice.errors.required">Please enter coin price</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Column confirm time (in seconds)</label>
+              <input type="number" class="form-control" formControlName="confirmseconds"
+                [ngClass]="{'is-invalid': typeAdminIsSubmit && configType.confirmseconds.errors}"
+                placeholder="Enter column confirm time" />
+              <div *ngIf="typeAdminIsSubmit && configType.confirmseconds.errors" class="invalid-feedback">
+                <span *ngIf="configType.confirmseconds.errors.required">Please enter column confirm time</span>
+              </div>
+            </div>
+
+            <div class="form-group mb-0">
+              <div>
+                <button type="submit" class="btn btn-primary mr-1">
+                  Submit
+                </button>
+                <button type="button" class="btn btn-secondary">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>

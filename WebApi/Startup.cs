@@ -39,6 +39,7 @@ namespace WebApi
             services.AddSingleton<IUserInfoService, UserInfoService>();
             services.AddSingleton<IGameInfoService, GameInfoService>();
             services.AddSingleton<IUserGameService, UserGameService>();
+            services.AddSingleton<IAdminConfigService, AdminConfigService>();
             services.AddSignalR();
             services.AddSwaggerGen(options =>
             {

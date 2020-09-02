@@ -72,5 +72,13 @@ namespace WebApi.Controllers
             int retVal = _userInfoService.Update(userInfo.UserID, userInfo);
             if (retVal > 0) return Ok(); else return NotFound();
         }
+        [Authorize]
+        [HttpPost("UpdateUserPassword")]
+        public IActionResult UpdateUserPassword([FromBody] tblUser userInfo)
+        {
+            if (_userInfoService.Find(userInfo.UserID) == null) return NotFound();
+            int retVal = _userInfoService.UpdateUserPassword(userInfo.UserID, userInfo);
+            if (retVal > 0) return Ok(); else return NotFound();
+        }
     }
 }

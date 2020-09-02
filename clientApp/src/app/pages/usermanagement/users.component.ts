@@ -27,14 +27,17 @@ export class UsersComponent implements OnInit {
   users: Users[] = [];
   term: any; // Variable to search the text in grid
   typesubmit: boolean;
+  typeResetPasswordsubmit: boolean;
   public isAdmin: boolean = false;
   // page
   currentpage: number;
   totalPages: number;
   typeValidationForm: FormGroup; // type validation form
+  typeResetPasswordForm: FormGroup; // type validation form
   public _hubConnection: HubConnection;
   constructor(private userService: UserService, private modalService: NgbModal, public formBuilder: FormBuilder) {
     this.typesubmit = false;
+    this.typeResetPasswordsubmit = false;
   }
   private getBoolean(value) {
     switch (value) {
@@ -83,6 +86,10 @@ export class UsersComponent implements OnInit {
       remainingCoins: ['', [Validators.required]],
       usedCoins: ['', [Validators.required]],
     });
+    this.typeResetPasswordForm = this.formBuilder.group({
+      userID: ['-1'],
+      password: ['', [Validators.required]],
+    });
     //console.log(this._hubConnection);
   }
   openModal(largeDataModal: any, info: Users) {
@@ -111,8 +118,31 @@ export class UsersComponent implements OnInit {
       });
     }
   }
+  openResetPasswordModal(largeDataModal: any, info: Users) {
+    this.typeResetPasswordsubmit = false;
+    this.modalService.open(largeDataModal, {
+      backdrop: 'static',
+      size: 'lg',
+      scrollable: true
+    });
+    if (info) {
+      this.typeResetPasswordForm.patchValue({
+        userID: info.userID,
+        password: "",
+      });
+    } else {
+
+      this.typeResetPasswordForm.patchValue({
+        userID: "-1",
+        password: "",
+      });
+    }
+  }
   get type() {
     return this.typeValidationForm.controls;
+  }
+  get resetType() {
+    return this.typeResetPasswordForm.controls;
   }
   /**
   * Type validation form submit data
@@ -150,11 +180,43 @@ export class UsersComponent implements OnInit {
       this.typesubmit = true;
     }
   }
+  typeResetPasswordSubmit() {
 
-  private loadAllUsers() {
-    this.userService.getAll().pipe(first()).subscribe(users => {
-      this.users = users;
-      this.totalPages = users.length;
-    });
+    if (this.typeResetPasswordForm.valid) {
+      this.typeResetPasswordsubmit = false;
+
+      var objUserInfo = {
+        'userID': Number(this.typeResetPasswordForm.get('userID').value),
+        'password': this.typeResetPasswordForm.get('password').value,
+      };
+
+      if (this.typeResetPasswordForm.get('userID').value === "-1") {
+
+        this.userService.updateUserPassword(objUserInfo).subscribe(response => {
+          this.statusMessage = 'User password updated successfully'
+          this._hubConnection.invoke('Start');
+        }, (error) => {
+          console.log('error during post is ', error)
+        });
+      } else {
+        this.userService.updateUserPassword(objUserInfo).subscribe(response => {
+          this.statusMessage = 'User password updated successfully'
+          this._hubConnection.invoke('Start');
+        }, (error) => {
+          console.log('error during post is ', error)
+        });
+      }
+      this.modalService.dismissAll();
+
+    } else {
+      // validate all form fields
+      this.typeResetPasswordsubmit = true;
+    }
   }
+  // private loadAllUsers() {
+  //   this.userService.getAll().pipe(first()).subscribe(users => {
+  //     this.users = users;
+  //     this.totalPages = users.length;
+  //   });
+  // }
 }

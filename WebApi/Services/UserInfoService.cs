@@ -41,6 +41,14 @@ namespace WebApi.Services
             int retVal = ExecuteUpdateQuery(sQry);
             return retVal;
         }
+        public int UpdateUserPassword(int userID, tblUser userInfo)
+        {
+            var saltedpassword = helper.Helper.ComputeHash(userInfo.Password, "SHA512", null);
+            string sQry = "UPDATE [tblUser] SET [Password]='" + saltedpassword + "' WHERE [UserID]=" + userID;
+            int retVal = ExecuteUpdateQuery(sQry);
+            return retVal;
+        }
+        
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
 

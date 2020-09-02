@@ -58,6 +58,37 @@
           <span>Games</span>
         </a>
       </li>
+      <li>
+        <a routerLink="/resetpassword" routerLinkActive="active" class="side-nav-link-ref">
+          <i class="bx bx-user-circle"></i>
+          <span>Reset Passord</span>
+        </a>
+      </li>
+      <li *ngIf="isAdmin">
+        <a routerLink="/adminconfig" routerLinkActive="active" class="side-nav-link-ref">
+          <i class="bx bx-user-circle"></i>
+          <span>Admin Configuration</span>
+        </a>
+      </li>
+      <!-- <li>
+        <a href="javascript: void(0);" class="has-dropdown">
+          <i class="bx bxs-eraser"></i>
+          <span class="badge badge-pill badge-danger float-right">6</span>
+          <span>Forms</span>
+        </a>
+        <ul class="sub-menu" aria-expanded="false">
+          <li><a routerLink="/form/elements" routerLinkActive="active" class="side-nav-link-ref">Form Elements</a></li>
+          <li><a routerLink="/form/validation" routerLinkActive="active" class="side-nav-link-ref">Form Validation</a>
+          </li>
+          <li><a routerLink="/form/advanced" routerLinkActive="active" class="side-nav-link-ref">Form Advanced</a></li>
+          <li><a routerLink="/form/editor" routerLinkActive="active" class="side-nav-link-ref">Form Editors</a></li>
+          <li><a routerLink="/form/uploads" routerLinkActive="active" class="side-nav-link-ref">Form File Upload</a>
+          </li>
+          <li><a routerLink="/form/repeater" routerLinkActive="active" class="side-nav-link-ref">Form Repeater</a></li>
+          <li><a routerLink="/form/wizard" routerLinkActive="active" class="side-nav-link-ref">Form Wizard</a></li>
+          <li><a routerLink="/form/mask" routerLinkActive="active" class="side-nav-link-ref">Form Mask</a></li>
+        </ul>
+      </li> -->
       <!-- <li>
         <a routerLink="/orderstatus" routerLinkActive="active" class="side-nav-link-ref">
           <i class="bx bx-calendar"></i>

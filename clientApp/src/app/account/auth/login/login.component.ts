@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loginForm: FormGroup;
   submitted = false;
   error = '';
-
+  statusMessage: string; // message to show after delete the record
   // set the currenr year
   year: number = new Date().getFullYear();
   public _hubConnection: HubConnection;
@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .pipe(first())
       .subscribe(
         data => {
+          // this.statusMessage = data.message;
           this._hubConnection.invoke('Start');
           if (!localStorage.getItem('isAdmin')) { this.router.navigate(['/usermanagement']); }
           else {
@@ -82,7 +83,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
         },
         error => {
-          // this.alertService.error(error);
+          this.statusMessage = 'Username or password is incorrect';
           // this.loading = false;
         });
     // this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {

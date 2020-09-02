@@ -33,8 +33,10 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { MapsModule } from './maps/maps.module';
 import { ChatComponent } from './chat/chat.component';
 import { UsersModule } from './usermanagement/users.module';
+import { UpdatePasswordModule } from './updatepassword/updatepassword.module';
 import { GamesModule } from './games/games.module';
 import { GameStartModule } from './gamestart/gamestart.module';
+import { AdminConfigModule } from './adminconfiguration/adminconfig.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -73,6 +75,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     UsersModule,
     GamesModule,
     GameStartModule,
+    UpdatePasswordModule,
+    AdminConfigModule
 
   ],
   providers: [

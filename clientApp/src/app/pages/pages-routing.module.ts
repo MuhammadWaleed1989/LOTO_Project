@@ -15,6 +15,8 @@ const routes: Routes = [
   { path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule) },
   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'usermanagement', loadChildren: () => import('./usermanagement/users.module').then(m => m.UsersModule) },
+  { path: 'resetpassword', loadChildren: () => import('./updatepassword/updatepassword.module').then(m => m.UpdatePasswordModule) },
+  { path: 'adminconfig', loadChildren: () => import('./adminconfiguration/adminconfig.module').then(m => m.AdminConfigModule) },
   { path: 'games', loadChildren: () => import('./games/games.module').then(m => m.GamesModule) },
   { path: 'gamestart/:id', loadChildren: () => import('./gamestart/gamestart.module').then(m => m.GameStartModule) },
   { path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule) },

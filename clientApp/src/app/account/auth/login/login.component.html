@@ -30,6 +30,7 @@
               </a>
             </div>
             <div class="p-2">
+              <div>{{statusMessage}}</div>
               <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
                 <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
@@ -64,11 +65,11 @@
                   <button class="btn btn-primary btn-block" type="submit">Log In</button>
                 </div>
 
-                <div class="mt-4 text-center">
+                <!-- <div class="mt-4 text-center">
                   <a routerLink="/account/reset-password" class="text-muted"><i class="mdi mdi-lock mr-1"></i> Forgot
                     your
                     password?</a>
-                </div>
+                </div> -->
               </form>
             </div>
 
@@ -78,7 +79,7 @@
           <p>Don't have an account ? <a routerLink="/account/signup" class="font-weight-medium text-primary"> Signup
               now
             </a> </p>
-          <p>© {{year}} Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+          <!-- <p>© {{year}} Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p> -->
         </div>
 
       </div>
