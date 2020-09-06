@@ -15,3 +15,21 @@ C:\Users\Muhammad.Waleed\OneDrive - Wiseman Innovations, LLC\Desktop\LOTOApi\api
 C:\Users\Muhammad.Waleed\OneDrive - Wiseman Innovations, LLC\Desktop\LOTOApi\api\obj\Debug\netcoreapp2.1\api.dll
 C:\Users\Muhammad.Waleed\OneDrive - Wiseman Innovations, LLC\Desktop\LOTOApi\api\obj\Debug\netcoreapp2.1\api.pdb
 C:\Users\Muhammad.Waleed\OneDrive - Wiseman Innovations, LLC\Desktop\LOTOApi\api\obj\Debug\netcoreapp2.1\api.genruntimeconfig.cache
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\appsettings.Development.json
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\appsettings.json
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\api.deps.json
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\api.runtimeconfig.json
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\api.runtimeconfig.dev.json
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\api.dll
+C:\Personal\LOTO Project\api\bin\Debug\netcoreapp2.1\api.pdb
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.csprojAssemblyReference.cache
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.csproj.CoreCompileInputs.cache
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.RazorAssemblyInfo.cache
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.RazorAssemblyInfo.cs
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.AssemblyInfoInputs.cache
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.AssemblyInfo.cs
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.RazorTargetAssemblyInfo.cache
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.dll
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.pdb
+C:\Personal\LOTO Project\api\obj\Debug\netcoreapp2.1\api.genruntimeconfig.cache

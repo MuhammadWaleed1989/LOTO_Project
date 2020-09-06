@@ -33,7 +33,7 @@ namespace api
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("http://localhost:4200")
+                    builder => builder.WithOrigins("*")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -72,7 +72,7 @@ namespace api
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             //app.UseRouting();
-            app.UseAuthentication();
+            app.UseJwtBearerAuthentication();
             // global cors policy////
             //app.UseCors(x => x
             //    .AllowAnyOrigin()

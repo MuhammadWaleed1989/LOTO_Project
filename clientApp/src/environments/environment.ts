@@ -15,7 +15,7 @@ export const environment = {
     measurementId: ''
   }
   ,
-  apiUrl: 'https://localhost:44320',
+  apiUrl: 'https://localhost:44373',
 };
 
 /*

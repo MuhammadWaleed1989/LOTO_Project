@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hyagb4/QHQdKbhbCRG0iGXw5vH7mIZOnNlwHKjQh4AJwFcq3PU+3xaIl5wTzYsaxIC74iw9mmU9lDJmKXbyxGA==",
+  "dgSpecHash": "hUYSDlF8LLsSe0lgN7dvqR+cj5ODHws5NmzrHCS+p3LUWq7YLeh7s4Qg0vwg6Nc+YWl6Rwig4+bKkIFLAhOHhw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Muhammad.Waleed\\OneDrive - Wiseman Innovations, LLC\\Desktop\\LOTOApi\\api\\api.csproj",
+  "projectFilePath": "C:\\Personal\\LOTO Project\\api\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Muhammad.Waleed\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.6\\microsoft.aspnet.webapi.client.5.2.6.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore\\2.1.1\\microsoft.aspnetcore.2.1.1.nupkg.sha512",
