@@ -12,7 +12,7 @@ import { NgbNavModule, NgbDropdownModule, NgbPaginationModule } from '@ng-bootst
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { UploadComponent } from '../upload/upload.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 const config: DropzoneConfigInterface = {
@@ -23,7 +23,7 @@ const config: DropzoneConfigInterface = {
 
 @NgModule({
   // tslint:disable-next-line: max-line-length
-  declarations: [GameStartComponent],
+  declarations: [GameStartComponent, UploadComponent],
   imports: [
     CommonModule,
     GameStartRoutingModule,

@@ -32,15 +32,20 @@
                 <tr>
                   <th>Game Name</th>
                   <th>Winning Numbers</th>
+                  <th>Start Date & Time</th>
+                  <th>End Date & Time</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let game of gameInfo  | filter:term ;let i = index;">
                   <td><a [routerLink]="['/gamestart/', game.gameID]">{{game.gameName}}</a></td>
+
                   <td>
                     <div *ngFor="let value of game.winValueList" class="inlineDivs">{{value===-1?'':value}}</div>
                   </td>
+                  <td>{{game.startDateAndTime}}</td>
+                  <td>{{game.endDateAndTime}}</td>
                   <!-- <td>10</td> -->
                   <td>
                     <a [routerLink]="['/gamestart/', game.gameID]" title="Start" class="inlineItem"><i
@@ -79,70 +84,43 @@
 
 
         <form (ngSubmit)="typeSubmit()" [formGroup]="typeValidationForm">
-          <div class="form-group">
-            <label>Game Name</label>
-            <input type="text" class="form-control" formControlName="gameName"
-              [ngClass]="{'is-invalid': typesubmit && type.gameName.errors}" placeholder="Enter game name" />
-            <div *ngIf="typesubmit && type.gameName.errors" class="invalid-feedback">
-              <span *ngIf="type.gameName.errors.required">Game name is required.</span>
+          <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field p-col-12">
+              <label for="gameName">Game Name</label>
+              <input type="text" inputId="gameName" class="form-control" formControlName="gameName"
+                [ngClass]="{'is-invalid': typesubmit && type.gameName.errors}" placeholder="Enter game name" />
+              <div *ngIf="typesubmit && type.gameName.errors" class="invalid-feedback">
+                <span *ngIf="type.gameName.errors.required">Game name is required.</span>
+              </div>
             </div>
-          </div>
-          <!-- <div class="form-group">
-            <label>Win Value 1</label>
-            <input type="number" class="form-control" formControlName="winValue1"
-              [ngClass]="{'is-invalid': typesubmit && type.winValue1.errors}" placeholder="Enter Win Value 1" />
-            <div *ngIf="typesubmit && type.winValue1.errors" class="invalid-feedback">
-              <span *ngIf="type.winValue1.errors.required">Win Value 1 is required.</span>
+            <div class="p-field p-col-12">
+              <label for="startDate">Start Date</label>
+              <p-calendar formControlName="startDate" inputId="startDate" [showIcon]="true" showButtonBar="true">
+              </p-calendar>
             </div>
-          </div>
-          <div class="form-group">
-            <label>Win Value 2</label>
-            <input type="number" class="form-control" formControlName="winValue2"
-              [ngClass]="{'is-invalid': typesubmit && type.winValue2.errors}" placeholder="Enter Win Value 2" />
-            <div *ngIf="typesubmit && type.winValue2.errors" class="invalid-feedback">
-              <span *ngIf="type.winValue2.errors.required">Win Value 2 is required.</span>
+            <div class="p-field p-col-12">
+              <label for="startTime">Start Time</label>
+              <p-calendar formControlName="startTime" [timeOnly]="true" inputId="startTime">
+              </p-calendar>
             </div>
-          </div>
-          <div class="form-group">
-            <label>Win Value 3</label>
-            <input type="number" class="form-control" formControlName="winValue3"
-              [ngClass]="{'is-invalid': typesubmit && type.winValue3.errors}" placeholder="Enter Win Value 3" />
-            <div *ngIf="typesubmit && type.winValue3.errors" class="invalid-feedback">
-              <span *ngIf="type.winValue3.errors.required">Win Value 3 is required.</span>
+            <div class="p-field p-col-12">
+              <label for="endDate">End Date</label>
+              <p-calendar formControlName="endDate" inputId="endDate" [showIcon]="true" showButtonBar="true">
+              </p-calendar>
             </div>
-          </div>
-          <div class="form-group">
-            <label>Win Value 4</label>
-            <input type="number" class="form-control" formControlName="winValue4"
-              [ngClass]="{'is-invalid': typesubmit && type.winValue4.errors}" placeholder="Enter Win Value 4" />
-            <div *ngIf="typesubmit && type.winValue4.errors" class="invalid-feedback">
-              <span *ngIf="type.winValue4.errors.required">Win Value 4 is required.</span>
+            <div class="p-field p-col-12">
+              <label for="endTime">End Time</label>
+              <p-calendar formControlName="endTime" [timeOnly]="true" inputId="endTime"></p-calendar>
             </div>
-          </div>
-          <div class="form-group">
-            <label>Win Value 5</label>
-            <input type="number" class="form-control" formControlName="winValue5"
-              [ngClass]="{'is-invalid': typesubmit && type.winValue5.errors}" placeholder="Enter Win Value 5" />
-            <div *ngIf="typesubmit && type.winValue5.errors" class="invalid-feedback">
-              <span *ngIf="type.winValue5.errors.required">Win Value 5 is required.</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Win Value 6</label>
-            <input type="number" class="form-control" formControlName="winValue6"
-              [ngClass]="{'is-invalid': typesubmit && type.winValue6.errors}" placeholder="Enter Win Value 6" />
-            <div *ngIf="typesubmit && type.winValue6.errors" class="invalid-feedback">
-              <span *ngIf="type.winValue6.errors.required">Win Value 6 is required.</span>
-            </div>
-          </div> -->
-          <div class="form-group mb-0">
-            <div>
-              <button type="submit" class="btn btn-primary mr-1">
-                Submit
-              </button>
-              <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-secondary">
-                Cancel
-              </button>
+            <div class="form-group mb-0">
+              <div>
+                <button type="submit" class="btn btn-primary mr-1">
+                  Submit
+                </button>
+                <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-secondary">
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </form>

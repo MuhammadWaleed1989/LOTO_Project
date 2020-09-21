@@ -10,6 +10,9 @@ export class GameService {
     getAll() {
         return this.http.get<GameInfo[]>(`${environment.apiUrl}/api/GamesInfo`);
     }
+    getLastWinner() {
+        return this.http.get<GameInfo>(`${environment.apiUrl}/api/GamesInfo/GetLastWinner`);
+    }
     getGameValues() {
         return this.http.get<GameValues[]>(`${environment.apiUrl}/api/UserGame/GetGameValues`);
     }

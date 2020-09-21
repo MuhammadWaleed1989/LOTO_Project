@@ -6,12 +6,21 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <ngb-alert type="info">Game will be finish on Saturday night at 10PM</ngb-alert>
+          <!-- <div class="row" *ngIf="isGameFinish">
+            <h4>Upload Image for Game winner</h4>
+            <div class="col-sm-12">
+              <app-upload></app-upload>
+              <div class="imagePreview" *ngIf="winnerImage && winnerImage !== ''">
+                <img width="100" height="100" [src]="imagesFolder+winnerImage" [alt]="winnerImage">
+              </div>
+            </div>
+          </div> -->
+          <br>
+          <ngb-alert type="info">Game will be start on {{startDateAndTime}} and finish on {{endDateAndTime}}</ngb-alert>
           <ngb-alert type="success">Coin price for each column is : {{coinPrice}}</ngb-alert>
           <ngb-alert type="danger" *ngIf="error">{{ error }}</ngb-alert>
           <div class="row mb-2">
             <div class="col-sm-6">
-
               <h4>
                 {{isGameStart?'Please select columns':isGamePause?'You cannot select the columns for now !!!':isGameFinish?'Game is over, now you have to wait for winner !!!':'Please wait once administrator starts the game'}}
               </h4>
@@ -22,7 +31,6 @@
                   id="lblRemainingCoins{{currentUserID}}">0</span>
               </h6>
               <hr />
-
             </div>
             <div class="col-sm-6" *ngIf="isAdmin">
               <div class="text-sm-right">

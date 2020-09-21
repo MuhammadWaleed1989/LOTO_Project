@@ -1,0 +1,27 @@
+.table tr td.active {  
+    background-color:#48da24 !important;  
+    color: white;  
+  }
+  .table tr td {  
+    cursor: pointer;
+  }
+  .inlineItem {
+    margin-right: 3px;
+  }
+  .winnerNumberIncomplete{
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #f46a6a;
+  }
+  .inlineDivs {
+    width: 35px;
+    height: 35px;
+    background-color: #296b97 !important;
+    color: white;
+    display: inline-block;
+    margin-right: 5px;
+    text-align: center;
+    padding-top: 9px;
+}
+  

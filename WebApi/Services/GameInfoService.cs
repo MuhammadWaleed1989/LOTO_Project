@@ -46,16 +46,34 @@ namespace WebApi.Services
                                  WinValue4 = Convert.ToInt32(dr["WinValue4"].ToString()),
                                  WinValue5 = Convert.ToInt32(dr["WinValue5"].ToString()),
                                  WinValue6 = Convert.ToInt32(dr["WinValue6"].ToString()),
+                                 StartDate = Convert.ToDateTime(dr["StartDate"]),
+                                 StartTime = Convert.ToDateTime(dr["StartTime"]),
+                                 EndDate = Convert.ToDateTime(dr["EndDate"]),
+                                 EndTime = Convert.ToDateTime(dr["EndTime"]),
+                                 StartDateAndTime = Convert.ToDateTime(dr["StartDate"]).ToString("MM/dd/yyyy") + " " +  Convert.ToDateTime(dr["StartTime"]).ToString("hh:mm tt"),
+                                 EndDateAndTime = Convert.ToDateTime(dr["EndDate"]).ToString("MM/dd/yyyy") + " " + Convert.ToDateTime(dr["EndTime"]).ToString("hh:mm tt"),
                                  WinValueList = new int[6] { Convert.ToInt32(dr["WinValue1"].ToString()), Convert.ToInt32(dr["WinValue2"].ToString()), Convert.ToInt32(dr["WinValue3"].ToString()),Convert.ToInt32(dr["WinValue4"].ToString()), Convert.ToInt32(dr["WinValue5"].ToString()), Convert.ToInt32(dr["WinValue6"].ToString()) },
                              }).ToList();
             }
             return gameInfos;
         }
+        public tblGames GetLastWinner()
+        {
+            tblGames gameData = new tblGames();
+            string sQry = "SELECT TOP 1 * FROM dbo.tblGames WHERE ISNULL(WinnerImage,'')<>'' ORDER BY EndDate DESC ";
+            DataTable dtGameInfo = ExecuteQuery(sQry);
+            if (dtGameInfo != null)
+            {
+                DataRow dr = dtGameInfo.Rows[0];
+                gameData = GetGameInfoByRow(dr);
+            }
+            return gameData;
+        }
         public int Add(tblGames gameInfo)
         {
-            string sQry = "INSERT INTO [tblGames] ([GameName],[WinValue1],[WinValue2],[WinValue3],[WinValue4],[WinValue5],[WinValue6],[IsDeleted],[IsGameStart],[IsGamePause],[IsGameFinish]) " +
+            string sQry = "INSERT INTO [tblGames] ([GameName],[WinValue1],[WinValue2],[WinValue3],[WinValue4],[WinValue5],[WinValue6],[IsDeleted],[IsGameStart],[IsGamePause],[IsGameFinish],[StartDate],[StartTime],[EndDate],[EndTime]) " +
                 "VALUES('" + gameInfo.GameName + "','" + gameInfo.WinValue1 + "','" + gameInfo.WinValue2 + "','" +
-                gameInfo.WinValue3 + "','" + gameInfo.WinValue4 + "','" + gameInfo.WinValue5 + "','" + gameInfo.WinValue6 + "','" + false + "','" + gameInfo.IsGameStart + "','" + gameInfo.IsGamePause + "','" + gameInfo.IsGameFinish + "');SELECT SCOPE_IDENTITY();";
+                gameInfo.WinValue3 + "','" + gameInfo.WinValue4 + "','" + gameInfo.WinValue5 + "','" + gameInfo.WinValue6 + "','" + false + "','" + gameInfo.IsGameStart + "','" + gameInfo.IsGamePause + "','" + gameInfo.IsGameFinish + "','" + gameInfo.StartDate + "','" + gameInfo.StartTime + "','" + gameInfo.EndDate + "','" + gameInfo.EndTime + "');SELECT SCOPE_IDENTITY();";
             int retVal = ExecuteCRUDByQuery(sQry);
             return retVal;
         }
@@ -68,13 +86,19 @@ namespace WebApi.Services
         }
         public int Update(int gameId, tblGames gameInfo)
         {
-            string sQry = "UPDATE [tblGames] SET [GameName]='" + gameInfo.GameName + "' WHERE [GameID]=" + gameId;
+            string sQry = "UPDATE [tblGames] SET [GameName]='" + gameInfo.GameName + "',[StartDate]='" + gameInfo.StartDate + "',[StartTime]='" + gameInfo.StartTime + "',[EndDate]='" + gameInfo.EndDate + "',[EndTime]='" + gameInfo.EndTime + "' WHERE [GameID]=" + gameId;
             int retVal = ExecuteUpdateQuery(sQry);
             return retVal;
         }
         public int UpdateWinnigValues(tblGames gameInfo)
         {
             string sQry = "UPDATE [tblGames] SET [WinValue1]='" + gameInfo.WinValue1 + "',[WinValue2]='" + gameInfo.WinValue2 + "',[WinValue3]='" + gameInfo.WinValue3 + "',[WinValue4]='" + gameInfo.WinValue4 + "',[WinValue5]='" + gameInfo.WinValue5 + "',[WinValue6]='" + gameInfo.WinValue6 + "' WHERE [GameID]=" + gameInfo.GameID;
+            int retVal = ExecuteUpdateQuery(sQry);
+            return retVal;
+        }
+        public int UpdateWinnerImage(string winnerImage, int gameID)
+        {
+            string sQry = "UPDATE [tblGames] SET [WinnerImage]='" + winnerImage + "' WHERE [GameID]=" + gameID;
             int retVal = ExecuteUpdateQuery(sQry);
             return retVal;
         }
@@ -106,14 +130,16 @@ namespace WebApi.Services
         {
             tblGames gameInfo = new tblGames();
             gameInfo.GameID = Convert.ToInt32(dr["GameID"]);
-            gameInfo.GameName = dr["GameName"].ToString();
-            gameInfo.WinValue1 = Convert.ToInt32(dr["WinValue1"].ToString());
-            gameInfo.WinValue2 = Convert.ToInt32(dr["WinValue2"].ToString());
-            gameInfo.WinValue3 = Convert.ToInt32(dr["WinValue3"].ToString());
-            gameInfo.WinValue4 = Convert.ToInt32(dr["WinValue4"].ToString());
-            gameInfo.WinValue5 = Convert.ToInt32(dr["WinValue5"].ToString());
-            gameInfo.WinValue6 = Convert.ToInt32(dr["WinValue6"].ToString());
-            gameInfo.IsDeleted = Convert.ToBoolean(dr["IsDeleted"].ToString());
+            gameInfo.GameName = Convert.ToString(dr["GameName"]);
+            gameInfo.WinValue1 = Convert.ToInt32(dr["WinValue1"]);
+            gameInfo.WinValue2 = Convert.ToInt32(dr["WinValue2"]);
+            gameInfo.WinValue3 = Convert.ToInt32(dr["WinValue3"]);
+            gameInfo.WinValue4 = Convert.ToInt32(dr["WinValue4"]);
+            gameInfo.WinValue5 = Convert.ToInt32(dr["WinValue5"]);
+            gameInfo.WinValue6 = Convert.ToInt32(dr["WinValue6"]);
+            gameInfo.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+            gameInfo.WinnerImage = Convert.ToString(dr["WinnerImage"]);
+            gameInfo.WinValueList = new int[6] { Convert.ToInt32(dr["WinValue1"].ToString()), Convert.ToInt32(dr["WinValue2"].ToString()), Convert.ToInt32(dr["WinValue3"].ToString()), Convert.ToInt32(dr["WinValue4"].ToString()), Convert.ToInt32(dr["WinValue5"].ToString()), Convert.ToInt32(dr["WinValue6"].ToString()) };
             return gameInfo;
         }
         #endregion

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Services;
 using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace WebApi.Controllers
 {
@@ -20,7 +22,14 @@ namespace WebApi.Controllers
         {
             _gameInfoService = gameInfoService;
         }
+        [HttpGet("GetLastWinner")]
+        public IActionResult GetLastWinner()
+        {
+            var games = _gameInfoService.GetLastWinner();
+            return Ok(games);
+        }
         // POST api/gameinfo
+        [Authorize]
         [HttpPost]
         public IActionResult PostGameInfo([FromBody]tblGames gameInfo)
         {
@@ -30,6 +39,7 @@ namespace WebApi.Controllers
             if (retVal > 0) return Ok(); else return NotFound();
         }
         // GET api/gameinfo/id
+        [Authorize]
         [HttpGet("{id}", Name = nameof(GetGameInfoById))]
         public IActionResult GetGameInfoById(int id)
         {
@@ -80,6 +90,38 @@ namespace WebApi.Controllers
             if (usersOfGame == null) return BadRequest();
             int retVal = _gameInfoService.InsertUserOfGame(usersOfGame);
             if (retVal > 0) return Ok(); else return NotFound();
+        }
+        [HttpPost("Upload"), DisableRequestSizeLimit]
+        public IActionResult Upload([FromForm] int gameID)
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    int retVal = _gameInfoService.UpdateWinnerImage(dbPath, gameID);
+                    
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
     }
 }

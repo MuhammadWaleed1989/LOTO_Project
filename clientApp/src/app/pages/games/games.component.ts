@@ -76,12 +76,10 @@ export class GamesComponent implements OnInit {
     this.typeValidationForm = this.formBuilder.group({
       gameID: ['-1'],
       gameName: ['', [Validators.required]],
-      // winValue1: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      // winValue2: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      // winValue3: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      // winValue4: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      // winValue5: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      // winValue6: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      startDate: ['', [Validators.required]],
+      startTime: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
     });
   }
 
@@ -122,31 +120,27 @@ export class GamesComponent implements OnInit {
     this.typesubmit = false;
     this.modalService.open(largeDataModal, {
       backdrop: 'static',
-      size: 'xl',
+      size: 'lg',
       scrollable: true
     });
     if (info) {
       this.typeValidationForm.patchValue({
         gameID: info.gameID,
         gameName: info.gameName,
-        // winValue1: info.winValue1,
-        // winValue2: info.winValue2,
-        // winValue3: info.winValue3,
-        // winValue4: info.winValue4,
-        // winValue5: info.winValue5,
-        // winValue6: info.winValue6,
+        startDate: new Date(info.startDate),
+        startTime: new Date(info.startTime),
+        endDate: new Date(info.endDate),
+        endTime: new Date(info.endTime),
       });
     } else {
 
       this.typeValidationForm.patchValue({
         gameID: "-1",
         gameName: "",
-        // winValue1: "",
-        // winValue2: "",
-        // winValue3: "",
-        // winValue4: "",
-        // winValue5: "",
-        // winValue6: "",
+        startDate: "",
+        startTime: "",
+        endDate: "",
+        endTime: "",
       });
     }
   }
@@ -168,12 +162,10 @@ export class GamesComponent implements OnInit {
       var objGameInfo = {
         'gameID': Number(this.typeValidationForm.get('gameID').value),
         'gameName': this.typeValidationForm.get('gameName').value,
-        // 'winValue1': Number(this.typeValidationForm.get('winValue1').value),
-        // 'winValue2': Number(this.typeValidationForm.get('winValue2').value),
-        // 'winValue3': Number(this.typeValidationForm.get('winValue3').value),
-        // 'winValue4': Number(this.typeValidationForm.get('winValue4').value),
-        // 'winValue5': Number(this.typeValidationForm.get('winValue5').value),
-        // 'winValue6': Number(this.typeValidationForm.get('winValue6').value),
+        'startDate': new Date(this.typeValidationForm.get('startDate').value),
+        'startTime': new Date(this.typeValidationForm.get('startTime').value),
+        'endDate': new Date(this.typeValidationForm.get('endDate').value),
+        'endTime': new Date(this.typeValidationForm.get('endTime').value),
         'winValue1': -1,
         'winValue2': -1,
         'winValue3': -1,

@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { environment } from '../../../../environments/environment';
 import { Users } from '../../../pages/usermanagement/users.model';
+import { GameService } from '../../../services/game.service';
+import { GameInfo, UserGame } from '../../../pages/games/games.model';
 
 @Component({
   selector: 'app-login',
@@ -21,15 +23,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loginForm: FormGroup;
   submitted = false;
   error = '';
+  gameInfo: GameInfo;
   statusMessage: string; // message to show after delete the record
   // set the currenr year
   year: number = new Date().getFullYear();
   public _hubConnection: HubConnection;
   users: Users[] = [];
+  imagesFolder: string;
+  public winnerImage: string;
+  public winValueList: [];
   // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(private gameService: GameService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this.imagesFolder = `${environment.apiUrl}/`;
+    this.winnerImage = "";
+    this.winValueList = [];
     this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
     this._hubConnection.on('UserList', (data: any) => {
       this.users = data;
@@ -48,12 +57,19 @@ export class LoginComponent implements OnInit, AfterViewInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
-
+    this.loadAllGames();
     // reset login status
     this.authenticationService.logout();
 
   }
-
+  private loadAllGames() {
+    this.gameService.getLastWinner().pipe(first()).subscribe(games => {
+      if (games) {
+        this.winnerImage = games['winnerImage'];
+        this.winValueList = games['winValueList'];
+      }
+    });
+  }
   ngAfterViewInit() {
   }
 

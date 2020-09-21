@@ -241,6 +241,14 @@ namespace WebApi.Hubs
                                  IsGameStart = Convert.ToBoolean(dr["IsGameStart"]),
                                  IsGamePause = Convert.ToBoolean(dr["IsGamePause"]),
                                  IsGameFinish = Convert.ToBoolean(dr["IsGameFinish"]),
+                                 WinnerImage = Convert.ToString(dr["WinnerImage"]),
+                                 StartDate = Convert.ToDateTime(dr["StartDate"]),
+                                 StartTime = Convert.ToDateTime(dr["StartTime"]),
+                                 EndDate = Convert.ToDateTime(dr["EndDate"]),
+                                 EndTime = Convert.ToDateTime(dr["EndTime"]),
+                                 StartDateAndTime = Convert.ToDateTime(dr["StartDate"]).ToString("MM/dd/yyyy") + " " + Convert.ToDateTime(dr["StartTime"]).ToString("hh:mm tt"),
+                                 EndDateAndTime = Convert.ToDateTime(dr["EndDate"]).ToString("MM/dd/yyyy") + " " + Convert.ToDateTime(dr["EndTime"]).ToString("hh:mm tt"),
+                                 WinValueList = new int[6] { Convert.ToInt32(dr["WinValue1"].ToString()), Convert.ToInt32(dr["WinValue2"].ToString()), Convert.ToInt32(dr["WinValue3"].ToString()), Convert.ToInt32(dr["WinValue4"].ToString()), Convert.ToInt32(dr["WinValue5"].ToString()), Convert.ToInt32(dr["WinValue6"].ToString()) },
                              }).ToList();
 
             }

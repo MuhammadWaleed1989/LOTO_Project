@@ -30,6 +30,16 @@ namespace WebApi.Models
         public bool? IsGamePause { get; set; }
 
         public bool? IsGameFinish { get; set; }
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? StartTime { get; set; }
+        public string StartDateAndTime { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public DateTime? EndTime { get; set; }
+        public string EndDateAndTime { get; set; }
+        public string WinnerImage { get; set; }
     }
     public class GameData
     { 

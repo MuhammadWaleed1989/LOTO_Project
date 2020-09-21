@@ -1,3 +1,5 @@
+import { Time } from '@angular/common';
+
 export class GameInfo {
     gameID: number;
     gameName: string;
@@ -9,6 +11,12 @@ export class GameInfo {
     winValue6: number;
     winValueList: any;
     isDeleted: boolean;
+    startDate: Date;
+    startTime: Date;
+    endDate: Date;
+    endTime: Date;
+    startDateAndTime: string;
+    endDateAndTime: string;
 }
 export class GameValues {
     gameValueID: number;

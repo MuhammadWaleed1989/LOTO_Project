@@ -12,7 +12,8 @@ namespace WebApi.Services
         int Add(tblGames gameInfo);
         int Update(int gameId, tblGames gameInfo);
         int UpdateWinnigValues(tblGames gameInfo);
-        
+        int UpdateWinnerImage(string winnerImage, int gameID);
+        tblGames GetLastWinner();
         tblGames GetById(int id);
         tblGames Find(int id);
         int Remove(int id);
