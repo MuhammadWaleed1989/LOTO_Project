@@ -25,7 +25,7 @@ namespace WebApi
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("http://localhost:4200")
+                    builder => builder.WithOrigins("http://localhost:4200", "http://membersoflotoa.com")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());

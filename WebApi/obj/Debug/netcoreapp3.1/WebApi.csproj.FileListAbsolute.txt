@@ -222,3 +222,4 @@ C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\staticwebassets\WebApi.S
 C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.dll
 C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.pdb
 C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.genruntimeconfig.cache
+C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.csprojAssemblyReference.cache
