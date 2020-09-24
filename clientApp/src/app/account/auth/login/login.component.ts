@@ -29,15 +29,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
   year: number = new Date().getFullYear();
   public _hubConnection: HubConnection;
   users: Users[] = [];
-  imagesFolder: string;
-  public winnerImage: string;
+
   public winValueList: [];
   // tslint:disable-next-line: max-line-length
   constructor(private gameService: GameService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-    this.imagesFolder = `${environment.apiUrl}/`;
-    this.winnerImage = "";
     this.winValueList = [];
     this._hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/echo`).build();
     this._hubConnection.on('UserList', (data: any) => {
@@ -65,7 +62,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   private loadAllGames() {
     this.gameService.getLastWinner().pipe(first()).subscribe(games => {
       if (games) {
-        this.winnerImage = games['winnerImage'];
+
         this.winValueList = games['winValueList'];
       }
     });

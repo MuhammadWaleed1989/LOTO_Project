@@ -210,7 +210,6 @@ C:\Personal\LOTO Project\WebApi\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\
 C:\Personal\LOTO Project\WebApi\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
 C:\Personal\LOTO Project\WebApi\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Personal\LOTO Project\WebApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.csprojAssemblyReference.cache
 C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.csproj.CoreCompileInputs.cache
 C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Personal\LOTO Project\WebApi\obj\Debug\netcoreapp3.1\WebApi.MvcApplicationPartsAssemblyInfo.cache

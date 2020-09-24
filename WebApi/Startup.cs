@@ -6,10 +6,6 @@ using Microsoft.Extensions.Hosting;
 using WebApi.Services;
 using WebApi.helper;
 using WebApi.Hubs;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
-using Microsoft.AspNetCore.Http;
 
 namespace WebApi
 {
@@ -44,11 +40,6 @@ namespace WebApi
             services.AddSingleton<IUserGameService, UserGameService>();
             services.AddSingleton<IAdminConfigService, AdminConfigService>();
             services.AddSignalR();
-            services.Configure<FormOptions>(o => {
-                o.ValueLengthLimit = int.MaxValue;
-                o.MultipartBodyLengthLimit = int.MaxValue;
-                o.MemoryBufferThreshold = int.MaxValue;
-            });
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -68,11 +59,6 @@ namespace WebApi
             app.UseRouting();
             app.UseAuthorization();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
             // global cors policy////
             //app.UseCors(x => x
             //    .AllowAnyOrigin()

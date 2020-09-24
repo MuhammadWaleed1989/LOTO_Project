@@ -84,11 +84,11 @@ export class GameStartComponent implements OnInit {
   public isAdmin: boolean = false;
   public gameData: any;
   public error = '';
-  public winnerImage: string;
+
   public startDateAndTime: string;
   public endDateAndTime: string;
   public coinPrice: number = 100;
-  imagesFolder: string;
+
   adminConfig: AdminConfig[] = [];
   constructor(private userService: UserService, private gameService: GameService, private modalService: NgbModal, public formBuilder: FormBuilder, private actRoute: ActivatedRoute,
     private alertService: AlertService) {
@@ -112,7 +112,7 @@ export class GameStartComponent implements OnInit {
     this.loadConfiguration();
     // reset alerts on submit
     this.alertService.clear();
-    this.imagesFolder = `${environment.apiUrl}/`;
+
     this.typeValidationForm = this.formBuilder.group({
       winValue1: ['', [Validators.required, Validators.pattern('[0-9]+')]],
       winValue2: ['', [Validators.required, Validators.pattern('[0-9]+')]],
@@ -149,7 +149,7 @@ export class GameStartComponent implements OnInit {
       this.isGameStart = false;
       this.isGamePause = false;
       this.isGameFinish = false;
-      this.winnerImage = "";
+
       this.startDateAndTime = "";
       this.endDateAndTime = "";
       this.coinsCost = 0;
@@ -177,7 +177,7 @@ export class GameStartComponent implements OnInit {
           this.isGameStart = gameInfo[0].isGameStart;
           this.isGamePause = gameInfo[0].isGamePause;
           this.isGameFinish = gameInfo[0].isGameFinish;
-          this.winnerImage = gameInfo[0].winnerImage;
+
           this.startDateAndTime = (moment(gameInfo[0].startDate)).format('DD-MMM-YYYY') + ' at ' + (moment(gameInfo[0].startTime)).format('h:mm a');
           this.endDateAndTime = (moment(gameInfo[0].endDate)).format('DD-MMM-YYYY') + ' at ' + (moment(gameInfo[0].endTime)).format('h:mm a');
           this.WinListArray.push(gameInfo[0].winValue1, gameInfo[0].winValue2, gameInfo[0].winValue3, gameInfo[0].winValue4, gameInfo[0].winValue5, gameInfo[0].winValue6);

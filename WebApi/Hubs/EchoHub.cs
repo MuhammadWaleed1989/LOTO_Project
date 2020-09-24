@@ -241,7 +241,6 @@ namespace WebApi.Hubs
                                  IsGameStart = Convert.ToBoolean(dr["IsGameStart"]),
                                  IsGamePause = Convert.ToBoolean(dr["IsGamePause"]),
                                  IsGameFinish = Convert.ToBoolean(dr["IsGameFinish"]),
-                                 WinnerImage = Convert.ToString(dr["WinnerImage"]),
                                  StartDate = Convert.ToDateTime(dr["StartDate"]),
                                  StartTime = Convert.ToDateTime(dr["StartTime"]),
                                  EndDate = Convert.ToDateTime(dr["EndDate"]),

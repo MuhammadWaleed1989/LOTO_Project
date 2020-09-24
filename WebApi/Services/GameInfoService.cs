@@ -60,7 +60,7 @@ namespace WebApi.Services
         public tblGames GetLastWinner()
         {
             tblGames gameData = new tblGames();
-            string sQry = "SELECT TOP 1 * FROM dbo.tblGames WHERE ISNULL(WinnerImage,'')<>'' ORDER BY EndDate DESC ";
+            string sQry = "SELECT TOP 1 * FROM dbo.tblGames WHERE ISNULL(winValue1,-1)<>-1 ORDER BY EndDate DESC ";
             DataTable dtGameInfo = ExecuteQuery(sQry);
             if (dtGameInfo != null)
             {
